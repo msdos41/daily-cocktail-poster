@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600" role="img">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0f2a22"/>
+      <stop offset="1" stop-color="#9bd6a4"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#g)"/>
+  <rect x="82" y="82" width="1036" height="1436" fill="none" stroke="#f8efe4" stroke-width="3" opacity=".7"/>
+  <text x="104" y="180" fill="#f8efe4" font-family="Arial, sans-serif" font-size="30" letter-spacing="9">DAILY COCKTAIL POSTER</text>
+  <text x="104" y="330" fill="#f8efe4" font-family="Georgia, serif" font-size="150">Mojito</text>
+  <path d="M430 560h340l-54 610H484z" fill="#f8efe4" opacity=".9"/>
+  <path d="M468 720h264l-34 400H502z" fill="#d8f3d0" opacity=".8"/>
+  <circle cx="545" cy="820" r="50" fill="#f8efe4" opacity=".5"/>
+  <circle cx="642" cy="930" r="52" fill="#f8efe4" opacity=".44"/>
+  <path d="M390 665c68-100 150-116 240-48-88 58-162 72-240 48z" fill="#2f9b63"/>
+  <path d="M610 635c82-86 165-82 238-8-95 42-168 45-238 8z" fill="#238450"/>
+  <circle cx="755" cy="758" r="70" fill="#b9e56e" stroke="#f8efe4" stroke-width="11"/>
+  <text x="104" y="1350" fill="#10231c" font-family="Georgia, serif" font-size="58">Mint, lime, crushed daylight.</text>
+  <text x="104" y="1430" fill="#10231c" font-family="Arial, sans-serif" font-size="28">WHITE RUM / LIME / MINT / SODA</text>
+</svg>

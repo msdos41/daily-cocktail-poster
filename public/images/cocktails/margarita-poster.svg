@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600" role="img">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#132522"/>
+      <stop offset="1" stop-color="#e4b45f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#g)"/>
+  <rect x="82" y="82" width="1036" height="1436" fill="none" stroke="#f8efe4" stroke-width="3" opacity=".72"/>
+  <text x="104" y="180" fill="#f8efe4" font-family="Arial, sans-serif" font-size="30" letter-spacing="9">DAILY COCKTAIL POSTER</text>
+  <text x="104" y="330" fill="#f8efe4" font-family="Georgia, serif" font-size="132">Margarita</text>
+  <ellipse cx="600" cy="672" rx="315" ry="74" fill="#f8efe4"/>
+  <ellipse cx="600" cy="666" rx="268" ry="42" fill="#d2f1d2"/>
+  <path d="M360 675h480l-198 304h-84z" fill="#dff1c2" opacity=".92"/>
+  <rect x="582" y="974" width="36" height="260" fill="#f8efe4"/>
+  <ellipse cx="600" cy="1252" rx="210" ry="44" fill="#f8efe4"/>
+  <circle cx="815" cy="700" r="66" fill="#cce86e" stroke="#f8efe4" stroke-width="12"/>
+  <text x="104" y="1350" fill="#15120f" font-family="Georgia, serif" font-size="58">Salt, lime, tequila brightness.</text>
+  <text x="104" y="1430" fill="#15120f" font-family="Arial, sans-serif" font-size="28">TEQUILA / LIME / ORANGE LIQUEUR</text>
+</svg>

@@ -1,0 +1,68 @@
+---
+import { getAllCocktails } from "@/data/cocktails";
+import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
+import { t } from "@/i18n/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return supportedLocales.map((locale) => ({
+    params: { locale: localeToPath(locale) },
+    props: { locale },
+  }));
+}
+
+const locale = Astro.props.locale as Locale;
+const cocktails = getAllCocktails(locale).slice().sort((a, b) => b.date.localeCompare(a.date));
+const title = `${t(locale, "archive")} | ${t(locale, "siteName")}`;
+const description = t(locale, "siteDescription");
+---
+
+<BaseLayout locale={locale} title={title} description={description} path="/archive" image={cocktails[0].heroImageMobile}>
+  <section class="archive-grid" data-archive-grid>
+    {
+      cocktails.map((cocktail) => (
+        <a
+          class="archive-card"
+          href={`/${localeToPath(locale)}/cocktails/${cocktail.slug}`}
+          data-archive-card
+          data-scheduled-date={cocktail.date}
+        >
+          <img src={cocktail.heroImageMobile} alt={`${t(locale, "visualAlt")} ${cocktail.name}`} width="1080" height="1920" />
+          <div>
+            <time datetime={cocktail.date}>{cocktail.date}</time>
+            <h2>{cocktail.name}</h2>
+            <p>{cocktail.subtitle}</p>
+          </div>
+        </a>
+      ))
+    }
+  </section>
+  <p class="archive-empty" data-archive-empty hidden>{t(locale, "noPastPicks")}</p>
+</BaseLayout>
+
+<script>
+  const archiveCards = Array.from(document.querySelectorAll("[data-archive-card]"));
+  const emptyState = document.querySelector("[data-archive-empty]");
+  const today = getLocalDateKey(new Date());
+  let visibleCount = 0;
+
+  archiveCards.forEach((card) => {
+    if (!(card instanceof HTMLElement)) return;
+
+    const scheduledDate = card.dataset.scheduledDate || "";
+    const isPublished = scheduledDate <= today;
+    card.hidden = !isPublished;
+    if (isPublished) visibleCount += 1;
+  });
+
+  if (emptyState instanceof HTMLElement) {
+    emptyState.hidden = visibleCount > 0;
+  }
+
+  function getLocalDateKey(date: Date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+</script>

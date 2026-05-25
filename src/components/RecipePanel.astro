@@ -1,0 +1,27 @@
+---
+import type { Cocktail } from "@/data/cocktails";
+import type { Locale } from "@/i18n/config";
+import { t } from "@/i18n/ui";
+
+type Props = {
+  cocktail: Cocktail;
+  locale: Locale;
+};
+
+const { cocktail, locale } = Astro.props;
+---
+
+<section class="recipe-section">
+  <div class="recipe-column">
+    <h2>{t(locale, "ingredients")}</h2>
+    <ul class="ingredient-list">
+      {cocktail.ingredients.map((ingredient) => <li>{ingredient}</li>)}
+    </ul>
+  </div>
+  <div class="recipe-column">
+    <h2>{t(locale, "howToMake")}</h2>
+    <ol class="steps-list">
+      {cocktail.steps.map((step) => <li>{step}</li>)}
+    </ol>
+  </div>
+</section>

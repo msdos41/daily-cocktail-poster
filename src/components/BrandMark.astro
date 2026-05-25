@@ -1,0 +1,15 @@
+---
+import Martini from "lucide-astro/Martini";
+
+type Props = {
+  href: string;
+  label: string;
+  class?: string;
+};
+
+const { href, label, class: className } = Astro.props;
+---
+
+<a class:list={["immersive-brand", className]} href={href} aria-label={label}>
+  <Martini size={20} aria-hidden="true" />
+</a>

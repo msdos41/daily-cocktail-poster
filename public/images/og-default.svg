@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img">
+  <rect width="1200" height="630" fill="#15120f"/>
+  <rect x="70" y="70" width="1060" height="490" fill="#211b17" stroke="#e3b35f" stroke-opacity=".45"/>
+  <text x="96" y="155" fill="#e3b35f" font-family="Arial, sans-serif" font-size="30" letter-spacing="8">DAILY COCKTAIL POSTER</text>
+  <text x="96" y="330" fill="#f7efe5" font-family="Georgia, serif" font-size="96">One drink.</text>
+  <text x="96" y="430" fill="#f7efe5" font-family="Georgia, serif" font-size="96">One poster.</text>
+  <circle cx="930" cy="315" r="128" fill="#d3513c" opacity=".72"/>
+  <path d="M850 190h160l-42 210h-76z" fill="#f7efe5" opacity=".9"/>
+</svg>

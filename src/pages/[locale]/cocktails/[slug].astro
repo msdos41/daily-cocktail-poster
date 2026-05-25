@@ -1,0 +1,32 @@
+---
+import ImmersiveCocktail from "@/components/ImmersiveCocktail.astro";
+import { getCocktail, getCocktailSlugs } from "@/data/cocktails";
+import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
+import { t } from "@/i18n/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return supportedLocales.flatMap((locale) =>
+    getCocktailSlugs().map((slug) => ({
+      params: { locale: localeToPath(locale), slug },
+      props: { locale, slug },
+    })),
+  );
+}
+
+const locale = Astro.props.locale as Locale;
+const slug = Astro.props.slug as string;
+const cocktail = getCocktail(locale, slug);
+
+if (!cocktail) {
+  return Astro.redirect(`/${localeToPath(locale)}/`);
+}
+
+const path = `/cocktails/${cocktail.slug}`;
+const title = `${cocktail.name} ${t(locale, "recipePosterTitle")} | ${t(locale, "siteName")}`;
+const description = cocktail.description;
+---
+
+<BaseLayout locale={locale} title={title} description={description} path={path} image={cocktail.posterImage} immersive>
+  <ImmersiveCocktail cocktail={cocktail} locale={locale} path={path} />
+</BaseLayout>

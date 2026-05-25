@@ -1,0 +1,69 @@
+---
+import type { Cocktail } from "@/data/cocktails";
+import type { Locale } from "@/i18n/config";
+import { localeToPath } from "@/i18n/config";
+import { t } from "@/i18n/ui";
+import { absoluteUrl } from "@/utils/seo";
+
+type Props = {
+  cocktail: Cocktail;
+  locale: Locale;
+};
+
+const { cocktail, locale } = Astro.props;
+const detailPath = `/${localeToPath(locale)}/cocktails/${cocktail.slug}`;
+const shareUrl = absoluteUrl(detailPath);
+---
+
+<section class="hero-shell">
+  <div class="poster-frame">
+    <img
+      src={cocktail.image}
+      alt={`${t(locale, "posterAlt")} ${cocktail.name}`}
+      width="1200"
+      height="1600"
+    />
+  </div>
+  <article class="hero-copy">
+    <p class="eyebrow">{t(locale, "todaysCocktail")}</p>
+    <h1>{cocktail.name}</h1>
+    <p class="subtitle">{cocktail.subtitle}</p>
+    <p class="description">{cocktail.description}</p>
+
+    <dl class="meta-grid">
+      <div>
+        <dt>{t(locale, "flavor")}</dt>
+        <dd>{cocktail.flavor}</dd>
+      </div>
+      <div>
+        <dt>{t(locale, "baseSpirit")}</dt>
+        <dd>{cocktail.baseSpirit}</dd>
+      </div>
+      <div>
+        <dt>{t(locale, "glass")}</dt>
+        <dd>{cocktail.glass}</dd>
+      </div>
+      <div>
+        <dt>{t(locale, "garnish")}</dt>
+        <dd>{cocktail.garnish}</dd>
+      </div>
+    </dl>
+
+    <div class="tag-row" aria-label="Tags">
+      {cocktail.tags.map((tag) => <span>{tag}</span>)}
+    </div>
+
+    <div class="action-row">
+      <a class="button primary" href={cocktail.posterImage} download>{t(locale, "downloadPoster")}</a>
+      <button
+        class="button"
+        type="button"
+        data-share-url={shareUrl}
+        data-share-title={cocktail.name}
+        data-copied-label={t(locale, "copied")}
+      >
+        {t(locale, "share")}
+      </button>
+    </div>
+  </article>
+</section>

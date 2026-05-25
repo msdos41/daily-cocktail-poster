@@ -1,0 +1,126 @@
+---
+import ArchiveIcon from "lucide-astro/Archive";
+import Globe2 from "lucide-astro/Globe2";
+import Home from "lucide-astro/Home";
+import Menu from "lucide-astro/Menu";
+import BrandMark from "@/components/BrandMark.astro";
+import { localeLabel, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
+import { t } from "@/i18n/ui";
+import { absoluteUrl, alternateLinks } from "@/utils/seo";
+import "@/styles/global.css";
+
+type Props = {
+  locale: Locale;
+  title: string;
+  description: string;
+  path: string;
+  image?: string;
+  immersive?: boolean;
+};
+
+const { locale, title, description, path, image = "/images/og-default.svg", immersive = false } = Astro.props;
+const alternates = alternateLinks(path);
+const canonical = absoluteUrl(`/${localeToPath(locale)}${path === "/" ? "/" : path}`);
+const ogImage = absoluteUrl(image);
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#15120f" />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((item) => <link rel="alternate" hreflang={item.locale} href={item.href} />)}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <title>{title}</title>
+  </head>
+  <body class:list={[immersive && "immersive-page"]}>
+    {
+      !immersive && (
+        <header class="site-header utility-header">
+          <BrandMark class="site-brand-mark" href={`/${localeToPath(locale)}/`} label={t(locale, "siteName")} />
+          <nav class="immersive-tools site-tools" aria-label={t(locale, "more")}>
+            <details class="utility-menu">
+              <summary class="icon-button" data-tooltip={t(locale, "language")}>
+                <Globe2 size={20} aria-hidden="true" />
+                <span class="sr-only">{t(locale, "language")}</span>
+              </summary>
+              <div class="utility-menu-panel language-panel">
+                <p class="menu-label">{t(locale, "language")}</p>
+                {supportedLocales.map((item) => (
+                  <a
+                    class:list={[item === locale && "active"]}
+                    href={`/${localeToPath(item)}${path === "/" ? "/" : path}`}
+                    hreflang={item}
+                  >
+                    <span>{localeLabel[item]}</span>
+                    <small>{localeToPath(item)}</small>
+                  </a>
+                ))}
+              </div>
+            </details>
+
+            <details class="utility-menu">
+              <summary class="icon-button" data-tooltip={t(locale, "more")}>
+                <Menu size={20} aria-hidden="true" />
+                <span class="sr-only">{t(locale, "more")}</span>
+              </summary>
+              <div class="utility-menu-panel more-panel">
+                <a class:list={[path === "/" && "active"]} href={`/${localeToPath(locale)}/`}>
+                  <Home size={16} aria-hidden="true" />
+                  <span>{t(locale, "home")}</span>
+                </a>
+                <a class:list={[path === "/archive" && "active"]} href={`/${localeToPath(locale)}/archive`}>
+                  <ArchiveIcon size={16} aria-hidden="true" />
+                  <span>{t(locale, "pastPicks")}</span>
+                </a>
+              </div>
+            </details>
+          </nav>
+        </header>
+      )
+    }
+    <main class:list={[immersive && "immersive-main"]}>
+      <slot />
+    </main>
+    {
+      !immersive && (
+        <footer class="site-footer">
+          <span>{t(locale, "siteName")}</span>
+          <span>Static MVP for daily cocktail visuals.</span>
+        </footer>
+      )
+    }
+    <script is:inline>
+      document.querySelectorAll("[data-share-url]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const url = button.getAttribute("data-share-url");
+          const title = button.getAttribute("data-share-title") || document.title;
+          const copied = button.getAttribute("data-copied-label") || "Copied";
+
+          if (navigator.share) {
+            await navigator.share({ title, url });
+            return;
+          }
+
+          await navigator.clipboard.writeText(url);
+          const original = button.textContent;
+          button.textContent = copied;
+          window.setTimeout(() => {
+            button.textContent = original;
+          }, 1600);
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600" role="img">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff1c8"/>
+      <stop offset="1" stop-color="#e66032"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#g)"/>
+  <rect x="82" y="82" width="1036" height="1436" fill="none" stroke="#15120f" stroke-width="3" opacity=".52"/>
+  <text x="104" y="180" fill="#15120f" font-family="Arial, sans-serif" font-size="30" letter-spacing="9">DAILY COCKTAIL POSTER</text>
+  <text x="104" y="330" fill="#15120f" font-family="Georgia, serif" font-size="130">Aperol</text>
+  <text x="104" y="465" fill="#15120f" font-family="Georgia, serif" font-size="130">Spritz</text>
+  <ellipse cx="600" cy="650" rx="250" ry="60" fill="#f8efe4" opacity=".92"/>
+  <path d="M390 655h420l-92 478H482z" fill="#f8efe4" opacity=".9"/>
+  <path d="M440 785h320l-56 292H496z" fill="#ec6d32" opacity=".85"/>
+  <circle cx="755" cy="820" r="86" fill="#ffb84d" stroke="#f8efe4" stroke-width="12"/>
+  <circle cx="520" cy="850" r="44" fill="#f8efe4" opacity=".52"/>
+  <circle cx="650" cy="920" r="34" fill="#f8efe4" opacity=".4"/>
+  <text x="104" y="1350" fill="#15120f" font-family="Georgia, serif" font-size="58">Orange fizz for an open window.</text>
+  <text x="104" y="1430" fill="#15120f" font-family="Arial, sans-serif" font-size="28">APEROL / PROSECCO / SODA WATER</text>
+</svg>

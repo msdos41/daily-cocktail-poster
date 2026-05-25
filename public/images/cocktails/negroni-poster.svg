@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600" role="img">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#271713"/>
+      <stop offset="1" stop-color="#5f1716"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#g)"/>
+  <rect x="82" y="82" width="1036" height="1436" fill="none" stroke="#e4b45f" stroke-width="3" opacity=".75"/>
+  <text x="104" y="180" fill="#e4b45f" font-family="Arial, sans-serif" font-size="30" letter-spacing="9">DAILY COCKTAIL POSTER</text>
+  <text x="104" y="330" fill="#f8efe4" font-family="Georgia, serif" font-size="140">Negroni</text>
+  <circle cx="600" cy="865" r="255" fill="#d3513c" opacity=".38"/>
+  <path d="M395 610h410l-80 520H475z" fill="#f8efe4" opacity=".92"/>
+  <path d="M434 720h332l-55 350H489z" fill="#b72822" opacity=".88"/>
+  <circle cx="608" cy="890" r="120" fill="#e86d32" opacity=".78"/>
+  <path d="M530 872c78-88 180-80 246 0-78 42-160 42-246 0z" fill="#f5c06c" opacity=".9"/>
+  <text x="104" y="1350" fill="#f8efe4" font-family="Georgia, serif" font-size="64">Bitter ruby, slow evening.</text>
+  <text x="104" y="1430" fill="#e0c5a4" font-family="Arial, sans-serif" font-size="28">GIN / CAMPARI / SWEET VERMOUTH</text>
+</svg>

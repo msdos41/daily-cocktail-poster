@@ -1,0 +1,649 @@
+---
+import ArchiveIcon from "lucide-astro/Archive";
+import BookOpen from "lucide-astro/BookOpen";
+import ChevronUp from "lucide-astro/ChevronUp";
+import Download from "lucide-astro/Download";
+import Globe2 from "lucide-astro/Globe2";
+import Home from "lucide-astro/Home";
+import Menu from "lucide-astro/Menu";
+import Share2 from "lucide-astro/Share2";
+import XIcon from "lucide-astro/X";
+import BrandMark from "@/components/BrandMark.astro";
+import type { Cocktail } from "@/data/cocktails";
+import { sharePresets } from "@/data/sharePresets";
+import { localeLabel, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
+import { t } from "@/i18n/ui";
+
+type Props = {
+  cocktail: Cocktail;
+  dailyCocktails?: Cocktail[];
+  locale: Locale;
+  path: string;
+};
+
+const { cocktail, dailyCocktails, locale, path } = Astro.props;
+const heroIngredientSummary = cocktail.heroIngredients.join(" · ");
+const sharePayload = {
+  name: cocktail.name,
+  subtitle: cocktail.subtitle,
+  ingredients: heroIngredientSummary,
+  site: "daily-cocktail-poster.com",
+  baseImage: cocktail.shareBaseImage,
+  filenameBase: cocktail.slug,
+};
+const dailyCocktailPayload = dailyCocktails?.map((item) => ({
+  ...item,
+  heroIngredientSummary: item.heroIngredients.join(" · "),
+}));
+
+function localeHref(item: Locale) {
+  return `/${localeToPath(item)}${path === "/" ? "/" : path}`;
+}
+---
+
+<section
+  class="immersive-stage"
+  data-desktop-download={cocktail.backgroundDownloadDesktop}
+  data-mobile-download={cocktail.backgroundDownloadMobile}
+>
+  <picture class="immersive-bg">
+    <source media="(max-width: 720px)" srcset={cocktail.heroImageMobile} />
+    <img
+      src={cocktail.heroImageDesktop}
+      alt={`${t(locale, "visualAlt")} ${cocktail.name}`}
+      data-poster-alt-prefix={t(locale, "visualAlt")}
+    />
+  </picture>
+  <div class="immersive-shade" aria-hidden="true"></div>
+
+  <header class="immersive-topbar">
+    <BrandMark href={`/${localeToPath(locale)}/`} label={t(locale, "siteName")} />
+
+    <nav class="immersive-tools" aria-label={t(locale, "more")}>
+      <details class="utility-menu">
+        <summary class="icon-button" data-tooltip={t(locale, "language")}>
+          <Globe2 size={20} aria-hidden="true" />
+          <span class="sr-only">{t(locale, "language")}</span>
+        </summary>
+        <div class="utility-menu-panel language-panel">
+          <p class="menu-label">{t(locale, "language")}</p>
+          {
+            supportedLocales.map((item) => (
+              <a class:list={[item === locale && "active"]} href={localeHref(item)} hreflang={item}>
+                <span>{localeLabel[item]}</span>
+                <small>{localeToPath(item)}</small>
+              </a>
+            ))
+          }
+        </div>
+      </details>
+
+      <details class="utility-menu">
+        <summary class="icon-button" data-tooltip={t(locale, "more")}>
+          <Menu size={20} aria-hidden="true" />
+          <span class="sr-only">{t(locale, "more")}</span>
+        </summary>
+        <div class="utility-menu-panel more-panel">
+          <a href={`/${localeToPath(locale)}/`}>
+            <Home size={16} aria-hidden="true" />
+            <span>{t(locale, "home")}</span>
+          </a>
+          <a href={`/${localeToPath(locale)}/archive`}>
+            <ArchiveIcon size={16} aria-hidden="true" />
+            <span>{t(locale, "pastPicks")}</span>
+          </a>
+        </div>
+      </details>
+    </nav>
+  </header>
+
+  <div class="immersive-copy">
+    <p class="hero-kicker">{t(locale, "todaysCocktail")}</p>
+    <h1 data-cocktail-name data-hero-title>{cocktail.name}</h1>
+    <p class="immersive-subtitle" data-cocktail-subtitle>{cocktail.subtitle}</p>
+    <p class="hero-ingredients">
+      <span>{t(locale, "keyIngredients")}</span>
+      <strong data-hero-ingredients>{heroIngredientSummary}</strong>
+    </p>
+  </div>
+
+  <div class="floating-actions" aria-label={t(locale, "share")}>
+    <a
+      class="icon-button action-button"
+      href={cocktail.backgroundDownloadDesktop}
+      download={`${cocktail.slug}-background.svg`}
+      data-download-background
+      data-tooltip={t(locale, "downloadBackgroundLabel")}
+      aria-label={t(locale, "downloadBackgroundLabel")}
+    >
+      <Download size={20} aria-hidden="true" />
+    </a>
+    <button
+      class="icon-button action-button"
+      type="button"
+      data-open-share
+      data-tooltip={t(locale, "shareCardLabel")}
+      aria-label={t(locale, "shareCardLabel")}
+    >
+      <Share2 size={20} aria-hidden="true" />
+    </button>
+  </div>
+
+  <button
+    class="recipe-handle"
+    type="button"
+    data-open-recipe
+    aria-haspopup="dialog"
+  >
+    <BookOpen size={17} aria-hidden="true" />
+    <span>{t(locale, "openRecipe")}</span>
+    <ChevronUp size={16} aria-hidden="true" />
+  </button>
+
+  <dialog class="recipe-dialog" data-recipe-dialog>
+    <article class="recipe-sheet">
+      <form method="dialog" class="recipe-sheet-header">
+        <div>
+          <p class="eyebrow">{t(locale, "recipeDetails")}</p>
+          <h2 data-cocktail-name>{cocktail.name}</h2>
+        </div>
+        <button class="icon-close" type="submit" aria-label={t(locale, "closeRecipe")}>
+          <XIcon size={20} aria-hidden="true" />
+        </button>
+      </form>
+      <div class="recipe-sheet-content">
+        <p class="recipe-description" data-recipe-description>{cocktail.description}</p>
+
+        <dl class="recipe-meta-grid">
+          <div>
+            <dt>{t(locale, "flavor")}</dt>
+            <dd data-recipe-flavor>{cocktail.flavor}</dd>
+          </div>
+          <div>
+            <dt>{t(locale, "glass")}</dt>
+            <dd data-recipe-glass>{cocktail.glass}</dd>
+          </div>
+          <div>
+            <dt>{t(locale, "garnish")}</dt>
+            <dd data-recipe-garnish>{cocktail.garnish}</dd>
+          </div>
+          <div>
+            <dt>{t(locale, "baseSpirit")}</dt>
+            <dd data-recipe-base-spirit>{cocktail.baseSpirit}</dd>
+          </div>
+        </dl>
+
+        <div class="tag-row recipe-tags" aria-label="Tags" data-recipe-tags>
+          {cocktail.tags.map((tag) => <span>{tag}</span>)}
+        </div>
+
+        <section>
+          <h3>{t(locale, "ingredients")}</h3>
+          <ul data-recipe-ingredients>
+            {cocktail.ingredients.map((ingredient) => <li>{ingredient}</li>)}
+          </ul>
+        </section>
+        <section>
+          <h3>{t(locale, "howToMake")}</h3>
+          <ol data-recipe-steps>
+            {cocktail.steps.map((step) => <li>{step}</li>)}
+          </ol>
+        </section>
+      </div>
+    </article>
+  </dialog>
+
+  <dialog class="share-dialog" data-share-dialog>
+    <form method="dialog" class="share-dialog-inner">
+      <div class="share-dialog-heading">
+        <div>
+          <h2>{t(locale, "shareCardTitle")}</h2>
+          <p>{t(locale, "shareCardHelp")}</p>
+        </div>
+        <button class="icon-close" type="submit" aria-label={t(locale, "close")}>
+          <XIcon size={20} aria-hidden="true" />
+        </button>
+      </div>
+      <div class="share-preset-grid">
+        {
+          sharePresets.map((preset) => (
+            <button
+              type="button"
+              class="share-preset"
+              data-share-preset={preset.id}
+              data-width={preset.width}
+              data-height={preset.height}
+            >
+              <strong>{preset.label}</strong>
+              <span>{preset.description}</span>
+            </button>
+          ))
+        }
+      </div>
+    </form>
+  </dialog>
+
+  <script is:inline type="application/json" data-share-payload set:html={JSON.stringify(sharePayload)} />
+  {
+    dailyCocktailPayload && (
+      <script is:inline type="application/json" data-daily-cocktails set:html={JSON.stringify(dailyCocktailPayload)} />
+    )
+  }
+</section>
+
+<script>
+  const stage = document.querySelector(".immersive-stage");
+  const shareDialog = document.querySelector("[data-share-dialog]");
+  const recipeDialog = document.querySelector("[data-recipe-dialog]");
+  const openShare = document.querySelector("[data-open-share]");
+  const openRecipe = document.querySelector("[data-open-recipe]");
+  const heroTitle = document.querySelector("[data-hero-title]");
+  const sharePayloadNode = document.querySelector("[data-share-payload]");
+  const dailyCocktailsNode = document.querySelector("[data-daily-cocktails]");
+  type SharePayload = {
+    name: string;
+    subtitle: string;
+    ingredients: string;
+    site: string;
+    baseImage: string;
+    filenameBase: string;
+  };
+
+  type DailyCocktailPayload = {
+    date: string;
+    slug: string;
+    name: string;
+    subtitle: string;
+    description: string;
+    heroIngredientSummary: string;
+    ingredients: string[];
+    steps: string[];
+    tags: string[];
+    flavor: string;
+    glass: string;
+    garnish: string;
+    baseSpirit: string;
+    heroImageDesktop: string;
+    heroImageMobile: string;
+    backgroundDownloadDesktop: string;
+    backgroundDownloadMobile: string;
+    shareBaseImage: string;
+  };
+
+  type ShareCardInput = SharePayload & {
+    width: number;
+    height: number;
+  };
+
+  let currentSharePayload = (sharePayloadNode ? JSON.parse(sharePayloadNode.textContent || "{}") : {}) as SharePayload;
+  const dailyCocktails = (dailyCocktailsNode
+    ? JSON.parse(dailyCocktailsNode.textContent || "[]")
+    : []) as DailyCocktailPayload[];
+  const isMobileMedia = window.matchMedia("(max-width: 720px)");
+  let heroTitleFrame = 0;
+
+  function updateDownloadTarget() {
+    const link = document.querySelector("[data-download-background]");
+    if (!link || !stage) return;
+
+    const href = isMobileMedia.matches
+      ? stage.getAttribute("data-mobile-download")
+      : stage.getAttribute("data-desktop-download");
+
+    if (href) {
+      link.setAttribute("href", href);
+      link.setAttribute(
+        "download",
+        `${currentSharePayload.filenameBase || "cocktail"}-${isMobileMedia.matches ? "mobile" : "desktop"}-background.svg`,
+      );
+    }
+  }
+
+  if (dailyCocktails.length) {
+    applyDailyCocktail(pickDailyCocktail(dailyCocktails, new Date()));
+  }
+
+  configureHeroTitle();
+  updateDownloadTarget();
+  isMobileMedia.addEventListener("change", updateDownloadTarget);
+  window.addEventListener("resize", scheduleFitHeroTitle);
+  document.fonts?.ready.then(scheduleFitHeroTitle);
+
+  openShare?.addEventListener("click", () => {
+    if (shareDialog instanceof HTMLDialogElement && !shareDialog.open) {
+      shareDialog.showModal();
+    }
+  });
+
+  openRecipe?.addEventListener("click", () => {
+    if (recipeDialog instanceof HTMLDialogElement && !recipeDialog.open) {
+      recipeDialog.showModal();
+    }
+  });
+
+  [shareDialog, recipeDialog].forEach((dialog) => {
+    dialog?.addEventListener("click", (event) => {
+      if (event.target === dialog && dialog instanceof HTMLDialogElement) {
+        dialog.close();
+      }
+    });
+  });
+
+  const utilityMenus = Array.from(document.querySelectorAll(".utility-menu")).filter(
+    (menu): menu is HTMLDetailsElement => menu instanceof HTMLDetailsElement,
+  );
+
+  utilityMenus.forEach((menu) => {
+    menu.addEventListener("toggle", () => {
+      if (!menu.open) return;
+      utilityMenus.forEach((item) => {
+        if (item !== menu) item.removeAttribute("open");
+      });
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+
+    if (utilityMenus.some((menu) => menu.contains(target))) {
+      return;
+    }
+
+    utilityMenus.forEach((menu) => menu.removeAttribute("open"));
+  });
+
+  document.querySelectorAll("[data-share-preset]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      if (!(button instanceof HTMLElement)) return;
+      button.setAttribute("aria-busy", "true");
+      const width = Number(button.dataset.width);
+      const height = Number(button.dataset.height);
+      const preset = button.dataset.sharePreset || "share";
+
+      try {
+        const blob = await renderShareCard({ ...currentSharePayload, width, height });
+        const filename = `${currentSharePayload.filenameBase || "cocktail"}-${preset}.png`;
+        const file = new File([blob], filename, { type: "image/png" });
+
+        if (navigator.share && navigator.canShare?.({ files: [file] })) {
+          await navigator.share({ files: [file], title: currentSharePayload.name });
+        } else {
+          downloadBlob(blob, filename);
+        }
+
+        if (shareDialog instanceof HTMLDialogElement) {
+          shareDialog.close();
+        }
+      } finally {
+        button.removeAttribute("aria-busy");
+      }
+    });
+  });
+
+  function pickDailyCocktail(cocktails: DailyCocktailPayload[], date: Date) {
+    const today = getLocalDateKey(date);
+    const scheduled = cocktails.slice().sort((a, b) => a.date.localeCompare(b.date));
+    const exact = scheduled.find((cocktail) => cocktail.date === today);
+    if (exact) return exact;
+
+    const published = scheduled.filter((cocktail) => cocktail.date <= today);
+    return published[published.length - 1] ?? scheduled[0];
+  }
+
+  function getLocalDateKey(date: Date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  function applyDailyCocktail(cocktail: DailyCocktailPayload) {
+    if (!stage) return;
+
+    stage.setAttribute("data-desktop-download", cocktail.backgroundDownloadDesktop);
+    stage.setAttribute("data-mobile-download", cocktail.backgroundDownloadMobile);
+
+    const source = document.querySelector(".immersive-bg source");
+    const image = document.querySelector(".immersive-bg img");
+    if (source) source.setAttribute("srcset", cocktail.heroImageMobile);
+    if (image) {
+      image.setAttribute("src", cocktail.heroImageDesktop);
+      const altPrefix = image.getAttribute("data-poster-alt-prefix") || "";
+      image.setAttribute("alt", `${altPrefix} ${cocktail.name}`.trim());
+    }
+
+    setAllText("[data-cocktail-name]", cocktail.name);
+    setText("[data-cocktail-subtitle]", cocktail.subtitle);
+    setText("[data-hero-ingredients]", cocktail.heroIngredientSummary);
+    setText("[data-recipe-description]", cocktail.description);
+    setText("[data-recipe-flavor]", cocktail.flavor);
+    setText("[data-recipe-glass]", cocktail.glass);
+    setText("[data-recipe-garnish]", cocktail.garnish);
+    setText("[data-recipe-base-spirit]", cocktail.baseSpirit);
+    replaceList("[data-recipe-tags]", cocktail.tags, "span");
+    replaceList("[data-recipe-ingredients]", cocktail.ingredients, "li");
+    replaceList("[data-recipe-steps]", cocktail.steps, "li");
+
+    currentSharePayload = {
+      name: cocktail.name,
+      subtitle: cocktail.subtitle,
+      ingredients: cocktail.heroIngredientSummary,
+      site: currentSharePayload.site || "daily-cocktail-poster.com",
+      baseImage: cocktail.shareBaseImage,
+      filenameBase: cocktail.slug,
+    };
+
+    if (sharePayloadNode) {
+      sharePayloadNode.textContent = JSON.stringify(currentSharePayload);
+    }
+
+    configureHeroTitle();
+    updateDownloadTarget();
+  }
+
+  function setText(selector: string, value: string) {
+    const element = document.querySelector(selector);
+    if (element) element.textContent = value;
+  }
+
+  function setAllText(selector: string, value: string) {
+    document.querySelectorAll(selector).forEach((element) => {
+      element.textContent = value;
+    });
+  }
+
+  function replaceList(selector: string, values: string[], tagName: "li" | "span") {
+    const list = document.querySelector(selector);
+    if (!list) return;
+
+    list.replaceChildren(
+      ...values.map((value) => {
+        const item = document.createElement(tagName);
+        item.textContent = value;
+        return item;
+      }),
+    );
+  }
+
+  function configureHeroTitle() {
+    if (!(heroTitle instanceof HTMLElement)) return;
+
+    heroTitle.dataset.titleMode = getHeroTitleMode(heroTitle.textContent || "");
+    heroTitle.style.removeProperty("--hero-title-size");
+    scheduleFitHeroTitle();
+  }
+
+  function getHeroTitleMode(text: string) {
+    const value = text.trim();
+    const hasCjk = /[\u3400-\u9fff\u3040-\u30ff\uac00-\ud7af]/.test(value);
+    const hasNaturalBreak = /[\s\-–—/·.]/.test(value);
+
+    return hasCjk || !hasNaturalBreak ? "single" : "natural";
+  }
+
+  function scheduleFitHeroTitle() {
+    window.cancelAnimationFrame(heroTitleFrame);
+    heroTitleFrame = window.requestAnimationFrame(fitHeroTitle);
+  }
+
+  function fitHeroTitle() {
+    if (!(heroTitle instanceof HTMLElement)) return;
+
+    const mode = heroTitle.dataset.titleMode || getHeroTitleMode(heroTitle.textContent || "");
+    const maxLines = mode === "single" ? 1 : 2;
+    const minFontSize = getMinimumHeroTitleSize();
+
+    heroTitle.style.removeProperty("--hero-title-size");
+    let fontSize = Number.parseFloat(getComputedStyle(heroTitle).fontSize);
+    heroTitle.style.setProperty("--hero-title-size", `${fontSize}px`);
+
+    while (fontSize > minFontSize && !isHeroTitleFit(heroTitle, maxLines)) {
+      fontSize -= 2;
+      heroTitle.style.setProperty("--hero-title-size", `${Math.max(fontSize, minFontSize)}px`);
+    }
+  }
+
+  function isHeroTitleFit(title: HTMLElement, maxLines: number) {
+    const styles = getComputedStyle(title);
+    const fontSize = Number.parseFloat(styles.fontSize);
+    const lineHeight = Number.parseFloat(styles.lineHeight) || fontSize;
+    const lineCount = Math.ceil(title.getBoundingClientRect().height / lineHeight);
+
+    return title.scrollWidth <= title.clientWidth + 1 && lineCount <= maxLines;
+  }
+
+  function getMinimumHeroTitleSize() {
+    if (window.innerWidth <= 560) return 24;
+    if (window.innerWidth <= 860) return 30;
+    return 42;
+  }
+
+  async function renderShareCard({
+    name,
+    subtitle,
+    ingredients,
+    site,
+    baseImage,
+    width,
+    height,
+  }: ShareCardInput): Promise<Blob> {
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Canvas is not supported.");
+
+    const image = await loadImage(baseImage);
+    drawCover(ctx, image, width, height);
+
+    const gradient = ctx.createLinearGradient(0, height * 0.18, 0, height);
+    gradient.addColorStop(0, "rgba(0,0,0,0.08)");
+    gradient.addColorStop(0.58, "rgba(0,0,0,0.34)");
+    gradient.addColorStop(1, "rgba(0,0,0,0.78)");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+
+    const pad = Math.round(width * 0.075);
+    const footerY = height - pad;
+    ctx.fillStyle = "#f7efe5";
+    ctx.textBaseline = "alphabetic";
+    ctx.shadowColor = "rgba(0,0,0,0.55)";
+    ctx.shadowBlur = Math.round(width * 0.014);
+
+    ctx.font = `${Math.round(width * 0.034)}px Arial, sans-serif`;
+    ctx.letterSpacing = "0px";
+    ctx.fillStyle = "#e3b35f";
+    ctx.fillText("DAILY COCKTAIL POSTER", pad, pad + width * 0.025);
+
+    ctx.fillStyle = "#f7efe5";
+    ctx.font = `${Math.round(width * 0.105)}px Georgia, serif`;
+    const titleLines = wrapText(ctx, name, width - pad * 2, Boolean(name?.match(/[\u3400-\u9fff]/)));
+    let y = footerY - Math.round(width * 0.28) - Math.max(0, titleLines.length - 1) * Math.round(width * 0.105);
+    titleLines.slice(0, 2).forEach((line) => {
+      ctx.fillText(line, pad, y);
+      y += Math.round(width * 0.112);
+    });
+
+    ctx.font = `${Math.round(width * 0.034)}px Arial, sans-serif`;
+    ctx.fillStyle = "rgba(247,239,229,0.9)";
+    wrapText(ctx, subtitle, width - pad * 2, Boolean(subtitle?.match(/[\u3400-\u9fff]/)))
+      .slice(0, 2)
+      .forEach((line) => {
+        ctx.fillText(line, pad, y);
+        y += Math.round(width * 0.046);
+      });
+
+    ctx.font = `${Math.round(width * 0.025)}px Arial, sans-serif`;
+    ctx.fillStyle = "#e3b35f";
+    ctx.fillText(ingredients, pad, footerY - Math.round(width * 0.035));
+    ctx.fillStyle = "rgba(247,239,229,0.76)";
+    ctx.fillText(site, pad, footerY);
+
+    return new Promise((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (blob) resolve(blob);
+        else reject(new Error("Failed to render image."));
+      }, "image/png");
+    });
+  }
+
+  function drawCover(
+    ctx: CanvasRenderingContext2D,
+    image: HTMLImageElement,
+    width: number,
+    height: number,
+  ) {
+    const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+    const scaledWidth = image.naturalWidth * scale;
+    const scaledHeight = image.naturalHeight * scale;
+    const x = (width - scaledWidth) / 2;
+    const y = (height - scaledHeight) / 2;
+    ctx.drawImage(image, x, y, scaledWidth, scaledHeight);
+  }
+
+  function wrapText(
+    ctx: CanvasRenderingContext2D,
+    text: string,
+    maxWidth: number,
+    forceCharacterWrap = false,
+  ) {
+    const units: string[] = forceCharacterWrap ? Array.from(text || "") : String(text || "").split(/\s+/);
+    const lines: string[] = [];
+    let line = "";
+
+    units.forEach((unit) => {
+      const next = forceCharacterWrap ? `${line}${unit}` : line ? `${line} ${unit}` : unit;
+      if (ctx.measureText(next).width > maxWidth && line) {
+        lines.push(line);
+        line = unit;
+      } else {
+        line = next;
+      }
+    });
+
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  function loadImage(src: string): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.decoding = "async";
+      image.onload = () => resolve(image);
+      image.onerror = reject;
+      image.src = src;
+    });
+  }
+
+  function downloadBlob(blob: Blob, filename: string) {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+</script>
