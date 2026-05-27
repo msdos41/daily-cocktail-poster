@@ -12,9 +12,7 @@ const target = `/${localeToPath(defaultLocale)}/`;
     <meta http-equiv="refresh" content={`0; url=${target}`} />
     <link rel="canonical" href={target} />
     <title>Daily Cocktail Poster</title>
-    <script is:inline>{`window.location.replace("${target}")`}</script>
+    <script is:inline set:html={`window.location.replace("${target}")`}></script>
   </head>
-  <body>
-    <a href={target}>Go to Daily Cocktail Poster</a>
-  </body>
+  <body></body>
 </html>
