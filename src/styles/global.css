@@ -1099,10 +1099,13 @@ h2 {
   .share-tray {
     right: 0;
     top: auto;
-    bottom: calc(100% + 10px);
+    bottom: calc(100% + 8px);
     flex-direction: column;
     transform: none;
-    animation-name: share-tray-in-mobile;
+  }
+
+  .share-tray:not([hidden]) {
+    animation: share-tray-fade-in 120ms ease-out;
   }
 
   .share-toast {
@@ -1113,15 +1116,13 @@ h2 {
   }
 }
 
-@keyframes share-tray-in-mobile {
+@keyframes share-tray-fade-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
