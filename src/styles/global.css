@@ -263,7 +263,10 @@ summary.icon-button::-webkit-details-marker {
     background: rgba(9, 7, 6, 0.78);
     box-shadow: 0 16px 46px rgba(0, 0, 0, 0.34);
     content: attr(data-tooltip);
+    font-family: inherit;
     font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0;
     line-height: 1;
     opacity: 0;
     pointer-events: none;
@@ -445,12 +448,14 @@ summary.icon-button::-webkit-details-marker {
 
 .share-tray {
   position: absolute;
-  right: calc(100% + 10px);
-  top: 50%;
+  right: 0;
+  top: auto;
+  bottom: calc(100% + 8px);
   z-index: 5;
   display: flex;
+  flex-direction: column;
   gap: 8px;
-  transform: translateY(-50%);
+  transform: none;
 }
 
 .share-tray[hidden] {
@@ -458,7 +463,7 @@ summary.icon-button::-webkit-details-marker {
 }
 
 .share-tray:not([hidden]) {
-  animation: share-tray-in 150ms ease-out;
+  animation: share-tray-fade-in 120ms ease-out;
 }
 
 .share-target {
@@ -489,10 +494,10 @@ summary.icon-button::-webkit-details-marker {
   transform: translateY(-1px);
 }
 
-.share-target-reddit {
-  color: oklch(0.78 0.15 45);
-  font-weight: 700;
-  letter-spacing: 0;
+.share-target svg {
+  display: block;
+  width: 20px;
+  height: 20px;
 }
 
 .share-toast {
@@ -514,18 +519,6 @@ summary.icon-button::-webkit-details-marker {
 
 .share-toast[hidden] {
   display: none;
-}
-
-@keyframes share-tray-in {
-  from {
-    opacity: 0;
-    transform: translate(8px, -50%);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate(0, -50%);
-  }
 }
 
 .recipe-handle {
@@ -1094,18 +1087,6 @@ h2 {
 
   .recipe-meta-grid {
     grid-template-columns: 1fr;
-  }
-
-  .share-tray {
-    right: 0;
-    top: auto;
-    bottom: calc(100% + 8px);
-    flex-direction: column;
-    transform: none;
-  }
-
-  .share-tray:not([hidden]) {
-    animation: share-tray-fade-in 120ms ease-out;
   }
 
   .share-toast {

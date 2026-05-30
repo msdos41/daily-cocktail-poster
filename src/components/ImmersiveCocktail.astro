@@ -26,6 +26,8 @@ const sharePayload = {
   name: cocktail.name,
   filenameBase: cocktail.slug,
 };
+const shareXTooltip = "X";
+const shareRedditTooltip = "Reddit";
 const shareOnXLabel = locale === "zh-CN" ? "分享到 X" : "Share on X";
 const shareOnRedditLabel = locale === "zh-CN" ? "分享到 Reddit" : "Share on Reddit";
 const xShareCopiedToast =
@@ -129,19 +131,29 @@ function localeHref(item: Locale) {
           class="share-target share-target-x"
           type="button"
           data-share-target="x"
-          data-tooltip={shareOnXLabel}
+          data-tooltip={shareXTooltip}
           aria-label={shareOnXLabel}
         >
-          <XIcon size={18} aria-hidden="true" />
+          <svg class="share-brand-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              fill="currentColor"
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.657l-5.214-6.817-5.966 6.817H1.68l7.73-8.835L1.254 2.25h6.826l4.713 6.231 5.451-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"
+            />
+          </svg>
         </button>
         <button
           class="share-target share-target-reddit"
           type="button"
           data-share-target="reddit"
-          data-tooltip={shareOnRedditLabel}
+          data-tooltip={shareRedditTooltip}
           aria-label={shareOnRedditLabel}
         >
-          <span aria-hidden="true">r/</span>
+          <svg class="share-brand-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              fill="currentColor"
+              d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0Zm5.011 4.744a1.25 1.25 0 0 1 .006 2.498c-.51 0-.95-.306-1.145-.744l-2.62-.558-.696 3.277c1.758.081 3.35.636 4.505 1.47a1.75 1.75 0 1 1 1.93 2.88c.034.218.052.44.052.666 0 2.771-3.155 5.019-7.043 5.019s-7.043-2.248-7.043-5.019c0-.225.018-.448.053-.666a1.75 1.75 0 1 1 1.93-2.88c1.154-.834 2.747-1.389 4.504-1.47l.84-3.957a.55.55 0 0 1 .652-.424l3.139.668c.229-.461.704-.78 1.256-.78ZM8.76 13.11a1.204 1.204 0 1 0 0 2.408 1.204 1.204 0 0 0 0-2.408Zm6.48 0a1.204 1.204 0 1 0 0 2.408 1.204 1.204 0 0 0 0-2.408Zm-6.053 4.18a.36.36 0 0 0-.255.616c.688.688 1.698 1.023 3.068 1.023 1.37 0 2.38-.335 3.068-1.023a.36.36 0 1 0-.51-.51c-.54.54-1.36.81-2.558.81-1.197 0-2.017-.27-2.558-.81a.36.36 0 0 0-.255-.106Z"
+            />
+          </svg>
         </button>
       </div>
     </div>
