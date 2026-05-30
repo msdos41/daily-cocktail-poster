@@ -438,13 +438,19 @@ summary.icon-button::-webkit-details-marker {
   box-shadow: 0 14px 44px rgba(0, 0, 0, 0.24);
 }
 
+.share-action {
+  position: relative;
+  display: grid;
+}
+
 .share-tray {
   position: absolute;
   right: calc(100% + 10px);
-  bottom: 0;
+  top: 50%;
   z-index: 5;
   display: flex;
   gap: 8px;
+  transform: translateY(-50%);
 }
 
 .share-tray[hidden] {
@@ -513,12 +519,12 @@ summary.icon-button::-webkit-details-marker {
 @keyframes share-tray-in {
   from {
     opacity: 0;
-    transform: translateX(8px);
+    transform: translate(8px, -50%);
   }
 
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translate(0, -50%);
   }
 }
 
@@ -1092,8 +1098,11 @@ h2 {
 
   .share-tray {
     right: 0;
+    top: auto;
     bottom: calc(100% + 10px);
     flex-direction: column;
+    transform: none;
+    animation-name: share-tray-in-mobile;
   }
 
   .share-toast {
@@ -1101,6 +1110,18 @@ h2 {
     bottom: 140px;
     max-width: min(300px, calc(100vw - 28px));
     border-radius: 16px;
+  }
+}
+
+@keyframes share-tray-in-mobile {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

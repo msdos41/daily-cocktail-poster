@@ -112,36 +112,38 @@ function localeHref(item: Locale) {
 
   <div class="floating-actions" aria-label={t(locale, "share")}>
 
-    <button
-      class="icon-button action-button"
-      type="button"
-      data-open-share
-      aria-controls="share-tray"
-      aria-expanded="false"
-      data-tooltip={t(locale, "share")}
-      aria-label={t(locale, "share")}
-    >
-      <Share2 size={20} aria-hidden="true" />
-    </button>
-    <div class="share-tray" id="share-tray" data-share-tray hidden>
+    <div class="share-action" data-share-action>
       <button
-        class="share-target share-target-x"
+        class="icon-button action-button"
         type="button"
-        data-share-target="x"
-        data-tooltip={shareOnXLabel}
-        aria-label={shareOnXLabel}
+        data-open-share
+        aria-controls="share-tray"
+        aria-expanded="false"
+        data-tooltip={t(locale, "share")}
+        aria-label={t(locale, "share")}
       >
-        <XIcon size={18} aria-hidden="true" />
+        <Share2 size={20} aria-hidden="true" />
       </button>
-      <button
-        class="share-target share-target-reddit"
-        type="button"
-        data-share-target="reddit"
-        data-tooltip={shareOnRedditLabel}
-        aria-label={shareOnRedditLabel}
-      >
-        <span aria-hidden="true">r/</span>
-      </button>
+      <div class="share-tray" id="share-tray" data-share-tray hidden>
+        <button
+          class="share-target share-target-x"
+          type="button"
+          data-share-target="x"
+          data-tooltip={shareOnXLabel}
+          aria-label={shareOnXLabel}
+        >
+          <XIcon size={18} aria-hidden="true" />
+        </button>
+        <button
+          class="share-target share-target-reddit"
+          type="button"
+          data-share-target="reddit"
+          data-tooltip={shareOnRedditLabel}
+          aria-label={shareOnRedditLabel}
+        >
+          <span aria-hidden="true">r/</span>
+        </button>
+      </div>
     </div>
     <a
       class="icon-button action-button"
@@ -241,6 +243,7 @@ function localeHref(item: Locale) {
   const recipeDialog = document.querySelector("[data-recipe-dialog]");
   const openShare = document.querySelector("[data-open-share]");
   const openRecipe = document.querySelector("[data-open-recipe]");
+  const shareAction = document.querySelector("[data-share-action]");
   const shareTray = document.querySelector("[data-share-tray]");
   const shareToast = document.querySelector("[data-share-toast]");
   const heroTitle = document.querySelector("[data-hero-title]");
@@ -344,7 +347,7 @@ function localeHref(item: Locale) {
     const target = event.target;
     if (!(target instanceof Node)) return;
 
-    if (openShare?.contains(target) || shareTray?.contains(target)) {
+    if (shareAction?.contains(target)) {
       return;
     }
 
