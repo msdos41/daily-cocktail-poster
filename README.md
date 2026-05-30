@@ -17,7 +17,7 @@ The site is designed around an immersive full-screen cocktail image. Each day ha
 - Past Picks page that only shows published recommendations (`date <= local today`).
 - Recipe bottom sheet on immersive pages.
 - HD background download.
-- Canvas-generated social share cards for multiple aspect ratios.
+- Compact X and Reddit share tray on immersive pages.
 - SEO basics: canonical URLs, hreflang links, Open Graph, Twitter meta, sitemap, robots.
 
 ## Tech Stack
@@ -95,7 +95,6 @@ src/
   data/
     cocktails.ts
     heroAssets.ts
-    sharePresets.ts
   i18n/
     config.ts
     ui.ts
@@ -190,14 +189,10 @@ Future bitmap or AI-generated assets can replace the current SVG outputs while k
 
 The share flow is implemented in `ImmersiveCocktail.astro`.
 
-Supported share card presets are defined in `src/data/sharePresets.ts`:
+The immersive action tray currently supports:
 
-- Instagram feed: `4:5`
-- Story/Reels/TikTok: `9:16`
-- Pinterest: `2:3`
-- X/Facebook: `16:9`
-
-The browser renders the selected share card to a PNG with Canvas. If file sharing is supported, it calls `navigator.share({ files })`; otherwise it downloads the generated PNG.
+- X: opens a post intent with the current page URL, prepared English post copy, and hashtags. The post text is copied first so users can paste it if an installed X PWA opens an empty composer.
+- Reddit: opens Reddit submit with the current page URL and an English title.
 
 ## SEO
 
@@ -227,7 +222,7 @@ Then verify:
 - Mobile layouts have no horizontal overflow.
 - Long cocktail names do not break inside words.
 - Download uses the current device background.
-- Share card generation works for all presets.
+- X and Reddit share links open with the current page URL.
 
 ## Deployment
 

@@ -438,6 +438,90 @@ summary.icon-button::-webkit-details-marker {
   box-shadow: 0 14px 44px rgba(0, 0, 0, 0.24);
 }
 
+.share-tray {
+  position: absolute;
+  right: calc(100% + 10px);
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  gap: 8px;
+}
+
+.share-tray[hidden] {
+  display: none;
+}
+
+.share-tray:not([hidden]) {
+  animation: share-tray-in 150ms ease-out;
+}
+
+.share-target {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid rgba(247, 239, 229, 0.22);
+  border-radius: 50%;
+  color: rgba(247, 239, 229, 0.92);
+  background: rgba(8, 7, 6, 0.38);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+  font: inherit;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.share-target:hover {
+  border-color: rgba(247, 239, 229, 0.42);
+  color: var(--ink);
+  background: rgba(247, 239, 229, 0.1);
+  transform: translateY(-1px);
+}
+
+.share-target-reddit {
+  color: oklch(0.78 0.15 45);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.share-toast {
+  position: absolute;
+  right: clamp(18px, 3vw, 40px);
+  bottom: clamp(150px, 19vh, 190px);
+  z-index: 6;
+  max-width: min(320px, calc(100vw - 32px));
+  padding: 10px 12px;
+  border: 1px solid rgba(247, 239, 229, 0.16);
+  border-radius: 999px;
+  color: rgba(247, 239, 229, 0.92);
+  background: rgba(9, 7, 6, 0.82);
+  box-shadow: 0 16px 46px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(16px);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+.share-toast[hidden] {
+  display: none;
+}
+
+@keyframes share-tray-in {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .recipe-handle {
   position: absolute;
   left: 50%;
@@ -468,8 +552,7 @@ summary.icon-button::-webkit-details-marker {
   background: rgba(247, 239, 229, 0.09);
 }
 
-.recipe-dialog,
-.share-dialog {
+.recipe-dialog {
   padding: 0;
   color: var(--ink);
 }
@@ -485,8 +568,7 @@ summary.icon-button::-webkit-details-marker {
   box-shadow: var(--shadow);
 }
 
-.recipe-dialog::backdrop,
-.share-dialog::backdrop {
+.recipe-dialog::backdrop {
   background: rgba(0, 0, 0, 0.58);
   backdrop-filter: blur(6px);
 }
@@ -580,81 +662,6 @@ summary.icon-button::-webkit-details-marker {
 
 .recipe-sheet li + li {
   margin-top: 6px;
-}
-
-.share-dialog {
-  width: min(560px, calc(100vw - 32px));
-  border: 1px solid rgba(247, 239, 229, 0.18);
-  border-radius: 8px;
-  background: rgba(18, 14, 12, 0.94);
-  box-shadow: var(--shadow);
-}
-
-.share-dialog-inner {
-  display: grid;
-  gap: 22px;
-  margin: 0;
-  padding: 22px;
-}
-
-.share-dialog-heading {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.share-dialog h2 {
-  margin-bottom: 6px;
-  font-size: 1.65rem;
-}
-
-.share-dialog p {
-  margin: 0;
-  color: var(--muted);
-}
-
-.icon-close {
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  width: 38px;
-  height: 38px;
-  padding: 0;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  color: var(--ink);
-  background: transparent;
-  cursor: pointer;
-}
-
-.share-preset-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.share-preset {
-  display: grid;
-  gap: 6px;
-  min-height: 92px;
-  padding: 14px;
-  border: 1px solid rgba(247, 239, 229, 0.18);
-  border-radius: 8px;
-  color: var(--ink);
-  background: rgba(247, 239, 229, 0.06);
-  cursor: pointer;
-  text-align: left;
-}
-
-.share-preset span {
-  color: var(--muted);
-  font-size: 0.88rem;
-}
-
-.share-preset[aria-busy="true"] {
-  opacity: 0.62;
-  pointer-events: none;
 }
 
 .hero-shell {
@@ -1083,8 +1090,17 @@ h2 {
     grid-template-columns: 1fr;
   }
 
-  .share-preset-grid {
-    grid-template-columns: 1fr;
+  .share-tray {
+    right: 0;
+    bottom: calc(100% + 10px);
+    flex-direction: column;
+  }
+
+  .share-toast {
+    right: 14px;
+    bottom: 140px;
+    max-width: min(300px, calc(100vw - 28px));
+    border-radius: 16px;
   }
 }
 

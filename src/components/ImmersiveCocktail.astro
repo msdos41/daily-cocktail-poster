@@ -10,7 +10,6 @@ import Share2 from "lucide-astro/Share2";
 import XIcon from "lucide-astro/X";
 import BrandMark from "@/components/BrandMark.astro";
 import type { Cocktail } from "@/data/cocktails";
-import { sharePresets } from "@/data/sharePresets";
 import { localeLabel, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 
@@ -25,12 +24,16 @@ const { cocktail, dailyCocktails, locale, path } = Astro.props;
 const heroIngredientSummary = cocktail.heroIngredients.join(" · ");
 const sharePayload = {
   name: cocktail.name,
-  subtitle: cocktail.subtitle,
-  ingredients: heroIngredientSummary,
-  site: "daily-cocktail-poster.com",
-  baseImage: cocktail.shareBaseImage,
   filenameBase: cocktail.slug,
 };
+const shareOnXLabel = locale === "zh-CN" ? "分享到 X" : "Share on X";
+const shareOnRedditLabel = locale === "zh-CN" ? "分享到 Reddit" : "Share on Reddit";
+const xShareCopiedToast =
+  locale === "zh-CN" ? "分享文案已复制。如果 X 输入框为空，请直接粘贴。" : "Post copied. If X opens empty, paste it.";
+const xShareReadyToast =
+  locale === "zh-CN"
+    ? "X 已打开。如果输入框为空，请手动粘贴当前页面链接。"
+    : "X opened. If it is empty, paste this page link manually.";
 const dailyCocktailPayload = dailyCocktails?.map((item) => ({
   ...item,
   heroIngredientSummary: item.heroIngredients.join(" · "),
@@ -108,6 +111,38 @@ function localeHref(item: Locale) {
   </div>
 
   <div class="floating-actions" aria-label={t(locale, "share")}>
+
+    <button
+      class="icon-button action-button"
+      type="button"
+      data-open-share
+      aria-controls="share-tray"
+      aria-expanded="false"
+      data-tooltip={t(locale, "share")}
+      aria-label={t(locale, "share")}
+    >
+      <Share2 size={20} aria-hidden="true" />
+    </button>
+    <div class="share-tray" id="share-tray" data-share-tray hidden>
+      <button
+        class="share-target share-target-x"
+        type="button"
+        data-share-target="x"
+        data-tooltip={shareOnXLabel}
+        aria-label={shareOnXLabel}
+      >
+        <XIcon size={18} aria-hidden="true" />
+      </button>
+      <button
+        class="share-target share-target-reddit"
+        type="button"
+        data-share-target="reddit"
+        data-tooltip={shareOnRedditLabel}
+        aria-label={shareOnRedditLabel}
+      >
+        <span aria-hidden="true">r/</span>
+      </button>
+    </div>
     <a
       class="icon-button action-button"
       href={cocktail.backgroundDownloadDesktop}
@@ -118,16 +153,16 @@ function localeHref(item: Locale) {
     >
       <Download size={20} aria-hidden="true" />
     </a>
-    <button
-      class="icon-button action-button"
-      type="button"
-      data-open-share
-      data-tooltip={t(locale, "shareCardLabel")}
-      aria-label={t(locale, "shareCardLabel")}
-    >
-      <Share2 size={20} aria-hidden="true" />
-    </button>
   </div>
+  <div
+    class="share-toast"
+    data-share-toast
+    data-copied-message={xShareCopiedToast}
+    data-ready-message={xShareReadyToast}
+    hidden
+    aria-live="polite"
+    aria-atomic="true"
+  ></div>
 
   <button
     class="recipe-handle"
@@ -193,36 +228,6 @@ function localeHref(item: Locale) {
     </article>
   </dialog>
 
-  <dialog class="share-dialog" data-share-dialog>
-    <form method="dialog" class="share-dialog-inner">
-      <div class="share-dialog-heading">
-        <div>
-          <h2>{t(locale, "shareCardTitle")}</h2>
-          <p>{t(locale, "shareCardHelp")}</p>
-        </div>
-        <button class="icon-close" type="submit" aria-label={t(locale, "close")}>
-          <XIcon size={20} aria-hidden="true" />
-        </button>
-      </div>
-      <div class="share-preset-grid">
-        {
-          sharePresets.map((preset) => (
-            <button
-              type="button"
-              class="share-preset"
-              data-share-preset={preset.id}
-              data-width={preset.width}
-              data-height={preset.height}
-            >
-              <strong>{preset.label}</strong>
-              <span>{preset.description}</span>
-            </button>
-          ))
-        }
-      </div>
-    </form>
-  </dialog>
-
   <script is:inline type="application/json" data-share-payload set:html={JSON.stringify(sharePayload)} />
   {
     dailyCocktailPayload && (
@@ -233,19 +238,16 @@ function localeHref(item: Locale) {
 
 <script>
   const stage = document.querySelector(".immersive-stage");
-  const shareDialog = document.querySelector("[data-share-dialog]");
   const recipeDialog = document.querySelector("[data-recipe-dialog]");
   const openShare = document.querySelector("[data-open-share]");
   const openRecipe = document.querySelector("[data-open-recipe]");
+  const shareTray = document.querySelector("[data-share-tray]");
+  const shareToast = document.querySelector("[data-share-toast]");
   const heroTitle = document.querySelector("[data-hero-title]");
   const sharePayloadNode = document.querySelector("[data-share-payload]");
   const dailyCocktailsNode = document.querySelector("[data-daily-cocktails]");
   type SharePayload = {
     name: string;
-    subtitle: string;
-    ingredients: string;
-    site: string;
-    baseImage: string;
     filenameBase: string;
   };
 
@@ -267,12 +269,6 @@ function localeHref(item: Locale) {
     heroImageMobile: string;
     backgroundDownloadDesktop: string;
     backgroundDownloadMobile: string;
-    shareBaseImage: string;
-  };
-
-  type ShareCardInput = SharePayload & {
-    width: number;
-    height: number;
   };
 
   let currentSharePayload = (sharePayloadNode ? JSON.parse(sharePayloadNode.textContent || "{}") : {}) as SharePayload;
@@ -281,6 +277,7 @@ function localeHref(item: Locale) {
     : []) as DailyCocktailPayload[];
   const isMobileMedia = window.matchMedia("(max-width: 720px)");
   let heroTitleFrame = 0;
+  let shareToastTimer = 0;
 
   function updateDownloadTarget() {
     const link = document.querySelector("[data-download-background]");
@@ -309,9 +306,12 @@ function localeHref(item: Locale) {
   window.addEventListener("resize", scheduleFitHeroTitle);
   document.fonts?.ready.then(scheduleFitHeroTitle);
 
-  openShare?.addEventListener("click", () => {
-    if (shareDialog instanceof HTMLDialogElement && !shareDialog.open) {
-      shareDialog.showModal();
+  openShare?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (isShareTrayOpen()) {
+      closeShareTray();
+    } else {
+      openShareTray();
     }
   });
 
@@ -321,12 +321,10 @@ function localeHref(item: Locale) {
     }
   });
 
-  [shareDialog, recipeDialog].forEach((dialog) => {
-    dialog?.addEventListener("click", (event) => {
-      if (event.target === dialog && dialog instanceof HTMLDialogElement) {
-        dialog.close();
-      }
-    });
+  recipeDialog?.addEventListener("click", (event) => {
+    if (event.target === recipeDialog && recipeDialog instanceof HTMLDialogElement) {
+      recipeDialog.close();
+    }
   });
 
   const utilityMenus = Array.from(document.querySelectorAll(".utility-menu")).filter(
@@ -346,40 +344,118 @@ function localeHref(item: Locale) {
     const target = event.target;
     if (!(target instanceof Node)) return;
 
-    if (utilityMenus.some((menu) => menu.contains(target))) {
+    if (openShare?.contains(target) || shareTray?.contains(target)) {
       return;
     }
 
+    if (utilityMenus.some((menu) => menu.contains(target))) {
+      closeShareTray();
+      return;
+    }
+
+    closeShareTray();
     utilityMenus.forEach((menu) => menu.removeAttribute("open"));
   });
 
-  document.querySelectorAll("[data-share-preset]").forEach((button) => {
-    button.addEventListener("click", async () => {
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeShareTray();
+    }
+  });
+
+  document.querySelectorAll("[data-share-target]").forEach((button) => {
+    button.addEventListener("click", () => {
       if (!(button instanceof HTMLElement)) return;
-      button.setAttribute("aria-busy", "true");
-      const width = Number(button.dataset.width);
-      const height = Number(button.dataset.height);
-      const preset = button.dataset.sharePreset || "share";
+      const target = button.dataset.shareTarget || "";
 
-      try {
-        const blob = await renderShareCard({ ...currentSharePayload, width, height });
-        const filename = `${currentSharePayload.filenameBase || "cocktail"}-${preset}.png`;
-        const file = new File([blob], filename, { type: "image/png" });
-
-        if (navigator.share && navigator.canShare?.({ files: [file] })) {
-          await navigator.share({ files: [file], title: currentSharePayload.name });
-        } else {
-          downloadBlob(blob, filename);
-        }
-
-        if (shareDialog instanceof HTMLDialogElement) {
-          shareDialog.close();
-        }
-      } finally {
-        button.removeAttribute("aria-busy");
+      if (target === "x") {
+        openXShareIntent();
+      } else if (target === "reddit") {
+        openRedditShareIntent();
       }
+      closeShareTray();
     });
   });
+
+  function openXShareIntent() {
+    const fullPostText = buildXPostText();
+    const intentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(fullPostText)}`;
+    copyTextToClipboard(fullPostText).then((copied) => {
+      showShareToast(copied ? "data-copied-message" : "data-ready-message");
+    });
+    window.open(intentUrl, "_blank", "noopener,noreferrer");
+  }
+
+  function openRedditShareIntent() {
+    const redditUrl = new URL("https://www.reddit.com/submit");
+    redditUrl.searchParams.set("url", window.location.href);
+    redditUrl.searchParams.set("title", buildRedditTitle());
+    window.open(redditUrl.toString(), "_blank", "noopener,noreferrer");
+  }
+
+  function buildXPostText() {
+    return [
+      `Today's cocktail recommendation: ${currentSharePayload.name}. A poster-style daily drink ritual from Daily Cocktail Poster.`,
+      window.location.href,
+      "#DailyCocktail #Cocktail #Mixology #CocktailRecipe #Drinkstagram",
+    ].join("\n\n");
+  }
+
+  function buildRedditTitle() {
+    return `Today's cocktail recommendation: ${currentSharePayload.name} | Daily Cocktail Poster`;
+  }
+
+  async function copyTextToClipboard(text: string) {
+    try {
+      if (!navigator.clipboard) return false;
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function openShareTray() {
+    hideShareToast();
+    utilityMenus.forEach((menu) => menu.removeAttribute("open"));
+    if (shareTray instanceof HTMLElement) {
+      shareTray.hidden = false;
+    }
+    if (openShare instanceof HTMLElement) {
+      openShare.setAttribute("aria-expanded", "true");
+    }
+  }
+
+  function closeShareTray() {
+    if (shareTray instanceof HTMLElement) {
+      shareTray.hidden = true;
+    }
+    if (openShare instanceof HTMLElement) {
+      openShare.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  function isShareTrayOpen() {
+    return shareTray instanceof HTMLElement && !shareTray.hidden;
+  }
+
+  function showShareToast(messageAttribute: "data-copied-message" | "data-ready-message") {
+    if (!(shareToast instanceof HTMLElement)) return;
+
+    shareToast.textContent = shareToast.getAttribute(messageAttribute) || "";
+    shareToast.hidden = false;
+    window.clearTimeout(shareToastTimer);
+    shareToastTimer = window.setTimeout(() => {
+      shareToast.hidden = true;
+    }, 3400);
+  }
+
+  function hideShareToast() {
+    if (shareToast instanceof HTMLElement) {
+      shareToast.hidden = true;
+    }
+    window.clearTimeout(shareToastTimer);
+  }
 
   function pickDailyCocktail(cocktails: DailyCocktailPayload[], date: Date) {
     const today = getLocalDateKey(date);
@@ -427,10 +503,6 @@ function localeHref(item: Locale) {
 
     currentSharePayload = {
       name: cocktail.name,
-      subtitle: cocktail.subtitle,
-      ingredients: cocktail.heroIngredientSummary,
-      site: currentSharePayload.site || "daily-cocktail-poster.com",
-      baseImage: cocktail.shareBaseImage,
       filenameBase: cocktail.slug,
     };
 
@@ -519,131 +591,4 @@ function localeHref(item: Locale) {
     return 42;
   }
 
-  async function renderShareCard({
-    name,
-    subtitle,
-    ingredients,
-    site,
-    baseImage,
-    width,
-    height,
-  }: ShareCardInput): Promise<Blob> {
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) throw new Error("Canvas is not supported.");
-
-    const image = await loadImage(baseImage);
-    drawCover(ctx, image, width, height);
-
-    const gradient = ctx.createLinearGradient(0, height * 0.18, 0, height);
-    gradient.addColorStop(0, "rgba(0,0,0,0.08)");
-    gradient.addColorStop(0.58, "rgba(0,0,0,0.34)");
-    gradient.addColorStop(1, "rgba(0,0,0,0.78)");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
-
-    const pad = Math.round(width * 0.075);
-    const footerY = height - pad;
-    ctx.fillStyle = "#f7efe5";
-    ctx.textBaseline = "alphabetic";
-    ctx.shadowColor = "rgba(0,0,0,0.55)";
-    ctx.shadowBlur = Math.round(width * 0.014);
-
-    ctx.font = `${Math.round(width * 0.034)}px Arial, sans-serif`;
-    ctx.letterSpacing = "0px";
-    ctx.fillStyle = "#e3b35f";
-    ctx.fillText("DAILY COCKTAIL POSTER", pad, pad + width * 0.025);
-
-    ctx.fillStyle = "#f7efe5";
-    ctx.font = `${Math.round(width * 0.105)}px Georgia, serif`;
-    const titleLines = wrapText(ctx, name, width - pad * 2, Boolean(name?.match(/[\u3400-\u9fff]/)));
-    let y = footerY - Math.round(width * 0.28) - Math.max(0, titleLines.length - 1) * Math.round(width * 0.105);
-    titleLines.slice(0, 2).forEach((line) => {
-      ctx.fillText(line, pad, y);
-      y += Math.round(width * 0.112);
-    });
-
-    ctx.font = `${Math.round(width * 0.034)}px Arial, sans-serif`;
-    ctx.fillStyle = "rgba(247,239,229,0.9)";
-    wrapText(ctx, subtitle, width - pad * 2, Boolean(subtitle?.match(/[\u3400-\u9fff]/)))
-      .slice(0, 2)
-      .forEach((line) => {
-        ctx.fillText(line, pad, y);
-        y += Math.round(width * 0.046);
-      });
-
-    ctx.font = `${Math.round(width * 0.025)}px Arial, sans-serif`;
-    ctx.fillStyle = "#e3b35f";
-    ctx.fillText(ingredients, pad, footerY - Math.round(width * 0.035));
-    ctx.fillStyle = "rgba(247,239,229,0.76)";
-    ctx.fillText(site, pad, footerY);
-
-    return new Promise((resolve, reject) => {
-      canvas.toBlob((blob) => {
-        if (blob) resolve(blob);
-        else reject(new Error("Failed to render image."));
-      }, "image/png");
-    });
-  }
-
-  function drawCover(
-    ctx: CanvasRenderingContext2D,
-    image: HTMLImageElement,
-    width: number,
-    height: number,
-  ) {
-    const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
-    const scaledWidth = image.naturalWidth * scale;
-    const scaledHeight = image.naturalHeight * scale;
-    const x = (width - scaledWidth) / 2;
-    const y = (height - scaledHeight) / 2;
-    ctx.drawImage(image, x, y, scaledWidth, scaledHeight);
-  }
-
-  function wrapText(
-    ctx: CanvasRenderingContext2D,
-    text: string,
-    maxWidth: number,
-    forceCharacterWrap = false,
-  ) {
-    const units: string[] = forceCharacterWrap ? Array.from(text || "") : String(text || "").split(/\s+/);
-    const lines: string[] = [];
-    let line = "";
-
-    units.forEach((unit) => {
-      const next = forceCharacterWrap ? `${line}${unit}` : line ? `${line} ${unit}` : unit;
-      if (ctx.measureText(next).width > maxWidth && line) {
-        lines.push(line);
-        line = unit;
-      } else {
-        line = next;
-      }
-    });
-
-    if (line) lines.push(line);
-    return lines;
-  }
-
-  function loadImage(src: string): Promise<HTMLImageElement> {
-    return new Promise((resolve, reject) => {
-      const image = new Image();
-      image.decoding = "async";
-      image.onload = () => resolve(image);
-      image.onerror = reject;
-      image.src = src;
-    });
-  }
-
-  function downloadBlob(blob: Blob, filename: string) {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename;
-    document.body.append(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-  }
 </script>
