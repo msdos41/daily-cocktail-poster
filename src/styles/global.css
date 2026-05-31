@@ -867,6 +867,14 @@ h2 {
   background: #0e0d0b;
 }
 
+.archive-card[data-cocktail-id="manhattan"] img {
+  object-position: center 36%;
+}
+
+.archive-card[data-cocktail-id="mojito"] img {
+  object-position: center 10%;
+}
+
 .archive-card div {
   padding: 18px;
 }

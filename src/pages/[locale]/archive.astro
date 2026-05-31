@@ -28,6 +28,7 @@ const description = t(locale, "siteDescription");
           class="archive-card"
           href={`/${localeToPath(locale)}/cocktails/${cocktail.slug}`}
           data-archive-card
+          data-cocktail-id={cocktail.id}
           data-scheduled-date={cocktail.date}
         >
           <img src={cocktail.heroImageMobile} alt={`${t(locale, "visualAlt")} ${cocktail.name}`} width="1080" height="1920" />
