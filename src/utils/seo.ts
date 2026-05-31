@@ -1,7 +1,7 @@
 import { defaultLocale, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 
 export const site = "https://justonesip.today";
-const defaultSocialImage = "/images/og-default.jpg";
+const defaultSocialImage = "/images/og-default-v2.jpg";
 const defaultSocialImageWidth = 1200;
 const defaultSocialImageHeight = 630;
 
