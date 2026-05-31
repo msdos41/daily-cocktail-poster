@@ -1,6 +1,6 @@
 import { defaultLocale, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 
-const site = "https://justonesip.today";
+export const site = "https://justonesip.today";
 const defaultSocialImage = "/images/og-default.jpg";
 const defaultSocialImageWidth = 1200;
 const defaultSocialImageHeight = 630;
@@ -15,6 +15,7 @@ export type SocialImageMetadata = {
 export function absoluteUrl(path: string) {
   return new URL(path, site).toString();
 }
+
 
 export function socialImageUrl(image = defaultSocialImage) {
   return socialImageMetadata(image).url;
@@ -72,4 +73,13 @@ export function alternateLinks(path: string) {
       href: absoluteUrl(routeForLocale(defaultLocale, path)),
     },
   ];
+}
+
+export function openGraphLocale(locale: Locale) {
+  if (locale === "zh-CN") return "zh_CN";
+  return "en_US";
+}
+
+export function alternateOpenGraphLocales(locale: Locale) {
+  return supportedLocales.filter((item) => item !== locale).map(openGraphLocale);
 }

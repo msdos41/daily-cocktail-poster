@@ -12,7 +12,7 @@ import BrandMark from "@/components/BrandMark.astro";
 import type { Cocktail } from "@/data/cocktails";
 import { localeLabel, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
-import { absoluteUrl, routeForLocale } from "@/utils/seo";
+import { absoluteUrl, routeForLocale, site } from "@/utils/seo";
 
 type Props = {
   cocktail: Cocktail;
@@ -53,6 +53,7 @@ function localeHref(item: Locale) {
   class="immersive-stage"
   data-desktop-download={cocktail.backgroundDownloadDesktop}
   data-mobile-download={cocktail.backgroundDownloadMobile}
+  data-fallback-share-url={`${site}/`}
 >
   <picture class="immersive-bg">
     <source media="(max-width: 720px)" srcset={cocktail.heroImageMobile} />
@@ -255,6 +256,8 @@ function localeHref(item: Locale) {
 
 <script>
   const stage = document.querySelector(".immersive-stage");
+  const fallbackShareUrl =
+    stage instanceof HTMLElement ? stage.dataset.fallbackShareUrl || window.location.href : window.location.href;
   const recipeDialog = document.querySelector("[data-recipe-dialog]");
   const openShare = document.querySelector("[data-open-share]");
   const openRecipe = document.querySelector("[data-open-recipe]");
@@ -430,7 +433,7 @@ function localeHref(item: Locale) {
   }
 
   function getCanonicalShareUrl() {
-    return currentSharePayload.shareUrl || "https://justonesip.today/";
+    return currentSharePayload.shareUrl || fallbackShareUrl;
   }
 
   async function copyTextToClipboard(text: string) {

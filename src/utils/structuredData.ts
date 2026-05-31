@@ -1,0 +1,119 @@
+import type { Cocktail } from "@/data/cocktails";
+import type { Locale } from "@/i18n/config";
+import { t } from "@/i18n/ui";
+import { absoluteUrl, routeForLocale, site, socialImageMetadata } from "@/utils/seo";
+
+export type JsonLd = {
+  [key: string]: JsonLdValue;
+};
+
+type JsonLdValue = string | number | boolean | null | JsonLd | JsonLdValue[];
+
+type PageStructuredDataConfig = {
+  locale: Locale;
+  url: string;
+  title: string;
+  description: string;
+};
+
+type CocktailStructuredDataConfig = {
+  locale: Locale;
+  cocktail: Cocktail;
+  url: string;
+};
+
+const organization = {
+  "@type": "Organization",
+  "@id": `${site}/#organization`,
+  name: "Daily Cocktail Poster",
+  url: `${site}/`,
+};
+
+const websiteReference = {
+  "@id": `${site}/#website`,
+};
+
+export function homeStructuredData({ locale, description }: PageStructuredDataConfig): JsonLd[] {
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": websiteReference["@id"],
+      name: "Daily Cocktail Poster",
+      url: `${site}/`,
+      description,
+      inLanguage: locale,
+      publisher: organization,
+    },
+  ];
+}
+
+export function archiveStructuredData(config: PageStructuredDataConfig): JsonLd[] {
+  const { locale, url, title, description } = config;
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": `${url}#collection`,
+      url,
+      name: title,
+      description,
+      inLanguage: locale,
+      isPartOf: websiteReference,
+      publisher: organization,
+    },
+    breadcrumbStructuredData([
+      { name: t(locale, "home"), url: localizedHomeUrl(locale) },
+      { name: t(locale, "pastPicks"), url },
+    ]),
+  ];
+}
+
+export function cocktailStructuredData({ locale, cocktail, url }: CocktailStructuredDataConfig): JsonLd[] {
+  const image = socialImageMetadata(cocktail.posterImage).url;
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "Recipe",
+      "@id": `${url}#recipe`,
+      name: cocktail.name,
+      description: cocktail.description,
+      image: [image],
+      url,
+      inLanguage: locale,
+      recipeCategory: "Cocktail",
+      recipeIngredient: cocktail.ingredients,
+      recipeInstructions: cocktail.steps.map((step) => ({
+        "@type": "HowToStep",
+        text: step,
+      })),
+      keywords: cocktail.tags.join(", "),
+      author: organization,
+      publisher: organization,
+      mainEntityOfPage: url,
+    },
+    breadcrumbStructuredData([
+      { name: t(locale, "home"), url: localizedHomeUrl(locale) },
+      { name: cocktail.name, url },
+    ]),
+  ];
+}
+
+function localizedHomeUrl(locale: Locale) {
+  return absoluteUrl(routeForLocale(locale, "/"));
+}
+
+function breadcrumbStructuredData(items: Array<{ name: string; url: string }>): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}

@@ -6,7 +6,14 @@ import Menu from "lucide-astro/Menu";
 import BrandMark from "@/components/BrandMark.astro";
 import { localeLabel, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
-import { absoluteUrl, alternateLinks, socialImageMetadata } from "@/utils/seo";
+import type { JsonLd } from "@/utils/structuredData";
+import {
+  absoluteUrl,
+  alternateLinks,
+  alternateOpenGraphLocales,
+  openGraphLocale,
+  socialImageMetadata,
+} from "@/utils/seo";
 import "@/styles/global.css";
 
 type Props = {
@@ -16,14 +23,26 @@ type Props = {
   path: string;
   image?: string;
   immersive?: boolean;
+  ogType?: "website" | "article";
+  structuredData?: JsonLd | JsonLd[];
 };
 
-const { locale, title, description, path, image = "/images/og-default.jpg", immersive = false } = Astro.props;
+const {
+  locale,
+  title,
+  description,
+  path,
+  image = "/images/og-default.jpg",
+  immersive = false,
+  ogType = "website",
+  structuredData,
+} = Astro.props;
 const googleAnalyticsId = "G-RLJPSW8NWV";
 const alternates = alternateLinks(path);
 const canonical = absoluteUrl(`/${localeToPath(locale)}${path === "/" ? "/" : path}`);
 const socialImage = socialImageMetadata(image);
 const imageAlt = title;
+const structuredDataItems = structuredData ? (Array.isArray(structuredData) ? structuredData : [structuredData]) : [];
 ---
 
 <!doctype html>
@@ -36,7 +55,10 @@ const imageAlt = title;
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="canonical" href={canonical} />
     {alternates.map((item) => <link rel="alternate" hreflang={item.locale} href={item.href} />)}
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={t(locale, "siteName")} />
+    <meta property="og:locale" content={openGraphLocale(locale)} />
+    {alternateOpenGraphLocales(locale).map((item) => <meta property="og:locale:alternate" content={item} />)}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -52,6 +74,7 @@ const imageAlt = title;
     <meta name="twitter:image" content={socialImage.url} />
     <meta name="twitter:image:alt" content={imageAlt} />
     <title>{title}</title>
+    {structuredDataItems.map((item) => <script is:inline type="application/ld+json" set:html={JSON.stringify(item)} />)}
     <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}></script>
     <script
       is:inline

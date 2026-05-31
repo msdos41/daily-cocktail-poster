@@ -4,6 +4,8 @@ import { getCocktail, getCocktailSlugs } from "@/data/cocktails";
 import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { absoluteUrl, routeForLocale } from "@/utils/seo";
+import { cocktailStructuredData } from "@/utils/structuredData";
 
 export function getStaticPaths() {
   return supportedLocales.flatMap((locale) =>
@@ -25,8 +27,19 @@ if (!cocktail) {
 const path = `/cocktails/${cocktail.slug}`;
 const title = `${cocktail.name} ${t(locale, "recipePosterTitle")} | ${t(locale, "siteName")}`;
 const description = cocktail.description;
+const pageUrl = absoluteUrl(routeForLocale(locale, path));
+const structuredData = cocktailStructuredData({ locale, cocktail, url: pageUrl });
 ---
 
-<BaseLayout locale={locale} title={title} description={description} path={path} image={cocktail.posterImage} immersive>
+<BaseLayout
+  locale={locale}
+  title={title}
+  description={description}
+  path={path}
+  image={cocktail.posterImage}
+  ogType="article"
+  structuredData={structuredData}
+  immersive
+>
   <ImmersiveCocktail cocktail={cocktail} locale={locale} path={path} />
 </BaseLayout>
