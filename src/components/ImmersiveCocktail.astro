@@ -397,12 +397,15 @@ function localeHref(item: Locale) {
   });
 
   function openXShareIntent() {
-    const fullPostText = buildXPostText();
-    const intentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(fullPostText)}`;
-    copyTextToClipboard(fullPostText).then((copied) => {
+    const intentUrl = new URL("https://twitter.com/intent/tweet");
+    intentUrl.searchParams.set("url", getCanonicalShareUrl());
+    intentUrl.searchParams.set("text", buildXPostText());
+    intentUrl.searchParams.set("hashtags", "DailyCocktail,Cocktail,Mixology,CocktailRecipe,Drinkstagram");
+
+    copyTextToClipboard(buildXClipboardText()).then((copied) => {
       showShareToast(copied ? "data-copied-message" : "data-ready-message");
     });
-    window.open(intentUrl, "_blank", "noopener,noreferrer");
+    window.open(intentUrl.toString(), "_blank", "noopener,noreferrer");
   }
 
   function openRedditShareIntent() {
@@ -413,11 +416,13 @@ function localeHref(item: Locale) {
   }
 
   function buildXPostText() {
-    return [
-      `Today's cocktail recommendation: ${currentSharePayload.name}. A poster-style daily drink ritual from Daily Cocktail Poster.`,
-      getCanonicalShareUrl(),
-      "#DailyCocktail #Cocktail #Mixology #CocktailRecipe #Drinkstagram",
-    ].join("\n\n");
+    return `Today's cocktail recommendation: ${currentSharePayload.name}. A poster-style daily drink ritual from Daily Cocktail Poster.`;
+  }
+
+  function buildXClipboardText() {
+    return [buildXPostText(), getCanonicalShareUrl(), "#DailyCocktail #Cocktail #Mixology #CocktailRecipe #Drinkstagram"].join(
+      "\n\n",
+    );
   }
 
   function buildRedditTitle() {

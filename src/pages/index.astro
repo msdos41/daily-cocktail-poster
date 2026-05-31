@@ -1,7 +1,13 @@
 ---
 import { defaultLocale, localeToPath } from "@/i18n/config";
+import { t } from "@/i18n/ui";
+import { absoluteUrl, socialImageMetadata } from "@/utils/seo";
 
 const target = `/${localeToPath(defaultLocale)}/`;
+const canonical = absoluteUrl(target);
+const title = t(defaultLocale, "siteName");
+const description = t(defaultLocale, "siteDescription");
+const socialImage = socialImageMetadata();
 ---
 
 <!doctype html>
@@ -9,9 +15,26 @@ const target = `/${localeToPath(defaultLocale)}/`;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#15120f" />
     <meta http-equiv="refresh" content={`0; url=${target}`} />
-    <link rel="canonical" href={target} />
-    <title>Daily Cocktail Poster</title>
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage.url} />
+    <meta property="og:image:secure_url" content={socialImage.url} />
+    <meta property="og:image:type" content={socialImage.type} />
+    {socialImage.width && <meta property="og:image:width" content={String(socialImage.width)} />}
+    {socialImage.height && <meta property="og:image:height" content={String(socialImage.height)} />}
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage.url} />
+    <meta name="twitter:image:alt" content={title} />
+    <title>{title}</title>
     <script is:inline set:html={`window.location.replace("${target}")`}></script>
   </head>
   <body></body>

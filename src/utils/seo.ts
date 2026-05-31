@@ -1,20 +1,57 @@
 import { defaultLocale, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 
 const site = "https://justonesip.today";
-const defaultSocialImage = "/images/og-default.png";
+const defaultSocialImage = "/images/og-default.jpg";
+const defaultSocialImageWidth = 1200;
+const defaultSocialImageHeight = 630;
+
+export type SocialImageMetadata = {
+  url: string;
+  type: string;
+  width?: number;
+  height?: number;
+};
 
 export function absoluteUrl(path: string) {
   return new URL(path, site).toString();
 }
 
 export function socialImageUrl(image = defaultSocialImage) {
-  const url = new URL(image || defaultSocialImage, site);
+  return socialImageMetadata(image).url;
+}
 
-  if (url.pathname.toLowerCase().endsWith(".svg")) {
-    return absoluteUrl(defaultSocialImage);
+export function socialImageMetadata(image = defaultSocialImage): SocialImageMetadata {
+  const url = new URL(image || defaultSocialImage, site);
+  const pathname = url.pathname.toLowerCase();
+
+  if (pathname.endsWith(".svg")) {
+    return defaultSocialImageMetadata();
   }
 
-  return url.toString();
+  return {
+    url: url.toString(),
+    type: socialImageType(pathname),
+    ...(pathname === defaultSocialImage && {
+      width: defaultSocialImageWidth,
+      height: defaultSocialImageHeight,
+    }),
+  };
+}
+
+function defaultSocialImageMetadata(): SocialImageMetadata {
+  return {
+    url: absoluteUrl(defaultSocialImage),
+    type: "image/jpeg",
+    width: defaultSocialImageWidth,
+    height: defaultSocialImageHeight,
+  };
+}
+
+function socialImageType(pathname: string) {
+  if (pathname.endsWith(".webp")) return "image/webp";
+  if (pathname.endsWith(".png")) return "image/png";
+  if (pathname.endsWith(".jpg") || pathname.endsWith(".jpeg")) return "image/jpeg";
+  return "image/jpeg";
 }
 
 export function routeForLocale(locale: Locale, path: string) {

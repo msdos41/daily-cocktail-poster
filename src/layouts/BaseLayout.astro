@@ -6,7 +6,7 @@ import Menu from "lucide-astro/Menu";
 import BrandMark from "@/components/BrandMark.astro";
 import { localeLabel, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
-import { absoluteUrl, alternateLinks, socialImageUrl } from "@/utils/seo";
+import { absoluteUrl, alternateLinks, socialImageMetadata } from "@/utils/seo";
 import "@/styles/global.css";
 
 type Props = {
@@ -18,11 +18,11 @@ type Props = {
   immersive?: boolean;
 };
 
-const { locale, title, description, path, image = "/images/og-default.png", immersive = false } = Astro.props;
+const { locale, title, description, path, image = "/images/og-default.jpg", immersive = false } = Astro.props;
 const googleAnalyticsId = "G-RLJPSW8NWV";
 const alternates = alternateLinks(path);
 const canonical = absoluteUrl(`/${localeToPath(locale)}${path === "/" ? "/" : path}`);
-const ogImage = socialImageUrl(image);
+const socialImage = socialImageMetadata(image);
 const imageAlt = title;
 ---
 
@@ -40,12 +40,16 @@ const imageAlt = title;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={socialImage.url} />
+    <meta property="og:image:secure_url" content={socialImage.url} />
+    <meta property="og:image:type" content={socialImage.type} />
+    {socialImage.width && <meta property="og:image:width" content={String(socialImage.width)} />}
+    {socialImage.height && <meta property="og:image:height" content={String(socialImage.height)} />}
     <meta property="og:image:alt" content={imageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={socialImage.url} />
     <meta name="twitter:image:alt" content={imageAlt} />
     <title>{title}</title>
     <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}></script>
