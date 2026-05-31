@@ -1,6 +1,6 @@
 import { defaultLocale, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 
-const site = "https://daily-cocktail-poster.com";
+const site = "https://justonesip.today";
 
 export function absoluteUrl(path: string) {
   return new URL(path, site).toString();
