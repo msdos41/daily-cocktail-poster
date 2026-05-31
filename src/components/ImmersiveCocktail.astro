@@ -12,6 +12,7 @@ import BrandMark from "@/components/BrandMark.astro";
 import type { Cocktail } from "@/data/cocktails";
 import { localeLabel, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
+import { absoluteUrl, routeForLocale } from "@/utils/seo";
 
 type Props = {
   cocktail: Cocktail;
@@ -22,9 +23,11 @@ type Props = {
 
 const { cocktail, dailyCocktails, locale, path } = Astro.props;
 const heroIngredientSummary = cocktail.heroIngredients.join(" · ");
+const shareUrl = absoluteUrl(routeForLocale(locale, path));
 const sharePayload = {
   name: cocktail.name,
   filenameBase: cocktail.slug,
+  shareUrl,
 };
 const shareXTooltip = "X";
 const shareRedditTooltip = "Reddit";
@@ -264,6 +267,7 @@ function localeHref(item: Locale) {
   type SharePayload = {
     name: string;
     filenameBase: string;
+    shareUrl: string;
   };
 
   type DailyCocktailPayload = {
@@ -403,7 +407,7 @@ function localeHref(item: Locale) {
 
   function openRedditShareIntent() {
     const redditUrl = new URL("https://www.reddit.com/submit");
-    redditUrl.searchParams.set("url", window.location.href);
+    redditUrl.searchParams.set("url", getCanonicalShareUrl());
     redditUrl.searchParams.set("title", buildRedditTitle());
     window.open(redditUrl.toString(), "_blank", "noopener,noreferrer");
   }
@@ -411,13 +415,17 @@ function localeHref(item: Locale) {
   function buildXPostText() {
     return [
       `Today's cocktail recommendation: ${currentSharePayload.name}. A poster-style daily drink ritual from Daily Cocktail Poster.`,
-      window.location.href,
+      getCanonicalShareUrl(),
       "#DailyCocktail #Cocktail #Mixology #CocktailRecipe #Drinkstagram",
     ].join("\n\n");
   }
 
   function buildRedditTitle() {
     return `Today's cocktail recommendation: ${currentSharePayload.name} | Daily Cocktail Poster`;
+  }
+
+  function getCanonicalShareUrl() {
+    return currentSharePayload.shareUrl || "https://justonesip.today/";
   }
 
   async function copyTextToClipboard(text: string) {
@@ -517,6 +525,7 @@ function localeHref(item: Locale) {
     replaceList("[data-recipe-steps]", cocktail.steps, "li");
 
     currentSharePayload = {
+      ...currentSharePayload,
       name: cocktail.name,
       filenameBase: cocktail.slug,
     };

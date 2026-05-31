@@ -2,7 +2,7 @@
 
 Daily Cocktail Poster is a static Astro MVP for a bilingual daily cocktail visual experience.
 
-Live site: https://daily-cocktail-poster.pages.dev/
+Live site: https://justonesip.today/
 
 The site is designed around an immersive full-screen cocktail image. Each day has one scheduled recommendation, while detail pages provide fixed recipe URLs for search, sharing, and archive browsing.
 

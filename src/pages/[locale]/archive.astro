@@ -1,5 +1,5 @@
 ---
-import { getAllCocktails } from "@/data/cocktails";
+import { getAllCocktails, getPublishedCocktails } from "@/data/cocktails";
 import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -13,11 +13,14 @@ export function getStaticPaths() {
 
 const locale = Astro.props.locale as Locale;
 const cocktails = getAllCocktails(locale).slice().sort((a, b) => b.date.localeCompare(a.date));
+const archiveImage = getPublishedCocktails(cocktails).find(
+  (cocktail) => !cocktail.heroImageMobile.toLowerCase().endsWith(".svg"),
+)?.heroImageMobile;
 const title = `${t(locale, "archive")} | ${t(locale, "siteName")}`;
 const description = t(locale, "siteDescription");
 ---
 
-<BaseLayout locale={locale} title={title} description={description} path="/archive" image={cocktails[0].heroImageMobile}>
+<BaseLayout locale={locale} title={title} description={description} path="/archive" image={archiveImage}>
   <section class="archive-grid" data-archive-grid>
     {
       cocktails.map((cocktail) => (
