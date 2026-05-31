@@ -12,7 +12,7 @@ import BrandMark from "@/components/BrandMark.astro";
 import type { Cocktail } from "@/data/cocktails";
 import { localeLabel, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
-import { absoluteUrl, routeForLocale, site } from "@/utils/seo";
+import { publicHomeUrl, shareUrlForLocalePath } from "@/utils/seo";
 
 type Props = {
   cocktail: Cocktail;
@@ -23,7 +23,7 @@ type Props = {
 
 const { cocktail, dailyCocktails, locale, path } = Astro.props;
 const heroIngredientSummary = cocktail.heroIngredients.join(" · ");
-const shareUrl = absoluteUrl(routeForLocale(locale, path));
+const shareUrl = shareUrlForLocalePath(locale, path);
 const sharePayload = {
   name: cocktail.name,
   filenameBase: cocktail.slug,
@@ -53,7 +53,7 @@ function localeHref(item: Locale) {
   class="immersive-stage"
   data-desktop-download={cocktail.backgroundDownloadDesktop}
   data-mobile-download={cocktail.backgroundDownloadMobile}
-  data-fallback-share-url={`${site}/`}
+  data-fallback-share-url={publicHomeUrl()}
 >
   <picture class="immersive-bg">
     <source media="(max-width: 720px)" srcset={cocktail.heroImageMobile} />
@@ -401,9 +401,7 @@ function localeHref(item: Locale) {
 
   function openXShareIntent() {
     const intentUrl = new URL("https://twitter.com/intent/tweet");
-    intentUrl.searchParams.set("url", getCanonicalShareUrl());
     intentUrl.searchParams.set("text", buildXPostText());
-    intentUrl.searchParams.set("hashtags", "DailyCocktail,Cocktail,Mixology,CocktailRecipe,Drinkstagram");
 
     copyTextToClipboard(buildXClipboardText()).then((copied) => {
       showShareToast(copied ? "data-copied-message" : "data-ready-message");
@@ -419,17 +417,20 @@ function localeHref(item: Locale) {
   }
 
   function buildXPostText() {
-    return `Today's cocktail recommendation: ${currentSharePayload.name}. A poster-style daily drink ritual from Daily Cocktail Poster.`;
+    return [
+      `Today's cocktail recommendation: ${currentSharePayload.name}.`,
+      "A daily cocktail poster site: one drink, one visual, every day.",
+      getCanonicalShareUrl(),
+      "#JustOneSip #Cocktails #Mixology",
+    ].join("\n\n");
   }
 
   function buildXClipboardText() {
-    return [buildXPostText(), getCanonicalShareUrl(), "#DailyCocktail #Cocktail #Mixology #CocktailRecipe #Drinkstagram"].join(
-      "\n\n",
-    );
+    return buildXPostText();
   }
 
   function buildRedditTitle() {
-    return `Today's cocktail recommendation: ${currentSharePayload.name} | Daily Cocktail Poster`;
+    return `Today's cocktail recommendation: ${currentSharePayload.name} | Just One Sip`;
   }
 
   function getCanonicalShareUrl() {

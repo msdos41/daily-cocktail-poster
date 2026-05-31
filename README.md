@@ -1,6 +1,6 @@
-# Daily Cocktail Poster
+# Just One Sip
 
-Daily Cocktail Poster is a static Astro MVP for a bilingual daily cocktail visual experience.
+Just One Sip is a static Astro MVP for a bilingual daily cocktail poster experience.
 
 Live site: https://justonesip.today/
 
@@ -186,7 +186,7 @@ The share flow is implemented in `ImmersiveCocktail.astro`.
 
 The immersive action tray currently supports:
 
-- X: opens a post intent with the current page URL, prepared English post copy, and hashtags. The post text is copied first so users can paste it if an installed X PWA opens an empty composer.
+- X: opens a post intent with prepared English post copy, the canonical share URL, and three compact hashtags. The post text is copied first so users can paste it if an installed X PWA opens an empty composer.
 - Reddit: opens Reddit submit with the current page URL and an English title.
 
 ## SEO

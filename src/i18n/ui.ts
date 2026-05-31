@@ -2,10 +2,10 @@ import type { Locale } from "./config";
 
 export const ui = {
   en: {
-    siteName: "Daily Cocktail Poster",
-    brandShort: "DCP",
+    siteName: "Just One Sip",
+    brandShort: "JOS",
     siteDescription:
-      "A daily cocktail visual ritual with poster-style artwork, recipes, and concise mixing notes.",
+      "A daily cocktail poster site: one drink, one visual, every day.",
     todaysCocktail: "Today's Cocktail",
     archive: "Past Picks",
     pastPicks: "Past Picks",
@@ -39,10 +39,10 @@ export const ui = {
     noPastPicks: "No past picks yet.",
   },
   "zh-CN": {
-    siteName: "每日鸡尾酒海报",
-    brandShort: "DCP",
+    siteName: "Just One Sip",
+    brandShort: "JOS",
     siteDescription:
-      "每天一张海报感鸡尾酒视觉图，附配方、调制步骤和简短介绍。",
+      "每天一杯，一张视觉海报，一份简洁鸡尾酒指南。",
     todaysCocktail: "今日鸡尾酒",
     archive: "往期推荐",
     pastPicks: "往期推荐",

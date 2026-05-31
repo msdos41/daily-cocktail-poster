@@ -16,6 +16,14 @@ export function absoluteUrl(path: string) {
   return new URL(path, site).toString();
 }
 
+export function publicHomeUrl() {
+  return site;
+}
+
+export function shareUrlForLocalePath(locale: Locale, path: string) {
+  if (path === "/") return publicHomeUrl();
+  return absoluteUrl(routeForLocale(locale, path));
+}
 
 export function socialImageUrl(image = defaultSocialImage) {
   return socialImageMetadata(image).url;

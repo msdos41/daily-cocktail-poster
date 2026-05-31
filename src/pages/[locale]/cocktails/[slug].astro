@@ -25,7 +25,7 @@ if (!cocktail) {
 }
 
 const path = `/cocktails/${cocktail.slug}`;
-const title = `${cocktail.name} ${t(locale, "recipePosterTitle")} | ${t(locale, "siteName")}`;
+const title = `${cocktail.name} | ${t(locale, "siteName")}`;
 const description = cocktail.description;
 const pageUrl = absoluteUrl(routeForLocale(locale, path));
 const structuredData = cocktailStructuredData({ locale, cocktail, url: pageUrl });
