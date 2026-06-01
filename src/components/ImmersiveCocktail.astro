@@ -67,6 +67,7 @@ const dailyCocktailPrepaintScript = `
 
   const stage = document.querySelector(".immersive-stage");
   if (stage) {
+    stage.setAttribute("data-cocktail-id", cocktail.id);
     stage.setAttribute("data-desktop-download", cocktail.backgroundDownloadDesktop);
     stage.setAttribute("data-mobile-download", cocktail.backgroundDownloadMobile);
   }
@@ -134,6 +135,7 @@ function localeHref(item: Locale) {
 
 <section
   class="immersive-stage"
+  data-cocktail-id={cocktail.id}
   data-desktop-download={cocktail.backgroundDownloadDesktop}
   data-mobile-download={cocktail.backgroundDownloadMobile}
   data-fallback-share-url={publicHomeUrl()}
@@ -358,6 +360,7 @@ function localeHref(item: Locale) {
   };
 
   type DailyCocktailPayload = {
+    id: string;
     date: string;
     slug: string;
     name: string;
@@ -593,6 +596,7 @@ function localeHref(item: Locale) {
   function applyDailyCocktail(cocktail: DailyCocktailPayload) {
     if (!stage) return;
 
+    stage.setAttribute("data-cocktail-id", cocktail.id);
     stage.setAttribute("data-desktop-download", cocktail.backgroundDownloadDesktop);
     stage.setAttribute("data-mobile-download", cocktail.backgroundDownloadMobile);
 

@@ -1053,6 +1053,10 @@ h2 {
     line-height: 0.98;
   }
 
+  .immersive-stage[data-cocktail-id="espresso-martini"] .immersive-copy h1 {
+    --hero-title-max: clamp(3rem, 15vw, 4.3rem);
+  }
+
   .immersive-subtitle {
     font-size: 1.06rem;
     line-height: 1.35;
