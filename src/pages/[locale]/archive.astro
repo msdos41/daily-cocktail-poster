@@ -26,7 +26,14 @@ const structuredData = archiveStructuredData({ locale, url: pageUrl, title, desc
 ---
 
 <BaseLayout locale={locale} title={title} description={description} path={path} image={archiveImage} structuredData={structuredData}>
-  <section class="archive-grid" data-archive-grid>
+  <noscript>
+    <style>
+      [data-archive-grid][hidden] {
+        display: grid !important;
+      }
+    </style>
+  </noscript>
+  <section class="archive-grid" data-archive-grid hidden>
     {
       cocktails.map((cocktail) => (
         <a
@@ -50,22 +57,30 @@ const structuredData = archiveStructuredData({ locale, url: pageUrl, title, desc
 </BaseLayout>
 
 <script>
+  const archiveGrid = document.querySelector("[data-archive-grid]");
   const archiveCards = Array.from(document.querySelectorAll("[data-archive-card]"));
   const emptyState = document.querySelector("[data-archive-empty]");
-  const today = getLocalDateKey(new Date());
+  const todayDate = new Date();
+  const today = getLocalDateKey(todayDate);
+  const earliestPastDate = getLocalDateKey(addLocalDays(todayDate, -14));
+  const maxPastPicks = 14;
   let visibleCount = 0;
 
   archiveCards.forEach((card) => {
     if (!(card instanceof HTMLElement)) return;
 
     const scheduledDate = card.dataset.scheduledDate || "";
-    const isPublished = scheduledDate <= today;
-    card.hidden = !isPublished;
-    if (isPublished) visibleCount += 1;
+    const isPastPick = scheduledDate < today && scheduledDate >= earliestPastDate && visibleCount < maxPastPicks;
+    card.hidden = !isPastPick;
+    if (isPastPick) visibleCount += 1;
   });
 
   if (emptyState instanceof HTMLElement) {
     emptyState.hidden = visibleCount > 0;
+  }
+
+  if (archiveGrid instanceof HTMLElement) {
+    archiveGrid.hidden = visibleCount === 0;
   }
 
   function getLocalDateKey(date: Date) {
@@ -73,5 +88,11 @@ const structuredData = archiveStructuredData({ locale, url: pageUrl, title, desc
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
+  }
+
+  function addLocalDays(date: Date, days: number) {
+    const next = new Date(date);
+    next.setDate(next.getDate() + days);
+    return next;
   }
 </script>

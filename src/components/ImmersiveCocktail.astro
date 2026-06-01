@@ -43,6 +43,89 @@ const dailyCocktailPayload = dailyCocktails?.map((item) => ({
   ...item,
   heroIngredientSummary: item.heroIngredients.join(" · "),
 }));
+const dailyCocktailPrepaintScript = `
+(() => {
+  const dailyCocktailsNode = document.querySelector("[data-daily-cocktails]");
+  if (!dailyCocktailsNode) return;
+
+  let cocktails = [];
+  try {
+    cocktails = JSON.parse(dailyCocktailsNode.textContent || "[]");
+  } catch {
+    return;
+  }
+
+  const today = getLocalDateKey(new Date());
+  const scheduled = cocktails.slice().sort((a, b) => a.date.localeCompare(b.date));
+  const published = scheduled.filter((item) => item.date <= today);
+  const cocktail =
+    scheduled.find((item) => item.date === today) ||
+    published[published.length - 1] ||
+    scheduled[0];
+
+  if (!cocktail) return;
+
+  const stage = document.querySelector(".immersive-stage");
+  if (stage) {
+    stage.setAttribute("data-desktop-download", cocktail.backgroundDownloadDesktop);
+    stage.setAttribute("data-mobile-download", cocktail.backgroundDownloadMobile);
+  }
+
+  const source = document.querySelector(".immersive-bg source");
+  const image = document.querySelector(".immersive-bg img");
+  if (source) source.setAttribute("srcset", cocktail.heroImageMobile);
+  if (image) {
+    image.setAttribute("src", cocktail.heroImageDesktop);
+    const altPrefix = image.getAttribute("data-poster-alt-prefix") || "";
+    image.setAttribute("alt", (altPrefix + " " + cocktail.name).trim());
+  }
+
+  setAllText("[data-cocktail-name]", cocktail.name);
+  setText("[data-cocktail-subtitle]", cocktail.subtitle);
+  setText("[data-hero-ingredients]", cocktail.heroIngredientSummary);
+
+  const sharePayloadNode = document.querySelector("[data-share-payload]");
+  if (sharePayloadNode) {
+    try {
+      const sharePayload = JSON.parse(sharePayloadNode.textContent || "{}");
+      sharePayload.name = cocktail.name;
+      sharePayload.filenameBase = cocktail.slug;
+      sharePayloadNode.textContent = JSON.stringify(sharePayload);
+    } catch {
+      return;
+    }
+  }
+
+  const downloadLink = document.querySelector("[data-download-background]");
+  const isMobile = window.matchMedia("(max-width: 720px)").matches;
+  const downloadHref = isMobile ? cocktail.backgroundDownloadMobile : cocktail.backgroundDownloadDesktop;
+  if (downloadLink && downloadHref) {
+    downloadLink.setAttribute("href", downloadHref);
+    downloadLink.setAttribute(
+      "download",
+      cocktail.slug + "-" + (isMobile ? "mobile" : "desktop") + "-background.svg",
+    );
+  }
+
+  function getLocalDateKey(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return year + "-" + month + "-" + day;
+  }
+
+  function setText(selector, value) {
+    const element = document.querySelector(selector);
+    if (element) element.textContent = value;
+  }
+
+  function setAllText(selector, value) {
+    document.querySelectorAll(selector).forEach((element) => {
+      element.textContent = value;
+    });
+  }
+})();
+`;
 
 function localeHref(item: Locale) {
   return `/${localeToPath(item)}${path === "/" ? "/" : path}`;
@@ -252,6 +335,7 @@ function localeHref(item: Locale) {
       <script is:inline type="application/json" data-daily-cocktails set:html={JSON.stringify(dailyCocktailPayload)} />
     )
   }
+  {dailyCocktailPayload && <script is:inline set:html={dailyCocktailPrepaintScript} />}
 </section>
 
 <script>
