@@ -2,7 +2,7 @@
 
 Just One Sip is a static Astro MVP for a bilingual daily cocktail poster experience.
 
-Live site: https://justonesip.today/
+Live site: https://justonesip.today
 
 The site is designed around an immersive full-screen cocktail image. Each day has one scheduled recommendation, while detail pages provide fixed recipe URLs for search, sharing, and archive browsing.
 
