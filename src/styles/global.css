@@ -607,6 +607,22 @@ summary.icon-button::-webkit-details-marker {
   backdrop-filter: blur(6px);
 }
 
+.recipe-dialog[open] {
+  animation: recipe-sheet-in 250ms ease-out;
+}
+
+.recipe-dialog[open]::backdrop {
+  animation: recipe-backdrop-in 250ms ease-out;
+}
+
+.recipe-dialog[data-closing] {
+  animation: recipe-sheet-out 200ms ease-in forwards;
+}
+
+.recipe-dialog[data-closing]::backdrop {
+  animation: recipe-backdrop-out 200ms ease-in forwards;
+}
+
 .recipe-sheet {
   display: flex;
   flex-direction: column;
@@ -1179,4 +1195,55 @@ body:has(astro-dev-toolbar) .recipe-handle {
 
 body:has(astro-dev-toolbar) .recipe-dialog {
   margin-bottom: 48px;
+}
+
+@keyframes recipe-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(60px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes recipe-sheet-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+}
+
+@keyframes recipe-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes recipe-backdrop-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recipe-dialog[open],
+  .recipe-dialog[data-closing] {
+    animation: none;
+  }
+  .recipe-dialog[open]::backdrop,
+  .recipe-dialog[data-closing]::backdrop {
+    animation: none;
+  }
 }

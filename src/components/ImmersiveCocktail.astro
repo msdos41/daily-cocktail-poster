@@ -234,12 +234,12 @@ const dailyCocktailPrepaintScript = `
 
   <dialog class="recipe-dialog" data-recipe-dialog>
     <article class="recipe-sheet">
-      <form method="dialog" class="recipe-sheet-header">
+      <form class="recipe-sheet-header">
         <div>
           <p class="eyebrow">{t(locale, "recipeDetails")}</p>
           <h2 data-cocktail-name>{cocktail.name}</h2>
         </div>
-        <button class="icon-close" type="submit" aria-label={t(locale, "closeRecipe")}>
+        <button class="icon-close" type="button" data-close-recipe aria-label={t(locale, "closeRecipe")}>
           <XIcon size={20} aria-hidden="true" />
         </button>
       </form>
@@ -378,16 +378,19 @@ const dailyCocktailPrepaintScript = `
     }
   });
 
-  openRecipe?.addEventListener("click", () => {
-    if (recipeDialog instanceof HTMLDialogElement && !recipeDialog.open) {
-      recipeDialog.showModal();
+  openRecipe?.addEventListener("click", openRecipeDialog);
+
+  recipeDialog?.addEventListener("click", (event) => {
+    if (event.target === recipeDialog) {
+      closeRecipeDialog();
     }
   });
 
-  recipeDialog?.addEventListener("click", (event) => {
-    if (event.target === recipeDialog && recipeDialog instanceof HTMLDialogElement) {
-      recipeDialog.close();
-    }
+  document.querySelector("[data-close-recipe]")?.addEventListener("click", closeRecipeDialog);
+
+  recipeDialog?.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeRecipeDialog();
   });
 
   const utilityMenus = Array.from(document.querySelectorAll(".utility-menu")).filter(
@@ -528,6 +531,35 @@ const dailyCocktailPrepaintScript = `
       shareToast.hidden = true;
     }
     window.clearTimeout(shareToastTimer);
+  }
+
+  function openRecipeDialog() {
+    if (!(recipeDialog instanceof HTMLDialogElement) || recipeDialog.open) return;
+    recipeDialog.removeAttribute("data-closing");
+    recipeDialog.showModal();
+  }
+
+  function closeRecipeDialog() {
+    if (!(recipeDialog instanceof HTMLDialogElement) || !recipeDialog.open) return;
+    if (recipeDialog.hasAttribute("data-closing")) return;
+    recipeDialog.setAttribute("data-closing", "");
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      recipeDialog.close();
+      recipeDialog.removeAttribute("data-closing");
+      return;
+    }
+    const finish = () => {
+      recipeDialog.removeEventListener("animationend", onEnd);
+      clearTimeout(fallbackTimer);
+      recipeDialog.close();
+      recipeDialog.removeAttribute("data-closing");
+    };
+    const onEnd = (event: AnimationEvent) => {
+      if (event.target !== recipeDialog) return;
+      finish();
+    };
+    recipeDialog.addEventListener("animationend", onEnd);
+    const fallbackTimer = window.setTimeout(finish, 300);
   }
 
   function pickDailyCocktail(cocktails: DailyCocktailPayload[], date: Date) {
