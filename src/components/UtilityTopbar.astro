@@ -30,12 +30,10 @@ function localeHref(item: Locale) {
         <span class="sr-only">{t(locale, "language")}</span>
       </summary>
       <div class="utility-menu-panel language-panel">
-        <p class="menu-label">{t(locale, "language")}</p>
         {
           supportedLocales.map((item) => (
             <a class:list={[item === locale && "active"]} href={localeHref(item)} hreflang={item}>
               <span>{localeLabel[item]}</span>
-              <small>{localeToPath(item)}</small>
             </a>
           ))
         }
