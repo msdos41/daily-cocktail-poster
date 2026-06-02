@@ -1,16 +1,12 @@
 ---
-import ArchiveIcon from "lucide-astro/Archive";
 import BookOpen from "lucide-astro/BookOpen";
 import ChevronUp from "lucide-astro/ChevronUp";
 import Download from "lucide-astro/Download";
-import Globe2 from "lucide-astro/Globe2";
-import Home from "lucide-astro/Home";
-import Menu from "lucide-astro/Menu";
 import Share2 from "lucide-astro/Share2";
 import XIcon from "lucide-astro/X";
-import BrandMark from "@/components/BrandMark.astro";
+import UtilityTopbar from "@/components/UtilityTopbar.astro";
 import type { Cocktail } from "@/data/cocktails";
-import { localeLabel, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
+import { type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import { publicHomeUrl, shareUrlForLocalePath } from "@/utils/seo";
 
@@ -128,9 +124,6 @@ const dailyCocktailPrepaintScript = `
 })();
 `;
 
-function localeHref(item: Locale) {
-  return `/${localeToPath(item)}${path === "/" ? "/" : path}`;
-}
 ---
 
 <section
@@ -150,46 +143,7 @@ function localeHref(item: Locale) {
   </picture>
   <div class="immersive-shade" aria-hidden="true"></div>
 
-  <header class="immersive-topbar">
-    <BrandMark href={`/${localeToPath(locale)}/`} label={t(locale, "siteName")} />
-
-    <nav class="immersive-tools" aria-label={t(locale, "more")}>
-      <details class="utility-menu">
-        <summary class="icon-button" data-tooltip={t(locale, "language")}>
-          <Globe2 size={20} aria-hidden="true" />
-          <span class="sr-only">{t(locale, "language")}</span>
-        </summary>
-        <div class="utility-menu-panel language-panel">
-          <p class="menu-label">{t(locale, "language")}</p>
-          {
-            supportedLocales.map((item) => (
-              <a class:list={[item === locale && "active"]} href={localeHref(item)} hreflang={item}>
-                <span>{localeLabel[item]}</span>
-                <small>{localeToPath(item)}</small>
-              </a>
-            ))
-          }
-        </div>
-      </details>
-
-      <details class="utility-menu">
-        <summary class="icon-button" data-tooltip={t(locale, "more")}>
-          <Menu size={20} aria-hidden="true" />
-          <span class="sr-only">{t(locale, "more")}</span>
-        </summary>
-        <div class="utility-menu-panel more-panel">
-          <a href={`/${localeToPath(locale)}/`}>
-            <Home size={16} aria-hidden="true" />
-            <span>{t(locale, "home")}</span>
-          </a>
-          <a href={`/${localeToPath(locale)}/archive`}>
-            <ArchiveIcon size={16} aria-hidden="true" />
-            <span>{t(locale, "pastPicks")}</span>
-          </a>
-        </div>
-      </details>
-    </nav>
-  </header>
+  <UtilityTopbar locale={locale} path={path} overlay />
 
   <div class="immersive-copy">
     <p class="hero-kicker">{t(locale, "todaysCocktail")}</p>

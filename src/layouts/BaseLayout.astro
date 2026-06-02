@@ -1,10 +1,6 @@
 ---
-import ArchiveIcon from "lucide-astro/Archive";
-import Globe2 from "lucide-astro/Globe2";
-import Home from "lucide-astro/Home";
-import Menu from "lucide-astro/Menu";
-import BrandMark from "@/components/BrandMark.astro";
-import { localeLabel, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
+import UtilityTopbar from "@/components/UtilityTopbar.astro";
+import { localeToPath, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import type { JsonLd } from "@/utils/structuredData";
 import {
@@ -88,49 +84,7 @@ gtag("config", "${googleAnalyticsId}");`}
   </head>
   <body class:list={[immersive && "immersive-page"]}>
     {
-      !immersive && (
-        <header class="site-header utility-header">
-          <BrandMark class="site-brand-mark" href={`/${localeToPath(locale)}/`} label={t(locale, "siteName")} />
-          <nav class="immersive-tools site-tools" aria-label={t(locale, "more")}>
-            <details class="utility-menu">
-              <summary class="icon-button" data-tooltip={t(locale, "language")}>
-                <Globe2 size={20} aria-hidden="true" />
-                <span class="sr-only">{t(locale, "language")}</span>
-              </summary>
-              <div class="utility-menu-panel language-panel">
-                <p class="menu-label">{t(locale, "language")}</p>
-                {supportedLocales.map((item) => (
-                  <a
-                    class:list={[item === locale && "active"]}
-                    href={`/${localeToPath(item)}${path === "/" ? "/" : path}`}
-                    hreflang={item}
-                  >
-                    <span>{localeLabel[item]}</span>
-                    <small>{localeToPath(item)}</small>
-                  </a>
-                ))}
-              </div>
-            </details>
-
-            <details class="utility-menu">
-              <summary class="icon-button" data-tooltip={t(locale, "more")}>
-                <Menu size={20} aria-hidden="true" />
-                <span class="sr-only">{t(locale, "more")}</span>
-              </summary>
-              <div class="utility-menu-panel more-panel">
-                <a class:list={[path === "/" && "active"]} href={`/${localeToPath(locale)}/`}>
-                  <Home size={16} aria-hidden="true" />
-                  <span>{t(locale, "home")}</span>
-                </a>
-                <a class:list={[path === "/archive" && "active"]} href={`/${localeToPath(locale)}/archive`}>
-                  <ArchiveIcon size={16} aria-hidden="true" />
-                  <span>{t(locale, "pastPicks")}</span>
-                </a>
-              </div>
-            </details>
-          </nav>
-        </header>
-      )
+      !immersive && <UtilityTopbar locale={locale} path={path} />
     }
     <main class:list={[immersive && "immersive-main"]}>
       <slot />
