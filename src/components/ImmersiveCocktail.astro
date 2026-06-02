@@ -265,22 +265,22 @@ const dailyCocktailPrepaintScript = `
           </div>
         </dl>
 
-        <div class="tag-row recipe-tags" aria-label="Tags" data-recipe-tags>
-          {cocktail.tags.map((tag) => <span>{tag}</span>)}
-        </div>
-
-        <section>
+        <section class="recipe-section-ingredients">
           <h3>{t(locale, "ingredients")}</h3>
           <ul data-recipe-ingredients>
             {cocktail.ingredients.map((ingredient) => <li>{ingredient}</li>)}
           </ul>
         </section>
-        <section>
+        <section class="recipe-section-steps">
           <h3>{t(locale, "howToMake")}</h3>
           <ol data-recipe-steps>
             {cocktail.steps.map((step) => <li>{step}</li>)}
           </ol>
         </section>
+
+        <div class="tag-row recipe-tags" aria-label="Tags" data-recipe-tags>
+          {cocktail.tags.map((tag) => <span>{tag}</span>)}
+        </div>
       </div>
     </article>
   </dialog>
