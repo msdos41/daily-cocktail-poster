@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-02T19:51:57.8980808+08:00",
+  "title": "Design System: Just One Sip",
+  "extensions": {
+    "colorMeta": {
+      "charred-walnut": {
+        "role": "primary",
+        "displayName": "Charred Walnut",
+        "canonical": "#15120f",
+        "tonalRamp": ["#050403", "#0c0908", "#15120f", "#211b17", "#2b221d", "#4a3a30", "#7c695b", "#b8a999"]
+      },
+      "cream-ink": {
+        "role": "primary",
+        "displayName": "Cream Ink",
+        "canonical": "#f7efe5",
+        "tonalRamp": ["#2c251f", "#4a4036", "#706356", "#9d8f80", "#c7b7a6", "#e2d3c3", "#f7efe5", "#fff8ee"]
+      },
+      "vermouth-gold": {
+        "role": "primary",
+        "displayName": "Vermouth Gold",
+        "canonical": "#e3b35f",
+        "tonalRamp": ["#22170a", "#4a300f", "#7b511b", "#a9762f", "#c99245", "#e3b35f", "#f2d08d", "#fae8bd"]
+      },
+      "bitter-ruby": {
+        "role": "secondary",
+        "displayName": "Bitter Ruby",
+        "canonical": "#d3513c",
+        "tonalRamp": ["#220806", "#4a100b", "#7a2016", "#a93425", "#d3513c", "#e57b67", "#f0a99b", "#f8d6cf"]
+      },
+      "smoked-taupe": {
+        "role": "secondary",
+        "displayName": "Smoked Taupe",
+        "canonical": "#c7b7a6",
+        "tonalRamp": ["#18130f", "#312821", "#514438", "#746658", "#9b8d7e", "#c7b7a6", "#e0d4c8", "#f3ece4"]
+      },
+      "deep-walnut-panel": {
+        "role": "neutral",
+        "displayName": "Deep Walnut Panel",
+        "canonical": "#211b17",
+        "tonalRamp": ["#070504", "#100d0b", "#211b17", "#342a23", "#514237", "#776557", "#a29284", "#d6c9bb"]
+      },
+      "stage-black": {
+        "role": "neutral",
+        "displayName": "Stage Black",
+        "canonical": "#050403",
+        "tonalRamp": ["#020101", "#050403", "#0b0908", "#15120f", "#2b221d", "#57483d", "#8c7c6d", "#cfc1b2"]
+      }
+    },
+    "typographyMeta": {
+      "immersive-display": {
+        "displayName": "Immersive Display",
+        "purpose": "Full-screen cocktail names over imagery."
+      },
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page-level cocktail and archive headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Recipe descriptions, instructions, and support text."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Short orientation labels, metadata keys, dates, and menu headings."
+      }
+    },
+    "shadows": [
+      {
+        "name": "ambient-sheet",
+        "value": "0 24px 80px rgba(0, 0, 0, 0.38)",
+        "purpose": "Recipe dialog and large framed surfaces."
+      },
+      {
+        "name": "ambient-menu",
+        "value": "0 24px 80px rgba(0, 0, 0, 0.42)",
+        "purpose": "Utility menu panels floating over imagery."
+      },
+      {
+        "name": "compact-control",
+        "value": "0 14px 44px rgba(0, 0, 0, 0.24)",
+        "purpose": "Floating share and download controls."
+      },
+      {
+        "name": "toast-lift",
+        "value": "0 16px 46px rgba(0, 0, 0, 0.34)",
+        "purpose": "Tooltip and copied-state feedback."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-fast",
+        "value": "160ms ease",
+        "purpose": "Icon button border, background, color, and transform changes."
+      },
+      {
+        "name": "tooltip-fast",
+        "value": "150ms ease",
+        "purpose": "Tooltip opacity and position changes."
+      },
+      {
+        "name": "share-tray-enter",
+        "value": "120ms ease-out",
+        "purpose": "Share tray fade-in."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile-tools",
+        "value": "560px"
+      },
+      {
+        "name": "tablet-layout",
+        "value": "860px"
+      },
+      {
+        "name": "mobile-media",
+        "value": "720px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "icon-button",
+      "description": "Circular translucent tool button for share, download, menu, and language actions.",
+      "html": "<button class=\"ds-icon-button\" type=\"button\" aria-label=\"Share\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.18 3.18 0 0 0 0-1.39l7.05-4.11A2.99 2.99 0 1 0 15 5c0 .23.03.45.08.67L8.03 9.78a3 3 0 1 0 0 4.44l7.12 4.18c-.04.19-.06.39-.06.6a3 3 0 1 0 3-2.92Z\" fill=\"currentColor\"/></svg></button>",
+      "css": ".ds-icon-button { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid rgba(247, 239, 229, 0.2); border-radius: 50%; color: rgba(247, 239, 229, 0.9); background: rgba(8, 7, 6, 0.28); box-shadow: 0 14px 44px rgba(0, 0, 0, 0.24); backdrop-filter: blur(16px); cursor: pointer; transition: border-color 160ms ease, background 160ms ease, color 160ms ease, transform 160ms ease; } .ds-icon-button:hover { border-color: rgba(247, 239, 229, 0.42); color: #f7efe5; background: rgba(247, 239, 229, 0.1); transform: translateY(-1px); } .ds-icon-button:focus-visible { outline: 2px solid #e3b35f; outline-offset: 3px; } .ds-icon-button svg { width: 20px; height: 20px; }"
+    },
+    {
+      "name": "Utility Menu Panel",
+      "kind": "nav",
+      "refersTo": "utility-menu-panel",
+      "description": "Compact translucent navigation panel for language and secondary routes.",
+      "html": "<nav class=\"ds-menu-panel\" aria-label=\"More\"><p class=\"ds-menu-label\">Language</p><a class=\"ds-menu-link ds-active\" href=\"#\"><span>English</span><small>en</small></a><a class=\"ds-menu-link\" href=\"#\"><span>简体中文</span><small>zh-cn</small></a></nav>",
+      "css": ".ds-menu-panel { display: grid; gap: 6px; min-width: 216px; padding: 10px; border: 1px solid rgba(247, 239, 229, 0.16); border-radius: 8px; background: rgba(11, 9, 8, 0.78); box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42); backdrop-filter: blur(22px); } .ds-menu-label { margin: 2px 10px 5px; color: rgba(247, 239, 229, 0.52); font: 700 0.72rem Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.1em; text-transform: uppercase; } .ds-menu-link { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 38px; padding: 8px 10px; border-radius: 7px; color: rgba(247, 239, 229, 0.82); font: 400 0.92rem Inter, ui-sans-serif, system-ui, sans-serif; text-decoration: none; } .ds-menu-link:hover, .ds-menu-link.ds-active { color: #f7efe5; background: rgba(247, 239, 229, 0.08); } .ds-menu-link:focus-visible { outline: 2px solid #e3b35f; outline-offset: 2px; } .ds-menu-link small { color: rgba(247, 239, 229, 0.52); font-size: 0.72rem; text-transform: uppercase; }"
+    },
+    {
+      "name": "Recipe Handle",
+      "kind": "button",
+      "refersTo": "recipe-handle",
+      "description": "Bottom-centered pill that opens the recipe sheet without covering the poster title.",
+      "html": "<button class=\"ds-recipe-handle\" type=\"button\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16ZM6.5 5A.5.5 0 0 0 6 5.5v12.7c.17-.04.33-.06.5-.06H18V5H6.5Z\" fill=\"currentColor\"/></svg><span>Recipe</span></button>",
+      "css": ".ds-recipe-handle { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; border: 1px solid rgba(247, 239, 229, 0.18); border-radius: 999px; color: rgba(247, 239, 229, 0.9); background: rgba(8, 7, 6, 0.32); backdrop-filter: blur(16px); cursor: pointer; font: 400 0.86rem Inter, ui-sans-serif, system-ui, sans-serif; transition: border-color 160ms ease, background 160ms ease, color 160ms ease; } .ds-recipe-handle:hover { border-color: rgba(247, 239, 229, 0.38); color: #f7efe5; background: rgba(247, 239, 229, 0.09); } .ds-recipe-handle:focus-visible { outline: 2px solid #e3b35f; outline-offset: 3px; } .ds-recipe-handle svg { width: 17px; height: 17px; }"
+    },
+    {
+      "name": "Recipe Sheet",
+      "kind": "card",
+      "refersTo": "recipe-sheet",
+      "description": "Bottom sheet for the full recipe, metadata, tags, ingredients, and steps.",
+      "html": "<article class=\"ds-recipe-sheet\"><header class=\"ds-sheet-header\"><p class=\"ds-eyebrow\">Recipe details</p><h2>Paloma</h2></header><div class=\"ds-sheet-content\"><p class=\"ds-description\">Tequila, grapefruit, and salted sunshine.</p><dl class=\"ds-meta\"><div><dt>Flavor</dt><dd>Tart, bright, lightly bitter</dd></div><div><dt>Glass</dt><dd>Highball</dd></div></dl></div></article>",
+      "css": ".ds-recipe-sheet { overflow: hidden; max-width: 900px; border: 1px solid rgba(247, 239, 229, 0.16); border-radius: 18px 18px 0 0; color: #f7efe5; background: rgba(12, 10, 9, 0.88); box-shadow: 0 24px 80px rgba(0, 0, 0, 0.38); backdrop-filter: blur(24px); } .ds-sheet-header { padding: 22px 24px 14px; border-bottom: 1px solid rgba(247, 239, 229, 0.1); } .ds-eyebrow { margin: 0 0 10px; color: #e3b35f; font: 700 0.78rem Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; } .ds-sheet-header h2 { margin: 0; font: 700 clamp(2rem, 4vw, 3.2rem)/0.95 Georgia, 'Times New Roman', serif; } .ds-sheet-content { display: grid; gap: 22px; padding: 20px 24px 26px; } .ds-description { margin: 0; color: rgba(247, 239, 229, 0.82); line-height: 1.7; } .ds-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; } .ds-meta div { padding: 12px; border: 1px solid rgba(247, 239, 229, 0.12); border-radius: 8px; background: rgba(247, 239, 229, 0.05); } .ds-meta dt { margin-bottom: 5px; color: #e3b35f; font: 700 0.7rem Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; } .ds-meta dd { margin: 0; color: rgba(247, 239, 229, 0.86); font-size: 0.9rem; }"
+    },
+    {
+      "name": "Archive Card",
+      "kind": "card",
+      "refersTo": "archive-card",
+      "description": "Published past-pick card with image first and localized text below.",
+      "html": "<a class=\"ds-archive-card\" href=\"#\"><img src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%2315120f'/%3E%3Ccircle cx='220' cy='220' r='118' fill='%23d3513c' opacity='.58'/%3E%3Cpath d='M130 160h140l-28 190h-84z' fill='%23f7efe5' opacity='.9'/%3E%3C/svg%3E\" alt=\"Cocktail visual for Paloma\"><div><time datetime=\"2026-06-02\">2026-06-02</time><h2>Paloma</h2><p>Tequila, grapefruit, and salted sunshine.</p></div></a>",
+      "css": ".ds-archive-card { display: block; overflow: hidden; border: 1px solid rgba(247, 239, 229, 0.14); border-radius: 8px; color: #f7efe5; background: rgba(33, 27, 23, 0.72); text-decoration: none; } .ds-archive-card:hover { border-color: rgba(247, 239, 229, 0.28); } .ds-archive-card:focus-visible { outline: 2px solid #e3b35f; outline-offset: 3px; } .ds-archive-card img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #0e0d0b; } .ds-archive-card div { padding: 18px; } .ds-archive-card time { color: #e3b35f; font-size: 0.8rem; } .ds-archive-card h2 { margin: 8px 0; font: 700 1.5rem Georgia, 'Times New Roman', serif; } .ds-archive-card p { margin: 0; color: #c7b7a6; line-height: 1.5; }"
+    },
+    {
+      "name": "Tag Pill",
+      "kind": "chip",
+      "refersTo": "tag-pill",
+      "description": "Informational cocktail flavor and technique tag.",
+      "html": "<span class=\"ds-tag-pill\">refreshing</span>",
+      "css": ".ds-tag-pill { display: inline-flex; align-items: center; min-height: 32px; padding: 7px 10px; border: 1px solid rgba(247, 239, 229, 0.14); border-radius: 999px; color: #c7b7a6; background: transparent; font: 400 0.88rem Inter, ui-sans-serif, system-ui, sans-serif; }"
+    },
+    {
+      "name": "Detail Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary detail-page action, currently used for poster download.",
+      "html": "<a class=\"ds-button-primary\" href=\"#\">Download Poster</a>",
+      "css": ".ds-button-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 12px 18px; border: 1px solid transparent; border-radius: 8px; color: #1a120e; background: #e3b35f; cursor: pointer; font: 400 1rem Inter, ui-sans-serif, system-ui, sans-serif; text-decoration: none; transition: background 160ms ease, transform 160ms ease; } .ds-button-primary:hover { background: #f0c878; transform: translateY(-1px); } .ds-button-primary:focus-visible { outline: 2px solid #f7efe5; outline-offset: 3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Midnight Pour",
+    "overview": "Just One Sip is a poster-first cocktail surface. The daily drink should feel staged under low bar light: full-bleed imagery, warm cream type, a gold cue for orientation, and compact controls that stay out of the frame until needed.\n\nThe system is brand-first, not workflow-first. Utility exists in tight layers: icon tools, small menus, a bottom recipe sheet, and a visual archive. Avoid AI-template cliches, generic hero/card grids, purple gradients, decorative glassmorphism, and feature-marketing copy.",
+    "keyCharacteristics": [
+      "Image-led immersive viewports with text placed directly over the poster scene.",
+      "Warm dark neutrals, cream text, bitter red atmosphere, and vermouth-gold labels.",
+      "Georgia display type for cocktail names, system sans for clear recipe and UI text.",
+      "Compact circular icon controls, pill handles, and 8px content cards.",
+      "Bilingual title fitting and mobile overflow prevention are core brand constraints."
+    ],
+    "rules": [
+      {
+        "name": "The Bar-Light Rule",
+        "body": "Gold is a cue, not a wash. Use it for labels, dates, and the single strongest action, not for broad panels.",
+        "section": "colors"
+      },
+      {
+        "name": "The Warm Neutral Rule",
+        "body": "Never introduce pure `#000` or `#fff`; every dark and light should stay tinted toward the existing warm palette.",
+        "section": "colors"
+      },
+      {
+        "name": "The Natural Break Rule",
+        "body": "Do not force hard word breaking. CJK and single-word titles prefer one line; multi-word names may wrap only at natural breaks.",
+        "section": "typography"
+      },
+      {
+        "name": "The Label Rarity Rule",
+        "body": "Uppercase tracked labels are for orientation and recipe metadata only. Do not turn every section into a label-plus-heading pattern.",
+        "section": "typography"
+      },
+      {
+        "name": "The Legibility Layer Rule",
+        "body": "Shade, blur, and shadow are allowed only where imagery would otherwise damage text or control clarity.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep the home and detail pages poster-first with full-bleed imagery.",
+      "Do use Charred Walnut, Cream Ink, Vermouth Gold, and Bitter Ruby as the core system colors.",
+      "Do keep icon controls compact and labeled for assistive technology.",
+      "Do preserve bilingual title fitting and avoid horizontal overflow on mobile.",
+      "Do use blur, shade, and shadow only as legibility layers over imagery."
+    ],
+    "donts": [
+      "Don't use AI-template cliches: generic hero/card-grid patterns, purple gradients, decorative glassmorphism, feature-marketing copy, repeated icon-card sections, or empty visual decoration.",
+      "Don't introduce a sterile recipe-app layout where the visual becomes secondary.",
+      "Don't use pure black or pure white.",
+      "Don't add colored side-stripe borders, gradient text, oversized rounded icon cards, or nested cards.",
+      "Don't add SSR, database, CMS, API, or schedule-dependent server behavior for visual-system work."
+    ]
+  }
+}
