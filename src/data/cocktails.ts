@@ -247,12 +247,20 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "rum",
   }),
-  createSceneOnlyCocktail({
+  {
     id: "last-word",
+    slug: "last-word",
     date: "2026-06-04",
+    image: "/images/cocktails/last-word-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/last-word-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/last-word-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/last-word-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/last-word-scene-mobile.webp",
+    posterImage: "/images/cocktails/last-word-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/last-word-scene-mobile.webp",
     glass: "coupe",
     baseSpirit: "gin",
-  }),
+  },
   createSceneOnlyCocktail({
     id: "aviation",
     date: "2026-06-22",

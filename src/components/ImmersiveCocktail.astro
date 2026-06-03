@@ -18,6 +18,11 @@ type Props = {
 };
 
 const { cocktail, dailyCocktails, locale, path } = Astro.props;
+
+const extname = (path: string): string => {
+  const i = path.lastIndexOf(".");
+  return i >= 0 ? path.substring(i) : "";
+};
 const heroIngredientSummary = cocktail.heroIngredients.join(" · ");
 const shareUrl = shareUrlForLocalePath(locale, path);
 const sharePayload = {
@@ -98,9 +103,10 @@ const dailyCocktailPrepaintScript = `
   const downloadHref = isMobile ? cocktail.backgroundDownloadMobile : cocktail.backgroundDownloadDesktop;
   if (downloadLink && downloadHref) {
     downloadLink.setAttribute("href", downloadHref);
+    const dlExt = downloadHref.includes(".") ? downloadHref.substring(downloadHref.lastIndexOf(".")) : ".svg";
     downloadLink.setAttribute(
       "download",
-      cocktail.slug + "-" + (isMobile ? "mobile" : "desktop") + "-background.svg",
+      cocktail.slug + "-" + (isMobile ? "mobile" : "desktop") + "-background" + dlExt,
     );
   }
 
@@ -203,7 +209,7 @@ const dailyCocktailPrepaintScript = `
     <a
       class="icon-button action-button"
       href={cocktail.backgroundDownloadDesktop}
-      download={`${cocktail.slug}-background.svg`}
+      download={`${cocktail.slug}-background${extname(cocktail.backgroundDownloadDesktop)}`}
       data-download-background
       data-tooltip={t(locale, "downloadBackgroundLabel")}
       aria-label={t(locale, "downloadBackgroundLabel")}
@@ -352,9 +358,10 @@ const dailyCocktailPrepaintScript = `
 
     if (href) {
       link.setAttribute("href", href);
+      const dlExt = href.includes(".") ? href.substring(href.lastIndexOf(".")) : ".svg";
       link.setAttribute(
         "download",
-        `${currentSharePayload.filenameBase || "cocktail"}-${isMobileMedia.matches ? "mobile" : "desktop"}-background.svg`,
+        `${currentSharePayload.filenameBase || "cocktail"}-${isMobileMedia.matches ? "mobile" : "desktop"}-background${dlExt}`,
       );
     }
   }
