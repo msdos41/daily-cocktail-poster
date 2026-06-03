@@ -155,9 +155,8 @@ const dailyCocktailPrepaintScript = `
     <p class="hero-kicker">{t(locale, "todaysCocktail")}</p>
     <h1 data-cocktail-name data-hero-title>{cocktail.name}</h1>
     <p class="immersive-subtitle" data-cocktail-subtitle>{cocktail.subtitle}</p>
-    <p class="hero-ingredients">
-      <span>{t(locale, "keyIngredients")}</span>
-      <strong data-hero-ingredients>{heroIngredientSummary}</strong>
+    <p class="hero-ingredients" aria-label={t(locale, "keyIngredients")}>
+      <span data-hero-ingredients>{heroIngredientSummary}</span>
     </p>
   </div>
 

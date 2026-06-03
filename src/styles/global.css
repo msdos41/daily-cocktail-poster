@@ -395,18 +395,18 @@ summary.icon-button::-webkit-details-marker {
   bottom: clamp(104px, 15vh, 148px);
   z-index: 3;
   display: grid;
-  gap: 16px;
+  gap: 0;
   width: min(640px, calc(100vw - 40px));
   color: var(--ink);
   text-shadow: 0 3px 26px rgba(0, 0, 0, 0.72);
 }
 
 .hero-kicker {
-  margin: 0;
+  margin: 0 0 6px;
   color: var(--accent-2);
   font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -432,10 +432,10 @@ summary.icon-button::-webkit-details-marker {
 
 .immersive-subtitle {
   max-width: 560px;
-  margin: 0;
-  color: rgba(247, 239, 229, 0.94);
-  font-size: clamp(1.2rem, 1.8vw, 1.65rem);
-  line-height: 1.34;
+  margin: 0 0 10px;
+  color: rgba(247, 239, 229, 0.85);
+  font-size: clamp(0.9rem, 1.6vw, 1.3rem);
+  line-height: 1.45;
 }
 
 .hero-ingredients {
@@ -444,22 +444,10 @@ summary.icon-button::-webkit-details-marker {
   align-items: baseline;
   flex-wrap: wrap;
   max-width: 620px;
-  margin: 4px 0 0;
-  color: rgba(247, 239, 229, 0.84);
-  font-size: 0.94rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(0.8rem, 1.2vw, 0.88rem);
   line-height: 1.45;
-}
-
-.hero-ingredients span {
-  color: var(--accent-2);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.hero-ingredients strong {
-  font-weight: 500;
 }
 
 .floating-actions {
@@ -1060,7 +1048,6 @@ h2 {
     left: clamp(16px, 5vw, 36px);
     bottom: 112px;
     width: min(620px, calc(100vw - 84px));
-    gap: 14px;
   }
 
   .immersive-copy h1 {
@@ -1131,7 +1118,6 @@ h2 {
     left: 14px;
     bottom: 108px;
     width: calc(100vw - 76px);
-    gap: 11px;
   }
 
   .immersive-copy h1 {
@@ -1144,18 +1130,16 @@ h2 {
   }
 
   .immersive-subtitle {
-    font-size: 1.06rem;
-    line-height: 1.35;
+    font-size: 0.9rem;
+    line-height: 1.4;
   }
 
-  .hero-kicker,
-  .hero-ingredients span {
+  .hero-kicker {
     font-size: 0.7rem;
   }
 
   .hero-ingredients {
-    gap: 8px;
-    font-size: 0.84rem;
+    font-size: 0.78rem;
   }
 
   .floating-actions {
