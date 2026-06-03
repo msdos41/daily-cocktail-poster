@@ -58,3 +58,31 @@ function localeHref(item: Locale) {
     </details>
   </nav>
 </header>
+
+<script>
+  const menus = Array.from(document.querySelectorAll(".utility-menu")).filter(
+    (el): el is HTMLDetailsElement => el instanceof HTMLDetailsElement,
+  );
+
+  menus.forEach((menu) => {
+    menu.addEventListener("toggle", () => {
+      if (!menu.open) return;
+      menus.forEach((other) => {
+        if (other !== menu) other.removeAttribute("open");
+      });
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+    if (menus.some((menu) => menu.contains(target))) return;
+    menus.forEach((menu) => menu.removeAttribute("open"));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      menus.forEach((menu) => menu.removeAttribute("open"));
+    }
+  });
+</script>

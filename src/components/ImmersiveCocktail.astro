@@ -403,15 +403,6 @@ const dailyCocktailPrepaintScript = `
     (menu): menu is HTMLDetailsElement => menu instanceof HTMLDetailsElement,
   );
 
-  utilityMenus.forEach((menu) => {
-    menu.addEventListener("toggle", () => {
-      if (!menu.open) return;
-      utilityMenus.forEach((item) => {
-        if (item !== menu) item.removeAttribute("open");
-      });
-    });
-  });
-
   document.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof Node)) return;
