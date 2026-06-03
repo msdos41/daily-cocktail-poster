@@ -1,4 +1,4 @@
-import type { Locale } from "@/i18n/config";
+﻿import type { Locale } from "@/i18n/config";
 
 export type CocktailId =
   | "negroni"
@@ -381,7 +381,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
   en: {
     negroni: {
       name: "Negroni",
-      subtitle: "Bitter ruby, slow evening.",
+      subtitle: "Bitter ruby, slow evening",
       description:
         "A compact Italian classic where gin, Campari, and sweet vermouth meet in equal measure. It is direct, aromatic, and built for a quiet golden-hour pour.",
       heroIngredients: ["Gin", "Campari", "Sweet Vermouth"],
@@ -400,7 +400,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     margarita: {
       name: "Margarita",
-      subtitle: "Salt, lime, and clean tequila brightness.",
+      subtitle: "Lime, salt, tequila — everything it needs",
       description:
         "A sharp, sunlit sour that balances tequila, orange liqueur, and fresh lime. The salt rim keeps each sip vivid and crisp.",
       heroIngredients: ["Tequila", "Lime", "Orange Liqueur"],
@@ -419,7 +419,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "old-fashioned": {
       name: "Old Fashioned",
-      subtitle: "Whiskey, sugar, bitters, patience.",
+      subtitle: "Whiskey, sugar, bitters, patience",
       description:
         "A restrained whiskey classic with just enough sweetness and bitters to frame the spirit. It is simple on paper and exacting in the glass.",
       heroIngredients: ["Whiskey", "Sugar", "Bitters"],
@@ -438,7 +438,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     daiquiri: {
       name: "Daiquiri",
-      subtitle: "Rum, lime, sugar. Nothing to hide.",
+      subtitle: "Rum, lime, sugar. Nothing to hide",
       description:
         "A clean rum sour that proves three ingredients can carry a complete drink. Fresh lime and measured sugar keep it elegant instead of flashy.",
       heroIngredients: ["White Rum", "Lime", "Sugar"],
@@ -457,7 +457,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "espresso-martini": {
       name: "Espresso Martini",
-      subtitle: "Night energy in a velvet coupe.",
+      subtitle: "Night energy in a velvet coupe",
       description:
         "A modern classic with vodka, coffee liqueur, and fresh espresso. It is dark, glossy, and built around a silky foam cap.",
       heroIngredients: ["Vodka", "Espresso", "Coffee Liqueur"],
@@ -476,7 +476,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "aperol-spritz": {
       name: "Aperol Spritz",
-      subtitle: "Orange fizz for an open window.",
+      subtitle: "Orange fizz for an open window",
       description:
         "A low-effort Italian aperitif that layers Aperol, prosecco, and soda into a bright orange glass made for long afternoons.",
       heroIngredients: ["Prosecco", "Aperol", "Soda"],
@@ -495,7 +495,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     mojito: {
       name: "Mojito",
-      subtitle: "Mint, lime, and crushed daylight.",
+      subtitle: "When mint meets rum, things stay cool",
       description:
         "A Cuban highball where mint and lime lift white rum into something tall, cold, and easy to revisit.",
       heroIngredients: ["White Rum", "Mint", "Lime"],
@@ -514,7 +514,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     manhattan: {
       name: "Manhattan",
-      subtitle: "Rye, vermouth, and a polished cherry glow.",
+      subtitle: "A stirred drink with a cherry on it — class matters",
       description:
         "A stirred whiskey classic where rye, sweet vermouth, and bitters meet in a clean, aromatic pour. It is compact, elegant, and endlessly worth revisiting.",
       heroIngredients: ["Rye Whiskey", "Sweet Vermouth", "Bitters"],
@@ -533,7 +533,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     sazerac: {
       name: "Sazerac",
-      subtitle: "Rye spice under an absinthe veil.",
+      subtitle: "Rye spice under an absinthe veil",
       description:
         "A New Orleans icon with rye whiskey, Peychaud's bitters, sugar, and a whisper of absinthe. It is potent, aromatic, and built for slow attention.",
       heroIngredients: ["Rye Whiskey", "Peychaud's", "Absinthe"],
@@ -552,7 +552,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     paloma: {
       name: "Paloma",
-      subtitle: "Tequila, grapefruit, and salted sunshine.",
+      subtitle: "Tequila's citrus answer to summer",
       description:
         "A tall tequila drink with lime, salt, and grapefruit soda. It is bright, bitter-edged, and one of the easiest ways to make citrus feel relaxed.",
       heroIngredients: ["Tequila", "Grapefruit", "Lime"],
@@ -571,7 +571,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "paper-plane": {
       name: "Paper Plane",
-      subtitle: "Equal parts, bittersweet lift.",
+      subtitle: "Equal parts, bittersweet lift",
       description:
         "A modern equal-parts cocktail where bourbon, Aperol, amaro, and lemon lock into a clean bittersweet sour. It feels effortless because the balance is doing the work.",
       heroIngredients: ["Bourbon", "Aperol", "Lemon"],
@@ -590,7 +590,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     boulevardier: {
       name: "Boulevardier",
-      subtitle: "Negroni's whiskey-lit cousin.",
+      subtitle: "Negroni's whiskey-lit cousin",
       description:
         "A whiskey variation on the Negroni template, trading gin's snap for bourbon warmth. Campari keeps the finish bitter, clean, and memorable.",
       heroIngredients: ["Bourbon", "Campari", "Sweet Vermouth"],
@@ -609,7 +609,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "mai-tai": {
       name: "Mai Tai",
-      subtitle: "Rum, lime, orgeat, and island depth.",
+      subtitle: "The tiki drink that takes rum seriously",
       description:
         "A tiki classic that lets good rum carry almond, citrus, and orange notes. It is tropical without being lazy, layered without becoming heavy.",
       heroIngredients: ["Rum", "Lime", "Orgeat"],
@@ -628,7 +628,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "last-word": {
       name: "Last Word",
-      subtitle: "Gin, herbs, cherry, and lime in balance.",
+      subtitle: "Gin, herbs, cherry, and lime in balance",
       description:
         "A precise equal-parts classic where gin, green Chartreuse, maraschino, and lime create a vivid herbal sour with a long finish.",
       heroIngredients: ["Gin", "Chartreuse", "Lime"],
@@ -647,7 +647,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     aviation: {
       name: "Aviation",
-      subtitle: "A pale violet gin sour.",
+      subtitle: "A pale violet gin sour",
       description:
         "A floral gin classic with lemon, maraschino, and a measured touch of creme de violette. It is delicate, tart, and visually unmistakable.",
       heroIngredients: ["Gin", "Lemon", "Violette"],
@@ -666,7 +666,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "french-75": {
       name: "French 75",
-      subtitle: "Gin, lemon, and Champagne brightness.",
+      subtitle: "Champagne makes a gin sour celebratory",
       description:
         "A sparkling classic that turns a gin sour into something crisp and celebratory. Lemon keeps it sharp, while bubbles make it feel light.",
       heroIngredients: ["Gin", "Lemon", "Champagne"],
@@ -685,7 +685,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "gin-martini": {
       name: "Gin Martini",
-      subtitle: "Cold gin, dry vermouth, clean focus.",
+      subtitle: "Cold gin, dry vermouth, clean focus",
       description:
         "A minimalist stirred cocktail where temperature, dilution, and proportion matter. Dry vermouth frames the gin without hiding it.",
       heroIngredients: ["Gin", "Dry Vermouth", "Lemon"],
@@ -704,7 +704,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "corpse-reviver-2": {
       name: "Corpse Reviver #2",
-      subtitle: "A crisp gin sour with an absinthe edge.",
+      subtitle: "A crisp gin sour with an absinthe edge",
       description:
         "A pre-Prohibition revival drink with gin, orange liqueur, aromatized wine, lemon, and a light absinthe rinse. It is sharp, bright, and neatly bitter.",
       heroIngredients: ["Gin", "Lemon", "Absinthe"],
@@ -723,7 +723,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "jungle-bird": {
       name: "Jungle Bird",
-      subtitle: "Pineapple, rum, and Campari bite.",
+      subtitle: "A tropical drink with an attitude",
       description:
         "A tropical drink with enough bitterness to stay focused. Dark rum and pineapple bring depth, while Campari keeps the finish vivid.",
       heroIngredients: ["Dark Rum", "Pineapple", "Campari"],
@@ -742,7 +742,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "naked-and-famous": {
       name: "Naked and Famous",
-      subtitle: "Smoky mezcal, Aperol, herbs, and lime.",
+      subtitle: "Mezcal's smoke meets Aperol's bitterness",
       description:
         "A modern equal-parts cocktail that combines mezcal smoke with Aperol, yellow Chartreuse, and lime. It is compact, vivid, and highly aromatic.",
       heroIngredients: ["Mezcal", "Aperol", "Lime"],
@@ -761,7 +761,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     sidecar: {
       name: "Sidecar",
-      subtitle: "Cognac, lemon, and orange clarity.",
+      subtitle: "The sugared rim can't hide its bite",
       description:
         "A bright cognac sour with orange liqueur and lemon. The drink is simple, polished, and sharper than its sugared rim suggests.",
       heroIngredients: ["Cognac", "Lemon", "Orange Liqueur"],
@@ -780,7 +780,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     gimlet: {
       name: "Gimlet",
-      subtitle: "Gin and lime, cut clean.",
+      subtitle: "Gin and lime, cut clean",
       description:
         "An old-school gin sour that keeps the focus on lime and botanicals. It is cold, compact, and satisfying without extra decoration.",
       heroIngredients: ["Gin", "Lime", "Sugar"],
@@ -799,7 +799,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "whiskey-sour": {
       name: "Whiskey Sour",
-      subtitle: "Bourbon, lemon, and a soft foam line.",
+      subtitle: "Lemon, sugar, bourbon. Shake. Top with foam",
       description:
         "A foundational sour that balances whiskey warmth with lemon and sugar. Egg white is optional, but it gives the drink its classic silky top.",
       heroIngredients: ["Bourbon", "Lemon", "Sugar"],
@@ -818,7 +818,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     caipirinha: {
       name: "Caipirinha",
-      subtitle: "Cachaca, lime, sugar, and crushed rhythm.",
+      subtitle: "Cachaca, lime, muddled in sugar. Drink as is",
       description:
         "Brazil's direct, bright cocktail built from cachaca, lime, and sugar. It is rustic, grassy, and best when the lime oils stay alive.",
       heroIngredients: ["Cachaca", "Lime", "Sugar"],
@@ -837,7 +837,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "pina-colada": {
       name: "Pina Colada",
-      subtitle: "Pineapple, coconut, and rum in full sun.",
+      subtitle: "Pineapple, coconut, and rum in full sun",
       description:
         "A creamy tropical classic that works best when pineapple stays bright and the coconut is rich but controlled.",
       heroIngredients: ["Rum", "Pineapple", "Coconut"],
@@ -856,7 +856,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "bees-knees": {
       name: "Bee's Knees",
-      subtitle: "Gin, lemon, honey, and clean lift.",
+      subtitle: "A gin sour sweetened by bees",
       description:
         "A Prohibition-era gin sour softened by honey syrup. It is simple, fragrant, and brighter than its small ingredient list suggests.",
       heroIngredients: ["Gin", "Lemon", "Honey"],
@@ -875,7 +875,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     penicillin: {
       name: "Penicillin",
-      subtitle: "Scotch, ginger, honey, and smoke.",
+      subtitle: "Smoke rides above honey and ginger heat",
       description:
         "A modern whiskey sour with blended Scotch, lemon, honey-ginger syrup, and an Islay float. It is warming, spicy, and smoky at the edge.",
       heroIngredients: ["Scotch", "Ginger", "Honey"],
@@ -894,7 +894,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "pisco-sour": {
       name: "Pisco Sour",
-      subtitle: "Pisco, lime, and bitters over foam.",
+      subtitle: "Pisco, lime, and bitters over foam",
       description:
         "A South American sour where pisco's grape character meets lime, sugar, and a silky egg-white cap finished with bitters.",
       heroIngredients: ["Pisco", "Lime", "Bitters"],
@@ -913,7 +913,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     painkiller: {
       name: "Painkiller",
-      subtitle: "Rum, pineapple, coconut, and nutmeg.",
+      subtitle: "Nutmeg-dusted and dangerously drinkable",
       description:
         "A rich tropical long drink with dark rum, pineapple, orange, coconut, and nutmeg. It is plush, sunny, and generous.",
       heroIngredients: ["Dark Rum", "Pineapple", "Coconut"],
@@ -932,7 +932,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "vieux-carre": {
       name: "Vieux Carre",
-      subtitle: "Rye, cognac, vermouth, and New Orleans depth.",
+      subtitle: "New Orleans in a rocks glass, stirred, not shaken",
       description:
         "A rich stirred classic with rye, cognac, sweet vermouth, Benedictine, and bitters. It is layered, aromatic, and quietly luxurious.",
       heroIngredients: ["Rye", "Cognac", "Vermouth"],
@@ -951,7 +951,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "singapore-sling": {
       name: "Singapore Sling",
-      subtitle: "Gin, cherry, pineapple, and a long pink glow.",
+      subtitle: "Gin dressed in tropical fruit",
       description:
         "A tropical gin long drink with cherry, citrus, pineapple, and spice. It is colorful, structured, and more layered than it first appears.",
       heroIngredients: ["Gin", "Cherry", "Pineapple"],
@@ -970,7 +970,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "dark-n-stormy": {
       name: "Dark 'n' Stormy",
-      subtitle: "Dark rum riding over ginger heat.",
+      subtitle: "Dark rum riding over ginger heat",
       description:
         "A tall, spicy highball of dark rum, ginger beer, and lime. It is direct, refreshing, and built around the bite of ginger.",
       heroIngredients: ["Dark Rum", "Ginger Beer", "Lime"],
@@ -989,7 +989,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "rusty-nail": {
       name: "Rusty Nail",
-      subtitle: "Scotch and honeyed heather warmth.",
+      subtitle: "Scotch and honeyed heather warmth",
       description:
         "A two-ingredient classic pairing Scotch with Drambuie. It is simple, strong, and more complex than its build suggests.",
       heroIngredients: ["Scotch", "Drambuie", "Lemon"],
@@ -1010,7 +1010,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
   "zh-CN": {
     negroni: {
       name: "内格罗尼",
-      subtitle: "宝石红的苦甜，适合慢下来的夜晚。",
+      subtitle: "宝石红的苦甜，适合慢下来的夜晚",
       description:
         "一杯紧凑而经典的意式鸡尾酒，金酒、金巴利和甜味美思等量组合，直接、草本、带着清晰的橙皮香气。",
       heroIngredients: ["金酒", "金巴利", "甜味美思"],
@@ -1029,7 +1029,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     margarita: {
       name: "玛格丽塔",
-      subtitle: "盐、青柠和干净明亮的龙舌兰。",
+      subtitle: "青柠和盐边都是认真的",
       description:
         "一杯清爽利落的酸型鸡尾酒，龙舌兰、橙味利口酒与新鲜青柠相互平衡，盐边让每一口更鲜明。",
       heroIngredients: ["龙舌兰", "青柠", "橙味利口酒"],
@@ -1048,7 +1048,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "old-fashioned": {
       name: "古典鸡尾酒",
-      subtitle: "威士忌、糖、苦精，以及耐心。",
+      subtitle: "威士忌、糖、苦精，以及耐心",
       description:
         "一杯克制的威士忌经典，用少量甜味和苦精衬托基酒本身。配方看似简单，实际很考验平衡。",
       heroIngredients: ["威士忌", "糖", "苦精"],
@@ -1067,7 +1067,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     daiquiri: {
       name: "得其利",
-      subtitle: "朗姆、青柠、糖，没有多余修饰。",
+      subtitle: "朗姆、青柠、糖，没有多余修饰",
       description:
         "一杯干净的朗姆酸型鸡尾酒，证明三种材料也能构成完整风味。新鲜青柠和适量糖让它保持优雅。",
       heroIngredients: ["白朗姆", "青柠", "糖"],
@@ -1086,7 +1086,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "espresso-martini": {
       name: "浓缩马天尼",
-      subtitle: "装在丝绒杯面里的夜间能量。",
+      subtitle: "装在丝绒杯面里的夜间能量",
       description:
         "一杯现代经典，伏特加、咖啡利口酒和新鲜浓缩咖啡构成深色光泽与细腻泡沫。",
       heroIngredients: ["伏特加", "浓缩咖啡", "咖啡利口酒"],
@@ -1105,7 +1105,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "aperol-spritz": {
       name: "阿佩罗橙光",
-      subtitle: "打开窗时最适合的一杯橙色气泡。",
+      subtitle: "打开窗时最适合的一杯橙色气泡",
       description:
         "一杯轻松的意式开胃酒，阿佩罗、普罗塞克和苏打水叠出明亮橙色，适合漫长午后。",
       heroIngredients: ["普罗塞克", "阿佩罗", "苏打水"],
@@ -1124,7 +1124,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     mojito: {
       name: "莫吉托",
-      subtitle: "薄荷、青柠，以及被敲碎的日光。",
+      subtitle: "夏天是薄荷味儿的",
       description:
         "一杯古巴高球，薄荷和青柠把白朗姆托起，清凉、修长，也很容易让人再来一杯。",
       heroIngredients: ["白朗姆", "薄荷", "青柠"],
@@ -1143,7 +1143,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     manhattan: {
       name: "曼哈顿",
-      subtitle: "黑麦威士忌、美思与樱桃光泽。",
+      subtitle: "这杯酒不需要摇",
       description:
         "一杯搅拌型威士忌经典，黑麦威士忌、甜味美思和苦精组成干净而有香气的酒体，优雅、紧凑，也很耐喝。",
       heroIngredients: ["黑麦威士忌", "甜味美思", "苦精"],
@@ -1162,7 +1162,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     sazerac: {
       name: "萨泽拉克",
-      subtitle: "黑麦辛香覆上一层苦艾气息。",
+      subtitle: "黑麦辛香覆上一层苦艾气息",
       description:
         "新奥尔良经典，黑麦威士忌、Peychaud's 苦精、糖和少量苦艾酒组成浓烈而有辨识度的一杯。",
       heroIngredients: ["黑麦威士忌", "Peychaud's", "苦艾酒"],
@@ -1181,7 +1181,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     paloma: {
       name: "帕洛玛",
-      subtitle: "龙舌兰、葡萄柚和一点盐的阳光感。",
+      subtitle: "热天就该喝这个",
       description:
         "一杯高球型龙舌兰饮品，青柠、盐和葡萄柚汽水让酒体明亮、清爽，并带一点轻微苦味。",
       heroIngredients: ["龙舌兰", "葡萄柚", "青柠"],
@@ -1200,7 +1200,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "paper-plane": {
       name: "纸飞机",
-      subtitle: "等量配方，苦甜起飞。",
+      subtitle: "等量配方，苦甜起飞",
       description:
         "一杯现代经典，波本、Aperol、阿玛罗和柠檬以等量组合，形成干净、苦甜而平衡的酸型鸡尾酒。",
       heroIngredients: ["波本", "Aperol", "柠檬"],
@@ -1219,7 +1219,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     boulevardier: {
       name: "布尔瓦迪耶",
-      subtitle: "带威士忌温度的尼格罗尼近亲。",
+      subtitle: "带威士忌温度的尼格罗尼近亲",
       description:
         "以波本替代金酒的尼格罗尼变体，威士忌带来温暖厚度，金巴利保留清晰的苦味收尾。",
       heroIngredients: ["波本", "金巴利", "甜味美思"],
@@ -1238,7 +1238,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "mai-tai": {
       name: "迈泰",
-      subtitle: "朗姆、青柠、杏仁糖浆和海岛层次。",
+      subtitle: "朗姆酒才是主角",
       description:
         "一杯 tiki 经典，让好朗姆撑起杏仁、柑橘和橙香。它有热带感，但并不松散。",
       heroIngredients: ["朗姆", "青柠", "杏仁糖浆"],
@@ -1257,7 +1257,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "last-word": {
       name: "最后一言",
-      subtitle: "金酒、草本、樱桃与青柠的平衡。",
+      subtitle: "金酒、草本、樱桃与青柠的平衡",
       description:
         "一杯等量配方经典，金酒、绿 Chartreuse、黑樱桃利口酒和青柠组合出鲜明的草本酸甜感。",
       heroIngredients: ["金酒", "Chartreuse", "青柠"],
@@ -1276,7 +1276,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     aviation: {
       name: "航空",
-      subtitle: "淡紫色的金酒酸。",
+      subtitle: "淡紫色的金酒酸",
       description:
         "一杯带花香的金酒经典，柠檬、黑樱桃利口酒和少量紫罗兰利口酒让它酸爽、细致，也很有视觉辨识度。",
       heroIngredients: ["金酒", "柠檬", "紫罗兰"],
@@ -1295,7 +1295,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "french-75": {
       name: "法式 75",
-      subtitle: "金酒、柠檬和香槟的明亮气泡。",
+      subtitle: "金酒加香槟，不为什么",
       description:
         "一杯气泡经典，把金酒酸变得清爽而有庆祝感。柠檬保持利落，气泡让酒体更轻盈。",
       heroIngredients: ["金酒", "柠檬", "香槟"],
@@ -1314,7 +1314,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "gin-martini": {
       name: "金酒马天尼",
-      subtitle: "冰冷金酒、干味美思和清晰焦点。",
+      subtitle: "冰冷金酒、干味美思和清晰焦点",
       description:
         "一杯极简搅拌型鸡尾酒，温度、稀释和比例都很关键。干味美思衬托金酒，而不是遮盖它。",
       heroIngredients: ["金酒", "干味美思", "柠檬"],
@@ -1333,7 +1333,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "corpse-reviver-2": {
       name: "亡者复苏 #2",
-      subtitle: "带苦艾边缘的清脆金酒酸。",
+      subtitle: "带苦艾边缘的清脆金酒酸",
       description:
         "一杯禁酒令前后的经典复苏酒，金酒、橙味利口酒、芳香化葡萄酒、柠檬和少量苦艾酒构成明亮又利落的酸味。",
       heroIngredients: ["金酒", "柠檬", "苦艾酒"],
@@ -1352,7 +1352,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "jungle-bird": {
       name: "丛林鸟",
-      subtitle: "菠萝、朗姆和金巴利的苦味咬合。",
+      subtitle: "热带归热带，苦的",
       description:
         "一杯带足够苦味的热带鸡尾酒。深色朗姆和菠萝带来厚度，金巴利让收尾保持鲜明。",
       heroIngredients: ["深色朗姆", "菠萝", "金巴利"],
@@ -1371,7 +1371,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "naked-and-famous": {
       name: "Naked and Famous",
-      subtitle: "烟熏梅斯卡尔、Aperol、草本和青柠。",
+      subtitle: "烟熏、草本、苦甜，谁也不让谁",
       description:
         "一杯现代等量配方鸡尾酒，把梅斯卡尔烟熏、Aperol、黄 Chartreuse 和青柠组合得紧凑而鲜明。",
       heroIngredients: ["梅斯卡尔", "Aperol", "青柠"],
@@ -1390,7 +1390,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     sidecar: {
       name: "边车",
-      subtitle: "干邑、柠檬和橙香的清晰线条。",
+      subtitle: "别被糖边骗了",
       description:
         "一杯明亮的干邑酸，橙味利口酒和柠檬让它简单、精确，也比糖边暗示的更利落。",
       heroIngredients: ["干邑", "柠檬", "橙味利口酒"],
@@ -1409,7 +1409,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     gimlet: {
       name: "吉姆雷特",
-      subtitle: "金酒与青柠，干净切入。",
+      subtitle: "金酒与青柠，干净切入",
       description:
         "一杯老派金酒酸，把焦点放在青柠和植物香上。冰冷、紧凑，不需要多余装饰。",
       heroIngredients: ["金酒", "青柠", "糖"],
@@ -1428,7 +1428,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "whiskey-sour": {
       name: "威士忌酸",
-      subtitle: "波本、柠檬和柔软泡沫。",
+      subtitle: "酸的、甜的、酒味，上面还有泡沫",
       description:
         "基础酸型鸡尾酒之一，用柠檬和糖平衡威士忌的温暖。蛋清可选，但会带来经典的丝滑泡沫。",
       heroIngredients: ["波本", "柠檬", "糖"],
@@ -1447,7 +1447,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     caipirinha: {
       name: "卡皮里尼亚",
-      subtitle: "卡莎萨、青柠、糖和碎冰节奏。",
+      subtitle: "捣一捣，加冰，喝",
       description:
         "巴西代表性鸡尾酒，由卡莎萨、青柠和糖直接组成。粗粝、清亮，关键是保留青柠油香。",
       heroIngredients: ["卡莎萨", "青柠", "糖"],
@@ -1466,7 +1466,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "pina-colada": {
       name: "椰林飘香",
-      subtitle: "菠萝、椰子和朗姆的盛夏感。",
+      subtitle: "菠萝、椰子和朗姆的盛夏感",
       description:
         "一杯奶油感热带经典，最好让菠萝保持明亮，椰子足够浓郁但不过分沉重。",
       heroIngredients: ["朗姆", "菠萝", "椰子"],
@@ -1485,7 +1485,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "bees-knees": {
       name: "Bee's Knees",
-      subtitle: "金酒、柠檬、蜂蜜和轻盈上扬。",
+      subtitle: "蜂蜜比糖聪明",
       description:
         "一杯禁酒令时期的金酒酸，用蜂蜜糖浆柔化柠檬酸度。简单、带香气，也比配方看起来更明亮。",
       heroIngredients: ["金酒", "柠檬", "蜂蜜"],
@@ -1504,7 +1504,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     penicillin: {
       name: "盘尼西林",
-      subtitle: "苏格兰威士忌、姜、蜂蜜和烟熏。",
+      subtitle: "姜和蜂蜜打底，烟熏收尾",
       description:
         "一杯现代威士忌酸，调和苏格兰威士忌、柠檬、蜂蜜姜糖浆和少量艾雷岛威士忌浮层，温暖、辛香并带烟熏边缘。",
       heroIngredients: ["苏格兰威士忌", "姜", "蜂蜜"],
@@ -1523,7 +1523,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "pisco-sour": {
       name: "皮斯科酸",
-      subtitle: "皮斯科、青柠和泡沫上的苦精。",
+      subtitle: "皮斯科、青柠和泡沫上的苦精",
       description:
         "一杯南美酸型鸡尾酒，皮斯科的葡萄香、青柠、糖和蛋清泡沫结合，最后以苦精收尾。",
       heroIngredients: ["皮斯科", "青柠", "苦精"],
@@ -1542,7 +1542,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     painkiller: {
       name: "止痛药",
-      subtitle: "朗姆、菠萝、椰子和肉豆蔻。",
+      subtitle: "撒了肉豆蔻，危险好喝",
       description:
         "一杯丰厚的热带长饮，深色朗姆、菠萝、橙汁、椰子和肉豆蔻组合出饱满而阳光的口感。",
       heroIngredients: ["深色朗姆", "菠萝", "椰子"],
@@ -1561,7 +1561,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "vieux-carre": {
       name: "旧广场",
-      subtitle: "黑麦、干邑、美思和新奥尔良深度。",
+      subtitle: "新奥尔良在杯子里",
       description:
         "一杯层次丰厚的搅拌经典，黑麦威士忌、干邑、甜味美思、Benedictine 和苦精带来复杂而奢华的香气。",
       heroIngredients: ["黑麦", "干邑", "美思"],
@@ -1580,7 +1580,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "singapore-sling": {
       name: "新加坡司令",
-      subtitle: "金酒、樱桃、菠萝和粉色长饮光泽。",
+      subtitle: "粉红色的，没人只喝一杯",
       description:
         "一杯热带金酒长饮，樱桃、柑橘、菠萝和香料让它色彩鲜明，也比第一眼看上去更有结构。",
       heroIngredients: ["金酒", "樱桃", "菠萝"],
@@ -1599,7 +1599,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "dark-n-stormy": {
       name: "黑暗风暴",
-      subtitle: "深色朗姆压过姜味热浪。",
+      subtitle: "深色朗姆压过姜味热浪",
       description:
         "一杯辛香高球，深色朗姆、姜汁汽水和青柠直接组合，清爽重点来自姜的刺激感。",
       heroIngredients: ["深色朗姆", "姜汁汽水", "青柠"],
@@ -1618,7 +1618,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
     },
     "rusty-nail": {
       name: "生锈钉",
-      subtitle: "苏格兰威士忌和蜂蜜草本温度。",
+      subtitle: "苏格兰威士忌和蜂蜜草本温度",
       description:
         "一杯两种材料的经典，把苏格兰威士忌和 Drambuie 组合在一起。做法简单，但风味比结构更复杂。",
       heroIngredients: ["苏格兰威士忌", "Drambuie", "柠檬"],
