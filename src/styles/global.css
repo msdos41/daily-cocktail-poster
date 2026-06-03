@@ -911,18 +911,28 @@ h2 {
   font-weight: 700;
 }
 
-.page-heading {
-  padding: 64px 0 28px;
+.archive-heading {
+  padding: 40px 0 32px;
 }
 
-.page-heading h1 {
-  font-size: clamp(3.2rem, 8vw, 6.4rem);
+.archive-heading h1 {
+  margin: 0 0 10px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 0.94;
+}
+
+.archive-intro {
+  max-width: 560px;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  line-height: 1.55;
 }
 
 .archive-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
+  gap: clamp(14px, 2vw, 24px);
   padding-bottom: 72px;
 }
 
@@ -930,8 +940,13 @@ h2 {
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(33, 27, 23, 0.72);
+  background: rgba(33, 27, 23, 0.4);
   text-decoration: none;
+  transition: border-color 180ms ease;
+}
+
+.archive-card:hover {
+  border-color: rgba(247, 239, 229, 0.28);
 }
 
 .archive-card img {
@@ -962,28 +977,32 @@ h2 {
 }
 
 .archive-card div {
-  padding: 18px;
+  padding: 14px 16px 18px;
 }
 
 .archive-card time {
   color: var(--accent-2);
-  font-size: 0.8rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .archive-card h2 {
-  margin: 8px 0;
-  font-size: 1.5rem;
+  margin: 6px 0 4px;
+  font-size: clamp(1.45rem, 2vw, 2rem);
 }
 
 .archive-card p {
   color: var(--muted);
-  line-height: 1.5;
+  font-size: 0.88rem;
+  line-height: 1.55;
 }
 
 .archive-empty {
-  min-height: 40vh;
   margin: 0;
-  padding-top: 72px;
+  padding: 48px 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
   color: var(--muted);
   text-align: center;
 }

@@ -33,6 +33,10 @@ const structuredData = archiveStructuredData({ locale, url: pageUrl, title, desc
       }
     </style>
   </noscript>
+  <section class="archive-heading">
+    <h1>{t(locale, "archive")}</h1>
+    <p class="archive-intro">{t(locale, "archiveIntro")}</p>
+  </section>
   <section class="archive-grid" data-archive-grid hidden>
     {
       cocktails.map((cocktail) => (
