@@ -961,6 +961,14 @@ h2 {
   object-position: center 10%;
 }
 
+.archive-card[data-cocktail-id="espresso-martini"] img {
+  object-position: center 40%;
+}
+
+.archive-card[data-cocktail-id="paloma"] img {
+  object-position: center 10%;
+}
+
 .archive-card div {
   padding: 18px;
 }
