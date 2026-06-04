@@ -976,6 +976,10 @@ h2 {
   object-position: center 30%;
 }
 
+.archive-card[data-cocktail-id="mai-tai"] img {
+  object-position: center 30%;
+}
+
 .archive-card div {
   padding: 14px 16px 18px;
 }

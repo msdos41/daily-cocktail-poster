@@ -241,12 +241,20 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "bourbon",
   }),
-  createSceneOnlyCocktail({
+  {
     id: "mai-tai",
+    slug: "mai-tai",
     date: "2026-06-05",
+    image: "/images/cocktails/mai-tai-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/mai-tai-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/mai-tai-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/mai-tai-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/mai-tai-scene-mobile.webp",
+    posterImage: "/images/cocktails/mai-tai-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/mai-tai-scene-mobile.webp",
     glass: "rocks",
     baseSpirit: "rum",
-  }),
+  },
   {
     id: "last-word",
     slug: "last-word",
