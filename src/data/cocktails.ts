@@ -335,12 +335,20 @@ const stableCocktails: StableCocktail[] = [
     glass: "hurricane",
     baseSpirit: "rum",
   }),
-  createSceneOnlyCocktail({
+  {
     id: "bees-knees",
+    slug: "bees-knees",
     date: "2026-06-07",
+    image: "/images/cocktails/bees-knees-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/bees-knees-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/bees-knees-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/bees-knees-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/bees-knees-scene-mobile.webp",
+    posterImage: "/images/cocktails/bees-knees-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/bees-knees-scene-mobile.webp",
     glass: "coupe",
     baseSpirit: "gin",
-  }),
+  },
   createSceneOnlyCocktail({
     id: "penicillin",
     date: "2026-06-21",
@@ -1492,8 +1500,8 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       baseSpirit: "朗姆",
     },
     "bees-knees": {
-      name: "Bee's Knees",
-      subtitle: "蜂蜜比糖聪明",
+      name: "蜂蜜金酸酒",
+      subtitle: "被蜜蜂亲吻过",
       description:
         "一杯禁酒令时期的金酒酸，用蜂蜜糖浆柔化柠檬酸度。简单、带香气，也比配方看起来更明亮。",
       heroIngredients: ["金酒", "柠檬", "蜂蜜"],

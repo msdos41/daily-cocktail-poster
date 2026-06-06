@@ -1075,6 +1075,10 @@ h2 {
   object-position: center 30%;
 }
 
+.archive-card[data-cocktail-id="bees-knees"] img {
+  object-position: center 30%;
+}
+
 .archive-card div {
   padding: 13px 16px 17px;
 }
