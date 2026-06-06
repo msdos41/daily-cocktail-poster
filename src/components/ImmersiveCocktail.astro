@@ -237,12 +237,12 @@ const dailyCocktailPrepaintScript = `
     <ChevronUp size={16} aria-hidden="true" />
   </button>
 
-  <dialog class="recipe-dialog" data-recipe-dialog>
+  <dialog class="recipe-dialog" data-recipe-dialog aria-labelledby="recipe-dialog-title">
     <article class="recipe-sheet">
       <form class="recipe-sheet-header">
         <div>
           <p class="eyebrow">{t(locale, "recipeDetails")}</p>
-          <h2 data-cocktail-name>{cocktail.name}</h2>
+          <h2 data-cocktail-name id="recipe-dialog-title">{cocktail.name}</h2>
         </div>
         <button class="icon-close" type="button" data-close-recipe aria-label={t(locale, "closeRecipe")}>
           <XIcon size={20} aria-hidden="true" />

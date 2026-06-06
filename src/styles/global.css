@@ -259,8 +259,8 @@ summary.icon-button::-webkit-details-marker {
   flex-shrink: 0;
   display: inline-grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: 1px solid rgba(247, 239, 229, 0.2);
   border-radius: 50%;
@@ -358,7 +358,7 @@ summary.icon-button::-webkit-details-marker {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 38px;
+  min-height: 44px;
   padding: 8px 10px;
   border-radius: 7px;
   color: rgba(247, 239, 229, 0.82);
@@ -491,8 +491,8 @@ summary.icon-button::-webkit-details-marker {
 .share-target {
   display: inline-grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: 1px solid rgba(247, 239, 229, 0.22);
   border-radius: 50%;
@@ -551,7 +551,7 @@ summary.icon-button::-webkit-details-marker {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 42px;
+  min-height: 44px;
   padding: 0 16px;
   border: 1px solid rgba(247, 239, 229, 0.18);
   border-radius: 999px;
@@ -1122,12 +1122,6 @@ h2 {
     text-align: center;
   }
 
-  .immersive-brand,
-  .icon-button {
-    width: 40px;
-    height: 40px;
-  }
-
   .immersive-tools {
     gap: 8px;
   }
@@ -1172,7 +1166,7 @@ h2 {
 
   .recipe-handle {
     bottom: 14px;
-    min-height: 40px;
+    min-height: 44px;
     padding: 0 13px;
   }
 
@@ -1264,5 +1258,20 @@ body:has(astro-dev-toolbar) .recipe-dialog {
   .recipe-dialog[open]::backdrop,
   .recipe-dialog[data-closing]::backdrop {
     animation: none;
+  }
+  .share-tray:not([hidden]) {
+    animation: none;
+  }
+  .icon-button,
+  .icon-close,
+  .share-target,
+  .recipe-handle,
+  .archive-card {
+    transition: none;
+  }
+  .icon-button:hover,
+  .icon-close:hover,
+  .share-target:hover {
+    transform: none;
   }
 }
