@@ -48,6 +48,7 @@ type StableCocktail = {
   shareBaseImage: string;
   glass: string;
   baseSpirit: string;
+  estimatedCalories: number;
 };
 
 type LocalizedCocktail = {
@@ -66,9 +67,15 @@ type LocalizedCocktail = {
 
 export type Cocktail = StableCocktail & LocalizedCocktail;
 
-type SceneOnlyCocktailConfig = Pick<StableCocktail, "id" | "date" | "glass" | "baseSpirit">;
+type SceneOnlyCocktailConfig = Pick<StableCocktail, "id" | "date" | "glass" | "baseSpirit" | "estimatedCalories">;
 
-function createSceneOnlyCocktail({ id, date, glass, baseSpirit }: SceneOnlyCocktailConfig): StableCocktail {
+function createSceneOnlyCocktail({
+  id,
+  date,
+  glass,
+  baseSpirit,
+  estimatedCalories,
+}: SceneOnlyCocktailConfig): StableCocktail {
   const sceneDesktop = `/images/cocktails/${id}-scene-desktop.svg`;
   const sceneMobile = `/images/cocktails/${id}-scene-mobile.svg`;
 
@@ -85,6 +92,7 @@ function createSceneOnlyCocktail({ id, date, glass, baseSpirit }: SceneOnlyCockt
     shareBaseImage: sceneMobile,
     glass,
     baseSpirit,
+    estimatedCalories,
   };
 }
 
@@ -102,6 +110,7 @@ const stableCocktails: StableCocktail[] = [
     shareBaseImage: "/images/cocktails/negroni-scene-mobile.svg",
     glass: "rocks",
     baseSpirit: "gin",
+    estimatedCalories: 190,
   },
   {
     id: "margarita",
@@ -116,6 +125,7 @@ const stableCocktails: StableCocktail[] = [
     shareBaseImage: "/images/cocktails/margarita-scene-mobile.svg",
     glass: "coupe",
     baseSpirit: "tequila",
+    estimatedCalories: 210,
   },
   {
     id: "old-fashioned",
@@ -130,6 +140,7 @@ const stableCocktails: StableCocktail[] = [
     shareBaseImage: "/images/cocktails/old-fashioned-scene-mobile.svg",
     glass: "rocks",
     baseSpirit: "bourbon",
+    estimatedCalories: 160,
   },
   {
     id: "daiquiri",
@@ -144,6 +155,7 @@ const stableCocktails: StableCocktail[] = [
     shareBaseImage: "/images/cocktails/daiquiri-scene-mobile.svg",
     glass: "coupe",
     baseSpirit: "white rum",
+    estimatedCalories: 170,
   },
   {
     id: "espresso-martini",
@@ -158,6 +170,7 @@ const stableCocktails: StableCocktail[] = [
     shareBaseImage: "/images/cocktails/espresso-martini-scene-mobile.webp",
     glass: "martini",
     baseSpirit: "vodka",
+    estimatedCalories: 200,
   },
   {
     id: "aperol-spritz",
@@ -172,6 +185,7 @@ const stableCocktails: StableCocktail[] = [
     shareBaseImage: "/images/cocktails/aperol-spritz-scene-mobile.svg",
     glass: "wine",
     baseSpirit: "aperol",
+    estimatedCalories: 180,
   },
   {
     id: "mojito",
@@ -186,6 +200,7 @@ const stableCocktails: StableCocktail[] = [
     shareBaseImage: "/images/cocktails/mojito-scene-mobile.webp",
     glass: "highball",
     baseSpirit: "white rum",
+    estimatedCalories: 190,
   },
   {
     id: "manhattan",
@@ -200,6 +215,7 @@ const stableCocktails: StableCocktail[] = [
     shareBaseImage: "/images/cocktails/manhattan-scene-mobile.webp",
     glass: "coupe",
     baseSpirit: "rye whiskey",
+    estimatedCalories: 190,
   },
   {
     id: "sazerac",
@@ -214,6 +230,7 @@ const stableCocktails: StableCocktail[] = [
     shareBaseImage: "/images/cocktails/sazerac-scene-mobile.webp",
     glass: "rocks",
     baseSpirit: "rye whiskey",
+    estimatedCalories: 170,
   },
   {
     id: "paloma",
@@ -228,18 +245,21 @@ const stableCocktails: StableCocktail[] = [
     shareBaseImage: "/images/cocktails/paloma-scene-mobile.webp",
     glass: "highball",
     baseSpirit: "tequila",
+    estimatedCalories: 190,
   },
   createSceneOnlyCocktail({
     id: "paper-plane",
     date: "2026-06-19",
     glass: "coupe",
     baseSpirit: "bourbon",
+    estimatedCalories: 170,
   }),
   createSceneOnlyCocktail({
     id: "boulevardier",
     date: "2026-06-09",
     glass: "rocks",
     baseSpirit: "bourbon",
+    estimatedCalories: 220,
   }),
   {
     id: "mai-tai",
@@ -254,6 +274,7 @@ const stableCocktails: StableCocktail[] = [
     shareBaseImage: "/images/cocktails/mai-tai-scene-mobile.webp",
     glass: "rocks",
     baseSpirit: "rum",
+    estimatedCalories: 260,
   },
   {
     id: "last-word",
@@ -268,72 +289,84 @@ const stableCocktails: StableCocktail[] = [
     shareBaseImage: "/images/cocktails/last-word-scene-mobile.webp",
     glass: "coupe",
     baseSpirit: "gin",
+    estimatedCalories: 210,
   },
   createSceneOnlyCocktail({
     id: "aviation",
     date: "2026-06-22",
     glass: "coupe",
     baseSpirit: "gin",
+    estimatedCalories: 200,
   }),
   createSceneOnlyCocktail({
     id: "french-75",
     date: "2026-06-13",
     glass: "flute",
     baseSpirit: "gin",
+    estimatedCalories: 180,
   }),
   createSceneOnlyCocktail({
     id: "gin-martini",
     date: "2026-06-27",
     glass: "martini",
     baseSpirit: "gin",
+    estimatedCalories: 190,
   }),
   createSceneOnlyCocktail({
     id: "corpse-reviver-2",
     date: "2026-06-17",
     glass: "coupe",
     baseSpirit: "gin",
+    estimatedCalories: 190,
   }),
   createSceneOnlyCocktail({
     id: "jungle-bird",
     date: "2026-06-30",
     glass: "rocks",
     baseSpirit: "dark rum",
+    estimatedCalories: 250,
   }),
   createSceneOnlyCocktail({
     id: "naked-and-famous",
     date: "2026-06-12",
     glass: "coupe",
     baseSpirit: "mezcal",
+    estimatedCalories: 200,
   }),
   createSceneOnlyCocktail({
     id: "sidecar",
     date: "2026-06-11",
     glass: "coupe",
     baseSpirit: "cognac",
+    estimatedCalories: 210,
   }),
   createSceneOnlyCocktail({
     id: "gimlet",
     date: "2026-06-20",
     glass: "coupe",
     baseSpirit: "gin",
+    estimatedCalories: 190,
   }),
   createSceneOnlyCocktail({
     id: "whiskey-sour",
     date: "2026-06-29",
     glass: "rocks",
     baseSpirit: "bourbon",
+    estimatedCalories: 210,
   }),
   createSceneOnlyCocktail({
     id: "caipirinha",
     date: "2026-06-08",
     glass: "rocks",
     baseSpirit: "cachaca",
+    estimatedCalories: 170,
   }),
   createSceneOnlyCocktail({
     id: "pina-colada",
     date: "2026-06-14",
     glass: "hurricane",
     baseSpirit: "rum",
+    estimatedCalories: 370,
   }),
   {
     id: "bees-knees",
@@ -348,48 +381,56 @@ const stableCocktails: StableCocktail[] = [
     shareBaseImage: "/images/cocktails/bees-knees-scene-mobile.webp",
     glass: "coupe",
     baseSpirit: "gin",
+    estimatedCalories: 200,
   },
   createSceneOnlyCocktail({
     id: "penicillin",
     date: "2026-06-21",
     glass: "rocks",
     baseSpirit: "scotch",
+    estimatedCalories: 210,
   }),
   createSceneOnlyCocktail({
     id: "pisco-sour",
     date: "2026-06-26",
     glass: "coupe",
     baseSpirit: "pisco",
+    estimatedCalories: 200,
   }),
   createSceneOnlyCocktail({
     id: "painkiller",
     date: "2026-06-18",
     glass: "tiki mug",
     baseSpirit: "dark rum",
+    estimatedCalories: 430,
   }),
   createSceneOnlyCocktail({
     id: "vieux-carre",
     date: "2026-07-01",
     glass: "rocks",
     baseSpirit: "rye whiskey",
+    estimatedCalories: 180,
   }),
   createSceneOnlyCocktail({
     id: "singapore-sling",
     date: "2026-06-10",
     glass: "highball",
     baseSpirit: "gin",
+    estimatedCalories: 230,
   }),
   createSceneOnlyCocktail({
     id: "dark-n-stormy",
     date: "2026-06-25",
     glass: "highball",
     baseSpirit: "dark rum",
+    estimatedCalories: 210,
   }),
   createSceneOnlyCocktail({
     id: "rusty-nail",
     date: "2026-06-16",
     glass: "rocks",
     baseSpirit: "scotch",
+    estimatedCalories: 180,
   }),
 ];
 

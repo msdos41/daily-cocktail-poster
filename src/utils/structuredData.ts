@@ -84,11 +84,21 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
       url,
       inLanguage: locale,
       recipeCategory: "Cocktail",
+      prepTime: "PT2M",
+      cookTime: "PT3M",
+      totalTime: "PT5M",
+      recipeYield: "1",
       recipeIngredient: cocktail.ingredients,
-      recipeInstructions: cocktail.steps.map((step) => ({
+      recipeInstructions: cocktail.steps.map((step, index) => ({
         "@type": "HowToStep",
+        position: index + 1,
         text: step,
+        url: `${url}#recipe-step-${index + 1}`,
       })),
+      nutrition: {
+        "@type": "NutritionInformation",
+        calories: `${cocktail.estimatedCalories} calories`,
+      },
       keywords: cocktail.tags.join(", "),
       author: organization,
       publisher: organization,

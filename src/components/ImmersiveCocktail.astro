@@ -308,7 +308,7 @@ const dailyCocktailPrepaintScript = `
         <section class="recipe-section-steps">
           <h3>{t(locale, "howToMake")}</h3>
           <ol data-recipe-steps>
-            {cocktail.steps.map((step) => <li>{step}</li>)}
+            {cocktail.steps.map((step, index) => <li id={`recipe-step-${index + 1}`}>{step}</li>)}
           </ol>
         </section>
 
