@@ -1434,3 +1434,15 @@ body:has(astro-dev-toolbar) .recipe-dialog {
     transform: none;
   }
 }
+
+a,
+button,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+summary:focus:not(:focus-visible) {
+  outline: none;
+}
