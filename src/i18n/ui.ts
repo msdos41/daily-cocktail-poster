@@ -7,6 +7,8 @@ export const ui = {
     siteDescription:
       "A daily cocktail poster site: one drink, one visual, every day.",
     todaysCocktail: "Today's Cocktail",
+    dailyPour: "Daily pour",
+    pourNotes: "Pour notes",
     archive: "Past Picks",
     pastPicks: "Past Picks",
     archiveIntro: "Recent pours, kept for another look.",
@@ -45,6 +47,8 @@ export const ui = {
     siteDescription:
       "每天一杯，一张视觉海报，一份简洁鸡尾酒指南。",
     todaysCocktail: "今日鸡尾酒",
+    dailyPour: "今日一杯",
+    pourNotes: "风味札记",
     archive: "往期推荐",
     pastPicks: "往期推荐",
     archiveIntro: "最近出现过的酒，留在这里再看一眼。",

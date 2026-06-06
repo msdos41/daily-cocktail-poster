@@ -15,14 +15,23 @@ type Props = {
   dailyCocktails?: Cocktail[];
   locale: Locale;
   path: string;
+  variant?: "home" | "detail";
 };
 
-const { cocktail, dailyCocktails, locale, path } = Astro.props;
+const { cocktail, dailyCocktails, locale, path, variant = "detail" } = Astro.props;
 
 const extname = (path: string): string => {
   const i = path.lastIndexOf(".");
   return i >= 0 ? path.substring(i) : "";
 };
+const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const formatMetadataDate = (date: string) => {
+  const [, month = "", day = ""] = date.split("-");
+  if (locale === "zh-CN") return `${month}.${day}`;
+  return `${monthLabels[Number(month) - 1] ?? month} ${day}`;
+};
+const heroMetadataLabel = t(locale, variant === "home" ? "dailyPour" : "pourNotes");
+const heroMetadata = `${heroMetadataLabel} · ${formatMetadataDate(cocktail.date)}`;
 const heroIngredientSummary = cocktail.heroIngredients.join(" · ");
 const shareUrl = shareUrlForLocalePath(locale, path);
 const sharePayload = {
@@ -46,6 +55,9 @@ const dailyCocktailPayload = dailyCocktails?.map((item) => ({
 }));
 const dailyCocktailPrepaintScript = `
 (() => {
+  const locale = ${JSON.stringify(locale)};
+  const metadataLabel = ${JSON.stringify(t(locale, "dailyPour"))};
+  const monthLabels = ${JSON.stringify(monthLabels)};
   const dailyCocktailsNode = document.querySelector("[data-daily-cocktails]");
   if (!dailyCocktailsNode) return;
 
@@ -83,6 +95,7 @@ const dailyCocktailPrepaintScript = `
   }
 
   setAllText("[data-cocktail-name]", cocktail.name);
+  setText("[data-hero-metadata]", formatHeroMetadata(cocktail.date));
   setText("[data-cocktail-subtitle]", cocktail.subtitle);
   setText("[data-hero-ingredients]", cocktail.heroIngredientSummary);
 
@@ -117,6 +130,14 @@ const dailyCocktailPrepaintScript = `
     return year + "-" + month + "-" + day;
   }
 
+  function formatHeroMetadata(dateKey) {
+    const parts = dateKey.split("-");
+    const month = parts[1] || "";
+    const day = parts[2] || "";
+    const formattedDate = locale === "zh-CN" ? month + "." + day : (monthLabels[Number(month) - 1] || month) + " " + day;
+    return metadataLabel + " · " + formattedDate;
+  }
+
   function setText(selector, value) {
     const element = document.querySelector(selector);
     if (element) element.textContent = value;
@@ -135,6 +156,7 @@ const dailyCocktailPrepaintScript = `
 <section
   class="immersive-stage"
   data-cocktail-id={cocktail.id}
+  data-hero-variant={variant}
   data-desktop-download={cocktail.backgroundDownloadDesktop}
   data-mobile-download={cocktail.backgroundDownloadMobile}
   data-fallback-share-url={publicHomeUrl()}
@@ -152,7 +174,14 @@ const dailyCocktailPrepaintScript = `
   <UtilityTopbar locale={locale} path={path} overlay />
 
   <div class="immersive-copy">
-    <p class="hero-kicker">{t(locale, "todaysCocktail")}</p>
+    <p
+      class="hero-kicker"
+      data-hero-metadata
+      data-metadata-label={heroMetadataLabel}
+      data-metadata-locale={locale}
+    >
+      {heroMetadata}
+    </p>
     <h1 data-cocktail-name data-hero-title>{cocktail.name}</h1>
     <p class="immersive-subtitle" data-cocktail-subtitle>{cocktail.subtitle}</p>
     <p class="hero-ingredients" aria-label={t(locale, "keyIngredients")}>
@@ -310,6 +339,7 @@ const dailyCocktailPrepaintScript = `
   const shareTray = document.querySelector("[data-share-tray]");
   const shareToast = document.querySelector("[data-share-toast]");
   const heroTitle = document.querySelector("[data-hero-title]");
+  const heroMetadata = document.querySelector("[data-hero-metadata]");
   const sharePayloadNode = document.querySelector("[data-share-payload]");
   const dailyCocktailsNode = document.querySelector("[data-daily-cocktails]");
   type SharePayload = {
@@ -593,6 +623,7 @@ const dailyCocktailPrepaintScript = `
     }
 
     setAllText("[data-cocktail-name]", cocktail.name);
+    setText("[data-hero-metadata]", formatHeroMetadata(cocktail.date));
     setText("[data-cocktail-subtitle]", cocktail.subtitle);
     setText("[data-hero-ingredients]", cocktail.heroIngredientSummary);
     setText("[data-recipe-description]", cocktail.description);
@@ -627,6 +658,15 @@ const dailyCocktailPrepaintScript = `
     document.querySelectorAll(selector).forEach((element) => {
       element.textContent = value;
     });
+  }
+
+  function formatHeroMetadata(dateKey: string) {
+    const label = heroMetadata instanceof HTMLElement ? heroMetadata.dataset.metadataLabel || "" : "";
+    const locale = heroMetadata instanceof HTMLElement ? heroMetadata.dataset.metadataLocale || "en" : "en";
+    const [, month = "", day = ""] = dateKey.split("-");
+    const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const formattedDate = locale === "zh-CN" ? `${month}.${day}` : `${monthLabels[Number(month) - 1] || month} ${day}`;
+    return `${label} · ${formattedDate}`;
   }
 
   function replaceList(selector: string, values: string[], tagName: "li" | "span") {

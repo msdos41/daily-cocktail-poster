@@ -59,7 +59,7 @@ const structuredData = archiveStructuredData({ locale, url: pageUrl, title, desc
           data-cocktail-id={cocktail.id}
           data-scheduled-date={cocktail.date}
         >
-          <img data-src={cocktail.heroImageMobile} data-alt={`${t(locale, "visualAlt")} ${cocktail.name}`} width="1080" height="1920" data-archive-img />
+          <img data-src={cocktail.heroImageMobile} data-desktop-src={cocktail.heroImageDesktop} data-alt={`${t(locale, "visualAlt")} ${cocktail.name}`} width="1080" height="1920" data-archive-img />
           <div>
             <time datetime={cocktail.date}>{cocktail.date}</time>
             <h2>{cocktail.name}</h2>
@@ -76,9 +76,14 @@ const structuredData = archiveStructuredData({ locale, url: pageUrl, title, desc
           <a
             class="archive-card"
             href={`/${localeToPath(locale)}/cocktails/${cocktail.slug}`}
+            data-cocktail-id={cocktail.id}
+            data-archive-featured={i === 0 ? "true" : undefined}
           >
             {i === 0 ? (
-              <img src={cocktail.heroImageMobile} alt={`${t(locale, "visualAlt")} ${cocktail.name}`} width="1080" height="1920" fetchpriority="high" decoding="async" />
+              <picture>
+                <source media="(min-width: 721px)" srcset={cocktail.heroImageDesktop} />
+                <img src={cocktail.heroImageMobile} alt={`${t(locale, "visualAlt")} ${cocktail.name}`} width="1080" height="1920" fetchpriority="high" decoding="async" />
+              </picture>
             ) : (
               <img src={cocktail.heroImageMobile} alt={`${t(locale, "visualAlt")} ${cocktail.name}`} width="1080" height="1920" loading="lazy" decoding="async" />
             )}
@@ -105,10 +110,12 @@ const structuredData = archiveStructuredData({ locale, url: pageUrl, title, desc
   const today = getLocalDateKey(todayDate);
   const earliestPastDate = getLocalDateKey(addLocalDays(todayDate, -14));
   const maxPastPicks = 14;
+  const desktopArchiveQuery = window.matchMedia("(min-width: 721px)");
   let visibleCount = 0;
 
   archiveCards.forEach((card) => {
     if (!(card instanceof HTMLElement)) return;
+    card.removeAttribute("data-archive-featured");
 
     const scheduledDate = card.dataset.scheduledDate || "";
     const isPastPick = scheduledDate < today && scheduledDate >= earliestPastDate && visibleCount < maxPastPicks;
@@ -120,15 +127,27 @@ const structuredData = archiveStructuredData({ locale, url: pageUrl, title, desc
   archiveCards.forEach((card) => {
     if (!(card instanceof HTMLElement) || card.hidden) return;
     const img = card.querySelector("[data-archive-img]");
-    if (!(img instanceof HTMLImageElement) || !img.dataset.src) return;
-    img.src = img.dataset.src;
+    const mobileSrc = img instanceof HTMLImageElement ? img.dataset.src : "";
+    if (!(img instanceof HTMLImageElement) || !mobileSrc) return;
     img.alt = img.dataset.alt || "";
     img.decoding = "async";
     if (firstVisible) {
+      card.dataset.archiveFeatured = "true";
+      setArchiveCardImage(card, true);
       img.fetchPriority = "high";
       firstVisible = false;
     } else {
+      setArchiveCardImage(card, false);
       img.loading = "lazy";
+    }
+  });
+
+  desktopArchiveQuery.addEventListener("change", () => {
+    const featuredCard = archiveCards.find(
+      (card) => card instanceof HTMLElement && !card.hidden && card.dataset.archiveFeatured === "true",
+    );
+    if (featuredCard instanceof HTMLElement) {
+      setArchiveCardImage(featuredCard, true);
     }
   });
 
@@ -151,5 +170,16 @@ const structuredData = archiveStructuredData({ locale, url: pageUrl, title, desc
     const next = new Date(date);
     next.setDate(next.getDate() + days);
     return next;
+  }
+
+  function setArchiveCardImage(card: HTMLElement, isFeatured: boolean) {
+    const img = card.querySelector("[data-archive-img]");
+    const mobileSrc = img instanceof HTMLImageElement ? img.dataset.src : "";
+    if (!(img instanceof HTMLImageElement) || !mobileSrc) return;
+
+    const targetSrc = isFeatured && desktopArchiveQuery.matches ? img.dataset.desktopSrc || mobileSrc : mobileSrc;
+    if (img.getAttribute("src") !== targetSrc) {
+      img.src = targetSrc;
+    }
   }
 </script>
