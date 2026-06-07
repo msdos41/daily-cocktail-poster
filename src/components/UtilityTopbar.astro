@@ -2,7 +2,9 @@
 import ArchiveIcon from "lucide-astro/Archive";
 import Globe2 from "lucide-astro/Globe2";
 import Home from "lucide-astro/Home";
+import Info from "lucide-astro/Info";
 import Menu from "lucide-astro/Menu";
+import ShieldCheck from "lucide-astro/ShieldCheck";
 import BrandMark from "@/components/BrandMark.astro";
 import { localeLabel, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
@@ -46,6 +48,7 @@ function localeHref(item: Locale) {
         <span class="sr-only">{t(locale, "more")}</span>
       </summary>
       <div class="utility-menu-panel more-panel">
+        <span class="menu-label">{t(locale, "explore")}</span>
         <a class:list={[path === "/" && "active"]} href={`/${localeToPath(locale)}/`}>
           <Home size={16} aria-hidden="true" />
           <span>{t(locale, "home")}</span>
@@ -53,6 +56,15 @@ function localeHref(item: Locale) {
         <a class:list={[path === "/archive" && "active"]} href={`/${localeToPath(locale)}/archive`}>
           <ArchiveIcon size={16} aria-hidden="true" />
           <span>{t(locale, "pastPicks")}</span>
+        </a>
+        <span class="menu-label">{t(locale, "info")}</span>
+        <a class:list={[path === "/about" && "active"]} href={`/${localeToPath(locale)}/about`}>
+          <Info size={16} aria-hidden="true" />
+          <span>{t(locale, "about")}</span>
+        </a>
+        <a class:list={[path === "/privacy" && "active"]} href={`/${localeToPath(locale)}/privacy`}>
+          <ShieldCheck size={16} aria-hidden="true" />
+          <span>{t(locale, "privacy")}</span>
         </a>
       </div>
     </details>

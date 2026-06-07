@@ -1,0 +1,66 @@
+---
+import { getInfoPageContent, contactEmail, xHandle, type InfoPageId } from "@/data/infoPages";
+import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
+import { t } from "@/i18n/ui";
+import Mail from "lucide-astro/Mail";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { absoluteUrl, routeForLocale } from "@/utils/seo";
+import { infoPageStructuredData } from "@/utils/structuredData";
+
+export function getStaticPaths() {
+  return supportedLocales.map((locale) => ({
+    params: { locale: localeToPath(locale) },
+    props: { locale },
+  }));
+}
+
+const locale = Astro.props.locale as Locale;
+const pageId: InfoPageId = "about";
+const content = getInfoPageContent(locale, pageId);
+const path = `/${pageId}`;
+const title = `${content.title} | ${t(locale, "siteName")}`;
+const pageUrl = absoluteUrl(routeForLocale(locale, path));
+const structuredData = infoPageStructuredData({ locale, url: pageUrl, title, description: content.description });
+---
+
+<BaseLayout locale={locale} title={title} description={content.description} path={path} structuredData={structuredData}>
+  <div class="info-page">
+    <header class="info-hero">
+      <!-- <span class="info-eyebrow">{content.eyebrow}</span> -->
+      <h2>{content.heading}</h2>
+      <!-- <p class="info-lede">{content.lede}</p>
+      <span class="info-brand">Just One Sip / justonesip.today</span> -->
+    </header>
+    <div class="info-sections">
+      {
+        content.sections.map((section, i) => (
+          <section class="info-row">
+            <span class="info-row-num">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <h2>{section.heading}</h2>
+              {
+                section.kind === "contact" ? (
+                  <p class="contact-line">
+                    <span>{section.body}</span>
+                    <span class="contact-links">
+                      <a href={`mailto:${contactEmail}`} class="contact-icon-link" aria-label={t(locale, "email")}>
+                        <Mail size={16} aria-hidden="true" />
+                      </a>
+                      <a href={`https://x.com/${xHandle}`} target="_blank" rel="noopener noreferrer" class="contact-icon-link" aria-label={t(locale, "xProfile")}>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                      </a>
+                    </span>
+                  </p>
+                ) : (
+                  <p>{section.body}</p>
+                )
+              }
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

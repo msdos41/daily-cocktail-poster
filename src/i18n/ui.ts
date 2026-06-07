@@ -40,6 +40,13 @@ export const ui = {
     recipePosterTitle: "Recipe Poster",
     more: "More",
     noPastPicks: "No past picks yet.",
+    about: "About",
+    privacy: "Privacy",
+    email: "Email Just One Sip",
+    xProfile: "Follow Just One Sip on X",
+    explore: "Explore",
+    info: "Info",
+    responsibleDrinking: "Enjoy responsibly. One sip at a time.",
   },
   "zh-CN": {
     siteName: "Just One Sip",
@@ -80,6 +87,13 @@ export const ui = {
     recipePosterTitle: "配方海报",
     more: "更多",
     noPastPicks: "暂无往期推荐。",
+    about: "关于",
+    privacy: "隐私",
+    email: "发送邮件给 Just One Sip",
+    xProfile: "在 X 上关注 Just One Sip",
+    explore: "浏览",
+    info: "信息",
+    responsibleDrinking: "理性饮酒，每日一杯。",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 

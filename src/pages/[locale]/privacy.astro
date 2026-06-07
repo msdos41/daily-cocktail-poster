@@ -1,0 +1,47 @@
+---
+import { getInfoPageContent, type InfoPageId } from "@/data/infoPages";
+import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
+import { t } from "@/i18n/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { absoluteUrl, routeForLocale } from "@/utils/seo";
+import { infoPageStructuredData } from "@/utils/structuredData";
+
+export function getStaticPaths() {
+  return supportedLocales.map((locale) => ({
+    params: { locale: localeToPath(locale) },
+    props: { locale },
+  }));
+}
+
+const locale = Astro.props.locale as Locale;
+const pageId: InfoPageId = "privacy";
+const content = getInfoPageContent(locale, pageId);
+const path = `/${pageId}`;
+const title = `${content.title} | ${t(locale, "siteName")}`;
+const pageUrl = absoluteUrl(routeForLocale(locale, path));
+const structuredData = infoPageStructuredData({ locale, url: pageUrl, title, description: content.description });
+---
+
+<BaseLayout locale={locale} title={title} description={content.description} path={path} structuredData={structuredData}>
+  <div class="info-page">
+    <header class="info-hero">
+      <!-- <span class="info-eyebrow">{content.eyebrow}</span> -->
+      <h2>{content.heading}</h2>
+      <!-- <p class="info-lede">{content.lede}</p>
+      <span class="info-brand">Just One Sip / justonesip.today</span> -->
+    </header>
+    <div class="info-sections">
+      {
+        content.sections.map((section, i) => (
+          <section class="info-row">
+            <span class="info-row-num">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <h2>{section.heading}</h2>
+              <p>{section.body}</p>
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

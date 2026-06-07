@@ -2,7 +2,7 @@ import { getCocktailSlugs } from "@/data/cocktails";
 import { supportedLocales, type Locale } from "@/i18n/config";
 import { absoluteUrl, alternateLinks, routeForLocale } from "@/utils/seo";
 
-const staticPaths = ["/", "/archive"];
+const staticPaths = ["/", "/archive", "/about", "/privacy"];
 
 type SitemapEntry = {
   path: string;

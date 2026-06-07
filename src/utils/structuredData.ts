@@ -111,6 +111,28 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
   ];
 }
 
+export function infoPageStructuredData(config: PageStructuredDataConfig): JsonLd[] {
+  const { locale, url, title, description } = config;
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": `${url}#webpage`,
+      url,
+      name: title,
+      description,
+      inLanguage: locale,
+      isPartOf: websiteReference,
+      publisher: organization,
+    },
+    breadcrumbStructuredData([
+      { name: t(locale, "home"), url: publicHomeUrl() },
+      { name: title, url },
+    ]),
+  ];
+}
+
 function breadcrumbStructuredData(items: Array<{ name: string; url: string }>): JsonLd {
   return {
     "@context": "https://schema.org",

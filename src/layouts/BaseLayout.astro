@@ -2,6 +2,8 @@
 import UtilityTopbar from "@/components/UtilityTopbar.astro";
 import { localeToPath, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
+import Mail from "lucide-astro/Mail";
+import { contactEmail, xHandle } from "@/data/infoPages";
 import type { JsonLd } from "@/utils/structuredData";
 import {
   absoluteUrl,
@@ -82,7 +84,7 @@ gtag("js", new Date());
 gtag("config", "${googleAnalyticsId}");`}
     />
   </head>
-  <body class:list={[immersive && "immersive-page"]}>
+  <body class:list={[immersive ? "immersive-page" : "standard-page"]}>
     {
       !immersive && <UtilityTopbar locale={locale} path={path} />
     }
@@ -92,8 +94,23 @@ gtag("config", "${googleAnalyticsId}");`}
     {
       !immersive && (
         <footer class="site-footer">
-          <span>{t(locale, "siteName")}</span>
-          <span>One drink, one visual, every day.</span>
+          <div>
+            <span>{t(locale, "siteName")}</span>
+            <span class="footer-tagline">{t(locale, "responsibleDrinking")}</span>
+          </div>
+          <nav class="footer-nav">
+            <a href={`/${localeToPath(locale)}/archive`}>{t(locale, "pastPicks")}</a>
+            <a href={`/${localeToPath(locale)}/about`}>{t(locale, "about")}</a>
+            <a href={`/${localeToPath(locale)}/privacy`}>{t(locale, "privacy")}</a>
+            <a href={`mailto:${contactEmail}`} class="icon-link" aria-label={t(locale, "email")}>
+              <Mail size={18} aria-hidden="true" />
+            </a>
+            <a href={`https://x.com/${xHandle}`} target="_blank" rel="noopener noreferrer" class="icon-link" aria-label={t(locale, "xProfile")}>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+            </a>
+          </nav>
         </footer>
       )
     }

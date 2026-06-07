@@ -1,5 +1,5 @@
 ---
-import { getAllCocktails, getPublishedCocktails } from "@/data/cocktails";
+import { getAllCocktails } from "@/data/cocktails";
 import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -13,31 +13,47 @@ export function getStaticPaths() {
   }));
 }
 
-const locale = Astro.props.locale as Locale;
-const cocktails = getAllCocktails(locale).slice().sort((a, b) => b.date.localeCompare(a.date));
 function getLocalDateKey(date: Date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
-const todayKey = getLocalDateKey(new Date());
-const earliestPastDateKey = getLocalDateKey(new Date(new Date().getTime() - 14 * 86400000));
+
+const locale = Astro.props.locale as Locale;
+const cocktails = getAllCocktails(locale).slice().sort((a, b) => b.date.localeCompare(a.date));
+const buildDate = new Date();
+const todayKey = getLocalDateKey(buildDate);
+const earliestDate = new Date(buildDate);
+earliestDate.setDate(earliestDate.getDate() - 14);
+const earliestPastDateKey = getLocalDateKey(earliestDate);
 const maxPastPicks = 14;
 const pastPickCocktails = cocktails.filter(
-  (c) => c.date < todayKey && c.date >= earliestPastDateKey,
+  (c) => c.date <= todayKey && c.date >= earliestPastDateKey,
 ).slice(0, maxPastPicks);
-const archiveImage = getPublishedCocktails(cocktails).find(
-  (cocktail) => !cocktail.heroImageMobile.toLowerCase().endsWith(".svg"),
+const archiveImage = pastPickCocktails.find(
+  (c) => !c.heroImageMobile.toLowerCase().endsWith(".svg"),
 )?.heroImageMobile;
 const path = "/archive";
 const title = `${t(locale, "archive")} | ${t(locale, "siteName")}`;
 const description = t(locale, "siteDescription");
 const pageUrl = absoluteUrl(routeForLocale(locale, path));
 const structuredData = archiveStructuredData({ locale, url: pageUrl, title, description });
+const archivePayload = cocktails.map((c) => ({
+  id: c.id,
+  slug: c.slug,
+  date: c.date,
+  name: c.name,
+  subtitle: c.subtitle,
+  heroImageDesktop: c.heroImageDesktop,
+  heroImageMobile: c.heroImageMobile,
+}));
+const localePrefix = `/${localeToPath(locale)}`;
+const visualAltPrefix = t(locale, "visualAlt");
 ---
 
 <BaseLayout locale={locale} title={title} description={description} path={path} image={archiveImage} structuredData={structuredData}>
+  <script is:inline set:html={`window.__ARCHIVE_PAYLOAD__ = ${JSON.stringify(archivePayload)};window.__ARCHIVE_CONFIG__ = ${JSON.stringify({ localePrefix, visualAltPrefix })};`}></script>
   <noscript>
     <style>
       [data-archive-grid] {
@@ -49,26 +65,8 @@ const structuredData = archiveStructuredData({ locale, url: pageUrl, title, desc
     <h1>{t(locale, "archive")}</h1>
     <p class="archive-intro">{t(locale, "archiveIntro")}</p>
   </section>
-  <section class="archive-grid" data-archive-grid hidden>
-    {
-      cocktails.map((cocktail) => (
-        <a
-          class="archive-card"
-          href={`/${localeToPath(locale)}/cocktails/${cocktail.slug}`}
-          data-archive-card
-          data-cocktail-id={cocktail.id}
-          data-scheduled-date={cocktail.date}
-        >
-          <img data-src={cocktail.heroImageMobile} data-desktop-src={cocktail.heroImageDesktop} data-alt={`${t(locale, "visualAlt")} ${cocktail.name}`} width="1080" height="1920" data-archive-img />
-          <div>
-            <time datetime={cocktail.date}>{cocktail.date}</time>
-            <h2>{cocktail.name}</h2>
-            <p>{cocktail.subtitle}</p>
-          </div>
-        </a>
-      ))
-    }
-  </section>
+  <section class="archive-grid" data-archive-grid hidden></section>
+  <p class="archive-empty" data-archive-empty hidden>{t(locale, "noPastPicks")}</p>
   <noscript>
     {pastPickCocktails.length > 0 ? (
       <section class="archive-grid">
@@ -99,64 +97,120 @@ const structuredData = archiveStructuredData({ locale, url: pageUrl, title, desc
       <p class="archive-empty">{t(locale, "noPastPicks")}</p>
     )}
   </noscript>
-  <p class="archive-empty" data-archive-empty hidden>{t(locale, "noPastPicks")}</p>
 </BaseLayout>
 
 <script>
-  const archiveGrid = document.querySelector("[data-archive-grid]");
-  const archiveCards = Array.from(document.querySelectorAll("[data-archive-card]"));
-  const emptyState = document.querySelector("[data-archive-empty]");
-  const todayDate = new Date();
-  const today = getLocalDateKey(todayDate);
-  const earliestPastDate = getLocalDateKey(addLocalDays(todayDate, -14));
-  const maxPastPicks = 14;
-  const desktopArchiveQuery = window.matchMedia("(min-width: 721px)");
-  let visibleCount = 0;
-
-  archiveCards.forEach((card) => {
-    if (!(card instanceof HTMLElement)) return;
-    card.removeAttribute("data-archive-featured");
-
-    const scheduledDate = card.dataset.scheduledDate || "";
-    const isPastPick = scheduledDate < today && scheduledDate >= earliestPastDate && visibleCount < maxPastPicks;
-    card.hidden = !isPastPick;
-    if (isPastPick) visibleCount += 1;
-  });
-
-  let firstVisible = true;
-  archiveCards.forEach((card) => {
-    if (!(card instanceof HTMLElement) || card.hidden) return;
-    const img = card.querySelector("[data-archive-img]");
-    const mobileSrc = img instanceof HTMLImageElement ? img.dataset.src : "";
-    if (!(img instanceof HTMLImageElement) || !mobileSrc) return;
-    img.alt = img.dataset.alt || "";
-    img.decoding = "async";
-    if (firstVisible) {
-      card.dataset.archiveFeatured = "true";
-      setArchiveCardImage(card, true);
-      img.fetchPriority = "high";
-      firstVisible = false;
-    } else {
-      setArchiveCardImage(card, false);
-      img.loading = "lazy";
-    }
-  });
-
-  desktopArchiveQuery.addEventListener("change", () => {
-    const featuredCard = archiveCards.find(
-      (card) => card instanceof HTMLElement && !card.hidden && card.dataset.archiveFeatured === "true",
-    );
-    if (featuredCard instanceof HTMLElement) {
-      setArchiveCardImage(featuredCard, true);
-    }
-  });
-
-  if (emptyState instanceof HTMLElement) {
-    emptyState.hidden = visibleCount > 0;
+  interface ArchiveItem {
+    id: string;
+    slug: string;
+    date: string;
+    name: string;
+    subtitle: string;
+    heroImageDesktop: string;
+    heroImageMobile: string;
   }
 
-  if (archiveGrid instanceof HTMLElement) {
-    archiveGrid.hidden = visibleCount === 0;
+  interface ArchiveRuntimeConfig {
+    localePrefix: string;
+    visualAltPrefix: string;
+  }
+
+  const archiveGrid = document.querySelector<HTMLElement>("[data-archive-grid]");
+  const emptyState = document.querySelector<HTMLElement>("[data-archive-empty]");
+  const payload: ArchiveItem[] = (window as any).__ARCHIVE_PAYLOAD__ || [];
+  const config: ArchiveRuntimeConfig = (window as any).__ARCHIVE_CONFIG__ || { localePrefix: "", visualAltPrefix: "" };
+  const { localePrefix, visualAltPrefix } = config;
+  const todayDate = new Date();
+  const today = getLocalDateKey(todayDate);
+  const earliestDate = new Date(todayDate);
+  earliestDate.setDate(earliestDate.getDate() - 14);
+  const earliestPastDate = getLocalDateKey(earliestDate);
+  const maxPastPicks = 14;
+  const desktopArchiveQuery = window.matchMedia("(min-width: 721px)");
+
+  const visible = payload
+    .filter((c: ArchiveItem) => c.date <= today && c.date >= earliestPastDate)
+    .sort((a: ArchiveItem, b: ArchiveItem) => b.date.localeCompare(a.date))
+    .slice(0, maxPastPicks);
+
+  if (archiveGrid) {
+    if (visible.length === 0) {
+      archiveGrid.hidden = true;
+      if (emptyState) emptyState.hidden = false;
+    } else {
+      archiveGrid.hidden = false;
+      archiveGrid.innerHTML = "";
+
+      visible.forEach((cocktail: ArchiveItem, i: number) => {
+        const card = document.createElement("a");
+        card.className = "archive-card";
+        card.href = `${localePrefix}/cocktails/${cocktail.slug}`;
+        card.dataset.cocktailId = cocktail.id;
+
+        const div = document.createElement("div");
+        const time = document.createElement("time");
+        time.dateTime = cocktail.date;
+        time.textContent = cocktail.date;
+        div.appendChild(time);
+
+        const h2 = document.createElement("h2");
+        h2.textContent = cocktail.name;
+        div.appendChild(h2);
+
+        const p = document.createElement("p");
+        p.textContent = cocktail.subtitle;
+        div.appendChild(p);
+
+        if (i === 0) {
+          card.dataset.archiveFeatured = "true";
+          const picture = document.createElement("picture");
+          const source = document.createElement("source");
+          source.media = "(min-width: 721px)";
+          source.srcset = cocktail.heroImageDesktop;
+          picture.appendChild(source);
+          const img = document.createElement("img");
+          img.alt = `${visualAltPrefix} ${cocktail.name}`;
+          img.src = cocktail.heroImageMobile;
+          img.width = 1080;
+          img.height = 1920;
+          img.fetchPriority = "high";
+          img.decoding = "async";
+          picture.appendChild(img);
+          card.appendChild(picture);
+        } else {
+          const img = document.createElement("img");
+          img.dataset.src = cocktail.heroImageMobile;
+          img.dataset.desktopSrc = cocktail.heroImageDesktop;
+          img.dataset.alt = `${visualAltPrefix} ${cocktail.name}`;
+          img.width = 1080;
+          img.height = 1920;
+          img.loading = "lazy";
+          img.decoding = "async";
+          img.className = "archive-img-lazy";
+          card.appendChild(img);
+        }
+
+        card.appendChild(div);
+        archiveGrid.appendChild(card);
+      });
+
+      const lazyImgs = archiveGrid.querySelectorAll(".archive-img-lazy");
+      let firstLazy = true;
+      lazyImgs.forEach((img: Element) => {
+        if (!(img instanceof HTMLImageElement)) return;
+        const mobileSrc = img.dataset.src || "";
+        const desktopSrc = img.dataset.desktopSrc || mobileSrc;
+        img.alt = img.dataset.alt || "";
+        img.decoding = "async";
+        const targetSrc = firstLazy && desktopArchiveQuery.matches ? desktopSrc : mobileSrc;
+        if (img.getAttribute("src") !== targetSrc) {
+          img.src = targetSrc;
+        }
+        firstLazy = false;
+      });
+
+      if (emptyState) emptyState.hidden = true;
+    }
   }
 
   function getLocalDateKey(date: Date) {
@@ -164,22 +218,5 @@ const structuredData = archiveStructuredData({ locale, url: pageUrl, title, desc
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
-  }
-
-  function addLocalDays(date: Date, days: number) {
-    const next = new Date(date);
-    next.setDate(next.getDate() + days);
-    return next;
-  }
-
-  function setArchiveCardImage(card: HTMLElement, isFeatured: boolean) {
-    const img = card.querySelector("[data-archive-img]");
-    const mobileSrc = img instanceof HTMLImageElement ? img.dataset.src : "";
-    if (!(img instanceof HTMLImageElement) || !mobileSrc) return;
-
-    const targetSrc = isFeatured && desktopArchiveQuery.matches ? img.dataset.desktopSrc || mobileSrc : mobileSrc;
-    if (img.getAttribute("src") !== targetSrc) {
-      img.src = targetSrc;
-    }
   }
 </script>
