@@ -126,10 +126,9 @@ const visualAltPrefix = t(locale, "visualAlt");
   earliestDate.setDate(earliestDate.getDate() - 14);
   const earliestPastDate = getLocalDateKey(earliestDate);
   const maxPastPicks = 14;
-  const desktopArchiveQuery = window.matchMedia("(min-width: 721px)");
 
   const visible = payload
-    .filter((c: ArchiveItem) => c.date <= today && c.date >= earliestPastDate)
+    .filter((c: ArchiveItem) => c.date < today && c.date >= earliestPastDate)
     .sort((a: ArchiveItem, b: ArchiveItem) => b.date.localeCompare(a.date))
     .slice(0, maxPastPicks);
 
@@ -195,18 +194,14 @@ const visualAltPrefix = t(locale, "visualAlt");
       });
 
       const lazyImgs = archiveGrid.querySelectorAll(".archive-img-lazy");
-      let firstLazy = true;
       lazyImgs.forEach((img: Element) => {
         if (!(img instanceof HTMLImageElement)) return;
         const mobileSrc = img.dataset.src || "";
-        const desktopSrc = img.dataset.desktopSrc || mobileSrc;
         img.alt = img.dataset.alt || "";
         img.decoding = "async";
-        const targetSrc = firstLazy && desktopArchiveQuery.matches ? desktopSrc : mobileSrc;
-        if (img.getAttribute("src") !== targetSrc) {
-          img.src = targetSrc;
+        if (img.getAttribute("src") !== mobileSrc) {
+          img.src = mobileSrc;
         }
-        firstLazy = false;
       });
 
       if (emptyState) emptyState.hidden = true;
