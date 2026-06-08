@@ -254,13 +254,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "bourbon",
     estimatedCalories: 170,
   }),
-  createSceneOnlyCocktail({
+  {
     id: "boulevardier",
+    slug: "boulevardier",
     date: "2026-06-09",
+    image: "/images/cocktails/boulevardier-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/boulevardier-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/boulevardier-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/boulevardier-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/boulevardier-scene-mobile.webp",
+    posterImage: "/images/cocktails/boulevardier-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/boulevardier-scene-mobile.webp",
     glass: "rocks",
     baseSpirit: "bourbon",
     estimatedCalories: 220,
-  }),
+  },
   {
     id: "mai-tai",
     slug: "mai-tai",
