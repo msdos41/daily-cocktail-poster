@@ -427,13 +427,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "rye whiskey",
     estimatedCalories: 180,
   }),
-  createSceneOnlyCocktail({
+  {
     id: "singapore-sling",
+    slug: "singapore-sling",
     date: "2026-06-10",
+    image: "/images/cocktails/singapore-sling-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/singapore-sling-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/singapore-sling-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/singapore-sling-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/singapore-sling-scene-mobile.webp",
+    posterImage: "/images/cocktails/singapore-sling-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/singapore-sling-scene-mobile.webp",
     glass: "highball",
     baseSpirit: "gin",
     estimatedCalories: 230,
-  }),
+  },
   createSceneOnlyCocktail({
     id: "dark-n-stormy",
     date: "2026-06-25",
