@@ -1,7 +1,7 @@
 import type { Cocktail } from "@/data/cocktails";
 import type { Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
-import { publicHomeUrl, site, socialImageMetadata } from "@/utils/seo";
+import { pageUrlForLocalePath, publicHomeUrl, site, socialImageMetadata } from "@/utils/seo";
 
 export type JsonLd = {
   [key: string]: JsonLdValue;
@@ -33,14 +33,14 @@ const websiteReference = {
   "@id": `${site}/#website`,
 };
 
-export function homeStructuredData({ locale, description }: PageStructuredDataConfig): JsonLd[] {
+export function homeStructuredData({ locale, url, description }: PageStructuredDataConfig): JsonLd[] {
   return [
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "@id": websiteReference["@id"],
       name: "Just One Sip",
-      url: publicHomeUrl(),
+      url,
       description,
       inLanguage: locale,
       publisher: organization,
@@ -50,6 +50,7 @@ export function homeStructuredData({ locale, description }: PageStructuredDataCo
 
 export function archiveStructuredData(config: PageStructuredDataConfig): JsonLd[] {
   const { locale, url, title, description } = config;
+  const homeUrl = pageUrlForLocalePath(locale, "/");
 
   return [
     {
@@ -64,7 +65,7 @@ export function archiveStructuredData(config: PageStructuredDataConfig): JsonLd[
       publisher: organization,
     },
     breadcrumbStructuredData([
-      { name: t(locale, "home"), url: publicHomeUrl() },
+      { name: t(locale, "home"), url: homeUrl },
       { name: t(locale, "pastPicks"), url },
     ]),
   ];
@@ -72,6 +73,7 @@ export function archiveStructuredData(config: PageStructuredDataConfig): JsonLd[
 
 export function cocktailStructuredData({ locale, cocktail, url }: CocktailStructuredDataConfig): JsonLd[] {
   const image = socialImageMetadata(cocktail.posterImage).url;
+  const homeUrl = pageUrlForLocalePath(locale, "/");
 
   return [
     {
@@ -105,7 +107,7 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
       mainEntityOfPage: url,
     },
     breadcrumbStructuredData([
-      { name: t(locale, "home"), url: publicHomeUrl() },
+      { name: t(locale, "home"), url: homeUrl },
       { name: cocktail.name, url },
     ]),
   ];
@@ -113,6 +115,7 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
 
 export function infoPageStructuredData(config: PageStructuredDataConfig): JsonLd[] {
   const { locale, url, title, description } = config;
+  const homeUrl = pageUrlForLocalePath(locale, "/");
 
   return [
     {
@@ -127,7 +130,7 @@ export function infoPageStructuredData(config: PageStructuredDataConfig): JsonLd
       publisher: organization,
     },
     breadcrumbStructuredData([
-      { name: t(locale, "home"), url: publicHomeUrl() },
+      { name: t(locale, "home"), url: homeUrl },
       { name: title, url },
     ]),
   ];

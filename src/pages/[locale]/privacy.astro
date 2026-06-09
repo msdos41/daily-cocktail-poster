@@ -3,7 +3,7 @@ import { getInfoPageContent, type InfoPageId } from "@/data/infoPages";
 import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { absoluteUrl, routeForLocale } from "@/utils/seo";
+import { pageUrlForLocalePath } from "@/utils/seo";
 import { infoPageStructuredData } from "@/utils/structuredData";
 
 export function getStaticPaths() {
@@ -18,7 +18,7 @@ const pageId: InfoPageId = "privacy";
 const content = getInfoPageContent(locale, pageId);
 const path = `/${pageId}`;
 const title = `${content.title} | ${t(locale, "siteName")}`;
-const pageUrl = absoluteUrl(routeForLocale(locale, path));
+const pageUrl = pageUrlForLocalePath(locale, path);
 const structuredData = infoPageStructuredData({ locale, url: pageUrl, title, description: content.description });
 ---
 

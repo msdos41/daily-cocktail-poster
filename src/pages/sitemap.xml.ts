@@ -1,6 +1,6 @@
 import { getCocktailSlugs } from "@/data/cocktails";
 import { supportedLocales, type Locale } from "@/i18n/config";
-import { absoluteUrl, alternateLinks, routeForLocale } from "@/utils/seo";
+import { alternateLinks, pageUrlForLocalePath } from "@/utils/seo";
 
 const staticPaths = ["/", "/archive", "/about", "/privacy"];
 
@@ -34,7 +34,7 @@ ${entries.map((entry) => renderUrl(entry)).join("\n")}
 function sitemapEntry(locale: Locale, path: string): SitemapEntry {
   return {
     path,
-    url: absoluteUrl(routeForLocale(locale, path)),
+    url: pageUrlForLocalePath(locale, path),
   };
 }
 

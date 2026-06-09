@@ -4,7 +4,7 @@ import { getAllCocktails, getDailyCocktail } from "@/data/cocktails";
 import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { absoluteUrl, routeForLocale } from "@/utils/seo";
+import { pageUrlForLocalePath } from "@/utils/seo";
 import { homeStructuredData } from "@/utils/structuredData";
 
 export function getStaticPaths() {
@@ -20,7 +20,7 @@ const dailyCocktails = getAllCocktails(locale);
 const currentPath = "/";
 const title = t(locale, "siteName");
 const description = t(locale, "siteDescription");
-const pageUrl = absoluteUrl(routeForLocale(locale, currentPath));
+const pageUrl = pageUrlForLocalePath(locale, currentPath);
 const structuredData = homeStructuredData({ locale, url: pageUrl, title, description });
 ---
 

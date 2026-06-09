@@ -17,12 +17,11 @@ export function absoluteUrl(path: string) {
 }
 
 export function publicHomeUrl() {
-  return site;
+  return pageUrlForLocalePath(defaultLocale, "/");
 }
 
 export function shareUrlForLocalePath(locale: Locale, path: string) {
-  if (path === "/") return publicHomeUrl();
-  return absoluteUrl(routeForLocale(locale, path));
+  return pageUrlForLocalePath(locale, path);
 }
 
 export function socialImageUrl(image = defaultSocialImage) {
@@ -65,20 +64,28 @@ function socialImageType(pathname: string) {
 
 export function routeForLocale(locale: Locale, path: string) {
   const cleanPath = path.startsWith("/") ? path : `/${path}`;
-  return `/${localeToPath(locale)}${cleanPath === "/" ? "/" : cleanPath}`;
+  return withTrailingSlash(`/${localeToPath(locale)}${cleanPath === "/" ? "/" : cleanPath}`);
+}
+
+export function pageUrlForLocalePath(locale: Locale, path: string) {
+  return absoluteUrl(routeForLocale(locale, path));
+}
+
+function withTrailingSlash(path: string) {
+  return path.endsWith("/") ? path : `${path}/`;
 }
 
 export function alternateLinks(path: string) {
   const links = supportedLocales.map((locale) => ({
     locale,
-    href: absoluteUrl(routeForLocale(locale, path)),
+    href: pageUrlForLocalePath(locale, path),
   }));
 
   return [
     ...links,
     {
       locale: "x-default",
-      href: absoluteUrl(routeForLocale(defaultLocale, path)),
+      href: pageUrlForLocalePath(defaultLocale, path),
     },
   ];
 }

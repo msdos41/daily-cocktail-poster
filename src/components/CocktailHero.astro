@@ -1,9 +1,8 @@
 ---
 import type { Cocktail } from "@/data/cocktails";
 import type { Locale } from "@/i18n/config";
-import { localeToPath } from "@/i18n/config";
 import { t } from "@/i18n/ui";
-import { absoluteUrl } from "@/utils/seo";
+import { shareUrlForLocalePath } from "@/utils/seo";
 
 type Props = {
   cocktail: Cocktail;
@@ -11,8 +10,7 @@ type Props = {
 };
 
 const { cocktail, locale } = Astro.props;
-const detailPath = `/${localeToPath(locale)}/cocktails/${cocktail.slug}`;
-const shareUrl = absoluteUrl(detailPath);
+const shareUrl = shareUrlForLocalePath(locale, `/cocktails/${cocktail.slug}`);
 ---
 
 <section class="hero-shell">

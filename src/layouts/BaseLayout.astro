@@ -6,10 +6,10 @@ import Mail from "lucide-astro/Mail";
 import { contactEmail, xHandle } from "@/data/infoPages";
 import type { JsonLd } from "@/utils/structuredData";
 import {
-  absoluteUrl,
   alternateLinks,
   alternateOpenGraphLocales,
   openGraphLocale,
+  pageUrlForLocalePath,
   socialImageMetadata,
 } from "@/utils/seo";
 import "@/styles/global.css";
@@ -37,7 +37,7 @@ const {
 } = Astro.props;
 const googleAnalyticsId = "G-RLJPSW8NWV";
 const alternates = alternateLinks(path);
-const canonical = absoluteUrl(`/${localeToPath(locale)}${path === "/" ? "/" : path}`);
+const canonical = pageUrlForLocalePath(locale, path);
 const socialImage = socialImageMetadata(image);
 const imageAlt = title;
 const structuredDataItems = structuredData ? (Array.isArray(structuredData) ? structuredData : [structuredData]) : [];
