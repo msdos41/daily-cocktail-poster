@@ -401,13 +401,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "cachaca",
     estimatedCalories: 170,
   },
-  createSceneOnlyCocktail({
+  {
     id: "pina-colada",
+    slug: "pina-colada",
     date: "2026-06-14",
+    image: "/images/cocktails/pina-colada-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/pina-colada-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/pina-colada-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/pina-colada-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/pina-colada-scene-mobile.webp",
+    posterImage: "/images/cocktails/pina-colada-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/pina-colada-scene-mobile.webp",
     glass: "hurricane",
     baseSpirit: "rum",
     estimatedCalories: 370,
-  }),
+  },
   {
     id: "bees-knees",
     slug: "bees-knees",

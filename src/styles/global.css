@@ -1113,6 +1113,10 @@ h2 {
   object-position: center 45%;
 }
 
+.archive-card[data-cocktail-id="pina-colada"] img {
+  object-position: center 35%;
+}
+
 .archive-card div {
   padding: 13px 16px 17px;
 }
