@@ -328,13 +328,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "gin",
     estimatedCalories: 190,
   }),
-  createSceneOnlyCocktail({
+  {
     id: "corpse-reviver-2",
+    slug: "corpse-reviver-2",
     date: "2026-06-17",
+    image: "/images/cocktails/corpse-reviver-2-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/corpse-reviver-2-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/corpse-reviver-2-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/corpse-reviver-2-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/corpse-reviver-2-scene-mobile.webp",
+    posterImage: "/images/cocktails/corpse-reviver-2-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/corpse-reviver-2-scene-mobile.webp",
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 190,
-  }),
+  },
   createSceneOnlyCocktail({
     id: "jungle-bird",
     date: "2026-06-30",
