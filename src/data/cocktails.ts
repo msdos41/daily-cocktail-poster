@@ -341,13 +341,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "mezcal",
     estimatedCalories: 200,
   }),
-  createSceneOnlyCocktail({
+  {
     id: "sidecar",
+    slug: "sidecar",
     date: "2026-06-11",
+    image: "/images/cocktails/sidecar-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/sidecar-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/sidecar-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/sidecar-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/sidecar-scene-mobile.webp",
+    posterImage: "/images/cocktails/sidecar-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/sidecar-scene-mobile.webp",
     glass: "coupe",
     baseSpirit: "cognac",
     estimatedCalories: 210,
-  }),
+  },
   createSceneOnlyCocktail({
     id: "gimlet",
     date: "2026-06-20",

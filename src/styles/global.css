@@ -1101,6 +1101,10 @@ h2 {
   object-position: center 10%;
 }
 
+.archive-card[data-cocktail-id="sidecar"] img {
+  object-position: center 40%;
+}
+
 .archive-card div {
   padding: 13px 16px 17px;
 }
