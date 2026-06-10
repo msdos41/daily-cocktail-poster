@@ -453,13 +453,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "pisco",
     estimatedCalories: 200,
   }),
-  createSceneOnlyCocktail({
+  {
     id: "painkiller",
+    slug: "painkiller",
     date: "2026-06-18",
+    image: "/images/cocktails/painkiller-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/painkiller-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/painkiller-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/painkiller-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/painkiller-scene-mobile.webp",
+    posterImage: "/images/cocktails/painkiller-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/painkiller-scene-mobile.webp",
     glass: "tiki mug",
     baseSpirit: "dark rum",
     estimatedCalories: 430,
-  }),
+  },
   createSceneOnlyCocktail({
     id: "vieux-carre",
     date: "2026-07-01",
