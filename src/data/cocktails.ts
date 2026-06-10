@@ -334,13 +334,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "dark rum",
     estimatedCalories: 250,
   }),
-  createSceneOnlyCocktail({
+  {
     id: "naked-and-famous",
+    slug: "naked-and-famous",
     date: "2026-06-12",
+    image: "/images/cocktails/naked-and-famous-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/naked-and-famous-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/naked-and-famous-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/naked-and-famous-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/naked-and-famous-scene-mobile.webp",
+    posterImage: "/images/cocktails/naked-and-famous-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/naked-and-famous-scene-mobile.webp",
     glass: "coupe",
     baseSpirit: "mezcal",
     estimatedCalories: 200,
-  }),
+  },
   {
     id: "sidecar",
     slug: "sidecar",

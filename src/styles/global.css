@@ -1105,6 +1105,10 @@ h2 {
   object-position: center 40%;
 }
 
+.archive-card[data-cocktail-id="naked-and-famous"] img {
+  object-position: center 35%;
+}
+
 .archive-card div {
   padding: 13px 16px 17px;
 }
