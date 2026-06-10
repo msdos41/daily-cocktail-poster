@@ -481,13 +481,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "dark rum",
     estimatedCalories: 210,
   }),
-  createSceneOnlyCocktail({
+  {
     id: "rusty-nail",
+    slug: "rusty-nail",
     date: "2026-06-16",
+    image: "/images/cocktails/rusty-nail-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/rusty-nail-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/rusty-nail-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/rusty-nail-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/rusty-nail-scene-mobile.webp",
+    posterImage: "/images/cocktails/rusty-nail-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/rusty-nail-scene-mobile.webp",
     glass: "rocks",
     baseSpirit: "scotch",
     estimatedCalories: 180,
-  }),
+  },
 ];
 
 const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> = {

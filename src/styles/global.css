@@ -1121,6 +1121,10 @@ h2 {
   object-position: center 35%;
 }
 
+.archive-card[data-cocktail-id="rusty-nail"] img {
+  object-position: center 20%;
+}
+
 .archive-card div {
   padding: 13px 16px 17px;
 }
