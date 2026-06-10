@@ -1109,6 +1109,10 @@ h2 {
   object-position: center 35%;
 }
 
+.archive-card[data-cocktail-id="french-75"] img {
+  object-position: center 45%;
+}
+
 .archive-card div {
   padding: 13px 16px 17px;
 }

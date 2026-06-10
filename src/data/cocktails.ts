@@ -306,13 +306,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "gin",
     estimatedCalories: 200,
   }),
-  createSceneOnlyCocktail({
+  {
     id: "french-75",
+    slug: "french-75",
     date: "2026-06-13",
+    image: "/images/cocktails/french-75-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/french-75-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/french-75-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/french-75-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/french-75-scene-mobile.webp",
+    posterImage: "/images/cocktails/french-75-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/french-75-scene-mobile.webp",
     glass: "flute",
     baseSpirit: "gin",
     estimatedCalories: 180,
-  }),
+  },
   createSceneOnlyCocktail({
     id: "gin-martini",
     date: "2026-06-27",
