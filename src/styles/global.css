@@ -1,5 +1,39 @@
+@import "./hero-title-rules.css";
+
+@font-face {
+  font-family: "Young Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/young-serif-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Young Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/young-serif-latin-ext.woff2") format("woff2");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF,
+    U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 :root {
   color-scheme: dark;
+  --font-display: "Young Serif", Cambria, Constantia, Georgia, "Times New Roman", serif;
+  --font-ui:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --font-cjk-display: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
+  --font-cjk-ui:
+    "Noto Sans SC", "PingFang SC", "Microsoft YaHei", ui-sans-serif, system-ui,
+    sans-serif;
   --bg: #0c0d0b;
   --panel: #151513;
   --panel-strong: #1d1c18;
@@ -11,9 +45,13 @@
   --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
   --topbar-inset-x: clamp(14px, 3vw, 34px);
   --topbar-inset-y: clamp(16px, 3vw, 34px);
-  font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  font-family: var(--font-ui);
+}
+
+html[lang="zh-CN"] {
+  --font-display: var(--font-cjk-display);
+  --font-ui: var(--font-cjk-ui);
+  font-family: var(--font-ui);
 }
 
 * {
@@ -96,9 +134,9 @@ img {
 }
 
 .brand {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-display);
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 400;
   text-decoration: none;
 }
 
@@ -158,6 +196,8 @@ main {
   --hero-copy-left: clamp(20px, 5vw, 74px);
   --hero-img-position: center;
   --hero-title-max: clamp(4.5rem, 10.8vw, 8.8rem);
+  --hero-title-lines: 1;
+  --hero-title-wrap: nowrap;
   --hero-shade-edge: 0.54;
   --hero-shade-left: 0.7;
   --hero-shade-right: 0.42;
@@ -201,7 +241,6 @@ main {
 .immersive-stage[data-cocktail-id="mai-tai"] {
   --hero-copy-bottom: clamp(88px, 12vh, 118px);
   --hero-img-position: center 44%;
-  --hero-title-max: clamp(4.2rem, 9.8vw, 8rem);
   --hero-shade-bottom: 0.82;
   --hero-shade-right: 0.3;
 }
@@ -209,7 +248,6 @@ main {
 .immersive-stage[data-cocktail-id="last-word"] {
   --hero-copy-bottom: clamp(92px, 13vh, 124px);
   --hero-img-position: center 42%;
-  --hero-title-max: clamp(4rem, 9.6vw, 7.6rem);
   --hero-shade-left: 0.74;
   --hero-shade-right: 0.34;
 }
@@ -217,31 +255,26 @@ main {
 .immersive-stage[data-cocktail-id="espresso-martini"] {
   --hero-copy-bottom: clamp(90px, 12vh, 120px);
   --hero-img-position: center 48%;
-  --hero-title-max: clamp(4rem, 9.4vw, 7.5rem);
   --hero-shade-bottom: 0.84;
   --hero-shade-right: 0.32;
 }
 
 .immersive-stage[data-cocktail-id="paloma"] {
   --hero-img-position: center 44%;
-  --hero-title-max: clamp(4.1rem, 9.6vw, 7.8rem);
   --hero-shade-right: 0.34;
 }
 
 .immersive-stage[data-cocktail-id="sazerac"] {
   --hero-img-position: center 48%;
-  --hero-title-max: clamp(4.1rem, 9.6vw, 7.8rem);
 }
 
 .immersive-stage[data-cocktail-id="manhattan"] {
   --hero-img-position: center 42%;
-  --hero-title-max: clamp(4rem, 9.2vw, 7.4rem);
   --hero-shade-left: 0.72;
 }
 
 .immersive-stage[data-cocktail-id="mojito"] {
   --hero-img-position: center 36%;
-  --hero-title-max: clamp(4.1rem, 9.6vw, 7.8rem);
   --hero-shade-right: 0.32;
 }
 
@@ -483,20 +516,17 @@ summary.icon-button::-webkit-details-marker {
 .immersive-copy h1 {
   margin: 0 0 clamp(6px, 0.9vw, 12px);
   max-width: 100%;
+  font-family: var(--font-display);
   font-size: var(--hero-title-size, var(--hero-title-max));
+  font-weight: 400;
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum" 1;
   line-height: 0.96;
   text-wrap: balance;
+  white-space: var(--hero-title-wrap);
   overflow-wrap: normal;
   word-break: normal;
   hyphens: manual;
-}
-
-.immersive-copy h1[data-title-mode="single"] {
-  white-space: nowrap;
-}
-
-.immersive-copy h1[data-title-mode="natural"] {
-  white-space: normal;
 }
 
 .immersive-subtitle {
@@ -703,6 +733,8 @@ summary.icon-button::-webkit-details-marker {
 .recipe-sheet-header h2 {
   margin: 0;
   font-size: clamp(2rem, 4vw, 3.2rem);
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum" 1;
   line-height: 0.95;
 }
 
@@ -858,15 +890,17 @@ p {
 
 h1 {
   margin-bottom: 16px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-display);
   font-size: clamp(3.4rem, 8vw, 7.8rem);
+  font-weight: 400;
   line-height: 0.9;
   letter-spacing: 0;
 }
 
 h2 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-display);
   font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 400;
   letter-spacing: 0;
 }
 
@@ -994,7 +1028,7 @@ h2 {
 
 .archive-heading h1 {
   margin: 0 0 10px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-display);
   font-size: clamp(2.4rem, 5vw, 4rem);
   line-height: 0.94;
 }
@@ -1142,7 +1176,10 @@ h2 {
 
 .archive-card h2 {
   margin: 6px 0 4px;
+  font-family: var(--font-display);
   font-size: clamp(1.35rem, 1.8vw, 1.9rem);
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum" 1;
   line-height: 0.98;
 }
 
@@ -1260,7 +1297,7 @@ h2 {
 }
 
 .info-hero h1 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-display);
   font-size: clamp(3rem, 7vw, 5.8rem);
   line-height: 0.9;
   margin-bottom: 16px;
@@ -1391,10 +1428,6 @@ h2 {
     width: min(620px, calc(100vw - 84px));
   }
 
-  .immersive-copy h1 {
-    --hero-title-max: clamp(3.8rem, 16vw, 6.4rem);
-  }
-
   .floating-actions {
     right: 16px;
     bottom: 92px;
@@ -1477,12 +1510,7 @@ h2 {
   }
 
   .immersive-copy h1 {
-    --hero-title-max: clamp(3.15rem, 15.8vw, 4.55rem);
     line-height: 0.98;
-  }
-
-  .immersive-stage[data-cocktail-id="espresso-martini"] .immersive-copy h1 {
-    --hero-title-max: clamp(2.9rem, 14vw, 4.05rem);
   }
 
   .immersive-stage[data-cocktail-id="mai-tai"],
@@ -1677,7 +1705,7 @@ summary:focus:not(:focus-visible) {
 }
 
 .not-found-title {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-display);
   font-size: clamp(1.7rem, 4.5vw, 2.6rem);
   line-height: 0.96;
   margin: 0;

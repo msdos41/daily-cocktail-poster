@@ -1,0 +1,61 @@
+.immersive-stage[data-cocktail-id="mai-tai"] {
+  --hero-title-max: clamp(4.2rem, 9.8vw, 8rem);
+}
+
+.immersive-stage[data-cocktail-id="last-word"] {
+  --hero-title-max: clamp(4rem, 9.6vw, 7.6rem);
+}
+
+.immersive-stage[data-cocktail-id="espresso-martini"] {
+  --hero-title-max: clamp(4rem, 9.4vw, 7.5rem);
+}
+
+.immersive-stage[data-cocktail-id="paloma"] {
+  --hero-title-max: clamp(4.1rem, 9.6vw, 7.8rem);
+}
+
+.immersive-stage[data-cocktail-id="sazerac"] {
+  --hero-title-max: clamp(4.1rem, 9.6vw, 7.8rem);
+}
+
+.immersive-stage[data-cocktail-id="manhattan"] {
+  --hero-title-max: clamp(4rem, 9.2vw, 7.4rem);
+}
+
+.immersive-stage[data-cocktail-id="mojito"] {
+  --hero-title-max: clamp(4.1rem, 9.6vw, 7.8rem);
+}
+
+.immersive-stage[data-cocktail-id="naked-and-famous"] {
+  --hero-title-max: clamp(3.5rem, 9.6vw, 7.8rem);
+}
+
+@media (max-width: 860px) {
+  .immersive-page .immersive-stage {
+    --hero-title-max: clamp(3.8rem, 16vw, 6.4rem);
+  }
+}
+
+@media (max-width: 560px) {
+  .immersive-page .immersive-stage {
+    --hero-title-max: clamp(3.15rem, 15.8vw, 4.55rem);
+  }
+
+  .immersive-stage[data-cocktail-id="espresso-martini"] {
+    --hero-title-lines: 2;
+    --hero-title-wrap: normal;
+    --hero-title-max: clamp(2.9rem, 14vw, 4.05rem);
+  }
+
+  .immersive-stage[data-cocktail-id="naked-and-famous"],
+  .immersive-stage[data-cocktail-id="corpse-reviver-2"],
+  .immersive-stage[data-cocktail-id="singapore-sling"],
+  .immersive-stage[data-cocktail-id="dark-n-stormy"] {
+    --hero-title-lines: 2;
+    --hero-title-wrap: normal;
+  }
+
+  .immersive-stage[data-cocktail-id="corpse-reviver-2"] {
+    --hero-title-max: clamp(2.65rem, 13.2vw, 3.85rem);
+  }
+}

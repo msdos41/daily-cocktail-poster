@@ -685,17 +685,8 @@ const dailyCocktailPrepaintScript = `
   function configureHeroTitle() {
     if (!(heroTitle instanceof HTMLElement)) return;
 
-    heroTitle.dataset.titleMode = getHeroTitleMode(heroTitle.textContent || "");
     heroTitle.style.removeProperty("--hero-title-size");
     scheduleFitHeroTitle();
-  }
-
-  function getHeroTitleMode(text: string) {
-    const value = text.trim();
-    const hasCjk = /[\u3400-\u9fff\u3040-\u30ff\uac00-\ud7af]/.test(value);
-    const hasNaturalBreak = /[\s\-–—/·.]/.test(value);
-
-    return hasCjk || !hasNaturalBreak ? "single" : "natural";
   }
 
   function scheduleFitHeroTitle() {
@@ -706,8 +697,7 @@ const dailyCocktailPrepaintScript = `
   function fitHeroTitle() {
     if (!(heroTitle instanceof HTMLElement)) return;
 
-    const mode = heroTitle.dataset.titleMode || getHeroTitleMode(heroTitle.textContent || "");
-    const maxLines = mode === "single" ? 1 : 2;
+    const maxLines = getHeroTitleLineLimit(heroTitle);
     const minFontSize = getMinimumHeroTitleSize();
 
     heroTitle.style.removeProperty("--hero-title-size");
@@ -718,6 +708,13 @@ const dailyCocktailPrepaintScript = `
       fontSize -= 2;
       heroTitle.style.setProperty("--hero-title-size", `${Math.max(fontSize, minFontSize)}px`);
     }
+  }
+
+  function getHeroTitleLineLimit(title: HTMLElement) {
+    const rawValue = getComputedStyle(title).getPropertyValue("--hero-title-lines");
+    const lineLimit = Number.parseInt(rawValue, 10);
+
+    return Number.isFinite(lineLimit) && lineLimit > 0 ? lineLimit : 1;
   }
 
   function isHeroTitleFit(title: HTMLElement, maxLines: number) {
