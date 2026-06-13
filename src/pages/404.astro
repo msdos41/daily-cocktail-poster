@@ -1,0 +1,38 @@
+---
+import ArrowLeft from "lucide-astro/ArrowLeft";
+import "@/styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Page Not Found — Just One Sip" id="nf-desc-meta" />
+    <meta name="robots" content="noindex,follow" />
+    <meta name="theme-color" content="#15120f" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <title id="nf-title-meta">404 · Just One Sip</title>
+  </head>
+  <body class="standard-page">
+    <div class="not-found">
+      <div class="not-found-card">
+        <span class="not-found-code" aria-hidden="true">404</span>
+        <h1 class="not-found-title" id="nf-title">Page Not Found</h1>
+        <a href="/en/" class="not-found-home-link" id="nf-home" aria-label="Back to Home">
+          <ArrowLeft size={24} aria-hidden="true" />
+        </a>
+      </div>
+    </div>
+    <script is:inline>
+      if (location.pathname.startsWith("/zh-cn")) {
+        document.documentElement.lang = "zh-CN";
+        document.getElementById("nf-title-meta").textContent = "404 · Just One Sip";
+        document.getElementById("nf-title").textContent = "\u9875\u9762\u672A\u627E\u5230";
+        document.getElementById("nf-desc-meta").content = "\u9875\u9762\u672A\u627E\u5230";
+        document.getElementById("nf-home").href = "/zh-cn/";
+        document.getElementById("nf-home").ariaLabel = "\u8FD4\u56DE\u9996\u9875";
+      }
+    </script>
+  </body>
+</html>
