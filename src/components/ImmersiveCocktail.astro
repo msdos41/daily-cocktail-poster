@@ -1,5 +1,4 @@
 ---
-import BookOpen from "lucide-astro/BookOpen";
 import ChevronUp from "lucide-astro/ChevronUp";
 import Download from "lucide-astro/Download";
 import Share2 from "lucide-astro/Share2";
@@ -260,13 +259,15 @@ const dailyCocktailPrepaintScript = `
     type="button"
     data-open-recipe
     aria-haspopup="dialog"
+    aria-controls="recipe-dialog"
+    aria-expanded="false"
+    aria-label={t(locale, "openRecipe")}
+    data-tooltip={t(locale, "openRecipe")}
   >
-    <BookOpen size={17} aria-hidden="true" />
-    <span>{t(locale, "openRecipe")}</span>
-    <ChevronUp size={16} aria-hidden="true" />
+    <ChevronUp size={20} aria-hidden="true" />
   </button>
 
-  <dialog class="recipe-dialog" data-recipe-dialog aria-labelledby="recipe-dialog-title">
+  <dialog class="recipe-dialog" id="recipe-dialog" data-recipe-dialog aria-labelledby="recipe-dialog-title">
     <article class="recipe-sheet">
       <form class="recipe-sheet-header">
         <div>
@@ -564,6 +565,7 @@ const dailyCocktailPrepaintScript = `
     if (!(recipeDialog instanceof HTMLDialogElement) || recipeDialog.open) return;
     recipeDialog.removeAttribute("data-closing");
     recipeDialog.showModal();
+    openRecipe?.setAttribute("aria-expanded", "true");
   }
 
   function closeRecipeDialog() {
@@ -573,6 +575,7 @@ const dailyCocktailPrepaintScript = `
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       recipeDialog.close();
       recipeDialog.removeAttribute("data-closing");
+      openRecipe?.setAttribute("aria-expanded", "false");
       return;
     }
     const finish = () => {
@@ -580,6 +583,7 @@ const dailyCocktailPrepaintScript = `
       clearTimeout(fallbackTimer);
       recipeDialog.close();
       recipeDialog.removeAttribute("data-closing");
+      openRecipe?.setAttribute("aria-expanded", "false");
     };
     const onEnd = (event: AnimationEvent) => {
       if (event.target !== recipeDialog) return;

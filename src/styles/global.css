@@ -427,6 +427,18 @@ summary.icon-button::-webkit-details-marker {
   .immersive-tools [data-tooltip]:hover::after {
     transform: translateY(0);
   }
+
+  .recipe-handle[data-tooltip]::after {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: calc(100% + 10px);
+    transform: translate(-50%, 4px);
+  }
+
+  .recipe-handle[data-tooltip]:hover::after {
+    transform: translate(-50%, 0);
+  }
 }
 
 .utility-menu {
@@ -649,16 +661,16 @@ summary.icon-button::-webkit-details-marker {
   z-index: 4;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 16px;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   border: 1px solid rgba(247, 239, 229, 0.18);
   border-radius: 999px;
   color: rgba(247, 239, 229, 0.9);
   background: rgba(8, 7, 6, 0.32);
   backdrop-filter: blur(16px);
   cursor: pointer;
-  font-size: 0.86rem;
   transform: translateX(-50%);
   transition:
     border-color 160ms ease,
@@ -1556,8 +1568,8 @@ h2 {
 
   .recipe-handle {
     bottom: 14px;
-    min-height: 44px;
-    padding: 0 13px;
+    width: 44px;
+    height: 44px;
   }
 
   .recipe-dialog {
