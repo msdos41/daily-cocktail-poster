@@ -1,4 +1,5 @@
 ---
+import ArrowDown from "lucide-astro/ArrowDown";
 import ChevronUp from "lucide-astro/ChevronUp";
 import Download from "lucide-astro/Download";
 import Share2 from "lucide-astro/Share2";
@@ -14,10 +15,14 @@ type Props = {
   dailyCocktails?: Cocktail[];
   locale: Locale;
   path: string;
+  recipeMode?: "dialog" | "scroll";
+  recipeTargetId?: string;
   variant?: "home" | "detail";
 };
 
-const { cocktail, dailyCocktails, locale, path, variant = "detail" } = Astro.props;
+const { cocktail, dailyCocktails, locale, path, recipeMode = "dialog", recipeTargetId, variant = "detail" } = Astro.props;
+const usesRecipeDialog = recipeMode === "dialog";
+const usesRecipeScroll = recipeMode === "scroll";
 
 const extname = (path: string): string => {
   const i = path.lastIndexOf(".");
@@ -255,70 +260,76 @@ const dailyCocktailPrepaintScript = `
   ></div>
 
   <button
-    class="recipe-handle"
+    class:list={["recipe-handle", usesRecipeScroll && "recipe-scroll-handle"]}
     type="button"
-    data-open-recipe
-    aria-haspopup="dialog"
-    aria-controls="recipe-dialog"
-    aria-expanded="false"
+    data-open-recipe={usesRecipeDialog ? "" : undefined}
+    data-scroll-recipe={usesRecipeScroll ? "" : undefined}
+    data-scroll-target={usesRecipeScroll ? recipeTargetId : undefined}
+    aria-haspopup={usesRecipeDialog ? "dialog" : undefined}
+    aria-controls={usesRecipeDialog ? "recipe-dialog" : recipeTargetId}
+    aria-expanded={usesRecipeDialog ? "false" : undefined}
     aria-label={t(locale, "openRecipe")}
     data-tooltip={t(locale, "openRecipe")}
   >
-    <ChevronUp size={20} aria-hidden="true" />
+    {usesRecipeScroll ? <ArrowDown size={20} aria-hidden="true" /> : <ChevronUp size={20} aria-hidden="true" />}
   </button>
 
-  <dialog class="recipe-dialog" id="recipe-dialog" data-recipe-dialog aria-labelledby="recipe-dialog-title">
-    <article class="recipe-sheet">
-      <form class="recipe-sheet-header">
-        <div>
-          <p class="eyebrow">{t(locale, "recipeDetails")}</p>
-          <h2 data-cocktail-name id="recipe-dialog-title">{cocktail.name}</h2>
-        </div>
-        <button class="icon-close" type="button" data-close-recipe aria-label={t(locale, "closeRecipe")}>
-          <XIcon size={20} aria-hidden="true" />
-        </button>
-      </form>
-      <div class="recipe-sheet-content">
-        <p class="recipe-description" data-recipe-description>{cocktail.description}</p>
+  {
+    usesRecipeDialog && (
+      <dialog class="recipe-dialog" id="recipe-dialog" data-recipe-dialog aria-labelledby="recipe-dialog-title">
+        <article class="recipe-sheet">
+          <form class="recipe-sheet-header">
+            <div>
+              <p class="eyebrow">{t(locale, "recipeDetails")}</p>
+              <h2 data-cocktail-name id="recipe-dialog-title">{cocktail.name}</h2>
+            </div>
+            <button class="icon-close" type="button" data-close-recipe aria-label={t(locale, "closeRecipe")}>
+              <XIcon size={20} aria-hidden="true" />
+            </button>
+          </form>
+          <div class="recipe-sheet-content">
+            <p class="recipe-description" data-recipe-description>{cocktail.description}</p>
 
-        <dl class="recipe-meta-grid">
-          <div>
-            <dt>{t(locale, "flavor")}</dt>
-            <dd data-recipe-flavor>{cocktail.flavor}</dd>
-          </div>
-          <div>
-            <dt>{t(locale, "glass")}</dt>
-            <dd data-recipe-glass>{cocktail.glass}</dd>
-          </div>
-          <div>
-            <dt>{t(locale, "garnish")}</dt>
-            <dd data-recipe-garnish>{cocktail.garnish}</dd>
-          </div>
-          <div>
-            <dt>{t(locale, "baseSpirit")}</dt>
-            <dd data-recipe-base-spirit>{cocktail.baseSpirit}</dd>
-          </div>
-        </dl>
+            <dl class="recipe-meta-grid">
+              <div>
+                <dt>{t(locale, "flavor")}</dt>
+                <dd data-recipe-flavor>{cocktail.flavor}</dd>
+              </div>
+              <div>
+                <dt>{t(locale, "glass")}</dt>
+                <dd data-recipe-glass>{cocktail.glass}</dd>
+              </div>
+              <div>
+                <dt>{t(locale, "garnish")}</dt>
+                <dd data-recipe-garnish>{cocktail.garnish}</dd>
+              </div>
+              <div>
+                <dt>{t(locale, "baseSpirit")}</dt>
+                <dd data-recipe-base-spirit>{cocktail.baseSpirit}</dd>
+              </div>
+            </dl>
 
-        <section class="recipe-section-ingredients">
-          <h3>{t(locale, "ingredients")}</h3>
-          <ul data-recipe-ingredients>
-            {cocktail.ingredients.map((ingredient) => <li>{ingredient}</li>)}
-          </ul>
-        </section>
-        <section class="recipe-section-steps">
-          <h3>{t(locale, "howToMake")}</h3>
-          <ol data-recipe-steps>
-            {cocktail.steps.map((step, index) => <li id={`recipe-step-${index + 1}`}>{step}</li>)}
-          </ol>
-        </section>
+            <section class="recipe-section-ingredients">
+              <h3>{t(locale, "ingredients")}</h3>
+              <ul data-recipe-ingredients>
+                {cocktail.ingredients.map((ingredient) => <li>{ingredient}</li>)}
+              </ul>
+            </section>
+            <section class="recipe-section-steps">
+              <h3>{t(locale, "howToMake")}</h3>
+              <ol data-recipe-steps>
+                {cocktail.steps.map((step, index) => <li id={`recipe-step-${index + 1}`}>{step}</li>)}
+              </ol>
+            </section>
 
-        <div class="tag-row recipe-tags" aria-label="Tags" data-recipe-tags>
-          {cocktail.tags.map((tag) => <span>{tag}</span>)}
-        </div>
-      </div>
-    </article>
-  </dialog>
+            <div class="tag-row recipe-tags" aria-label="Tags" data-recipe-tags>
+              {cocktail.tags.map((tag) => <span>{tag}</span>)}
+            </div>
+          </div>
+        </article>
+      </dialog>
+    )
+  }
 
   <script is:inline type="application/json" data-share-payload set:html={JSON.stringify(sharePayload)} />
   {
@@ -336,6 +347,7 @@ const dailyCocktailPrepaintScript = `
   const recipeDialog = document.querySelector("[data-recipe-dialog]");
   const openShare = document.querySelector("[data-open-share]");
   const openRecipe = document.querySelector("[data-open-recipe]");
+  const scrollRecipe = document.querySelector("[data-scroll-recipe]");
   const shareAction = document.querySelector("[data-share-action]");
   const shareTray = document.querySelector("[data-share-tray]");
   const shareToast = document.querySelector("[data-share-toast]");
@@ -416,6 +428,7 @@ const dailyCocktailPrepaintScript = `
   });
 
   openRecipe?.addEventListener("click", openRecipeDialog);
+  scrollRecipe?.addEventListener("click", scrollToRecipe);
 
   recipeDialog?.addEventListener("click", (event) => {
     if (event.target === recipeDialog) {
@@ -712,6 +725,18 @@ const dailyCocktailPrepaintScript = `
       fontSize -= 2;
       heroTitle.style.setProperty("--hero-title-size", `${Math.max(fontSize, minFontSize)}px`);
     }
+  }
+
+  function scrollToRecipe() {
+    if (!(scrollRecipe instanceof HTMLElement)) return;
+    const targetId = scrollRecipe.dataset.scrollTarget || "";
+    const target = targetId ? document.getElementById(targetId) : null;
+    if (!target) return;
+
+    target.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      block: "start",
+    });
   }
 
   function getHeroTitleLineLimit(title: HTMLElement) {

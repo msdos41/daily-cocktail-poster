@@ -21,6 +21,7 @@ type Props = {
   path: string;
   image?: string;
   immersive?: boolean;
+  immersiveScrollable?: boolean;
   ogType?: "website" | "article";
   structuredData?: JsonLd | JsonLd[];
 };
@@ -32,6 +33,7 @@ const {
   path,
   image = "/images/og-default-v2.jpg",
   immersive = false,
+  immersiveScrollable = false,
   ogType = "website",
   structuredData,
 } = Astro.props;
@@ -84,11 +86,11 @@ gtag("js", new Date());
 gtag("config", "${googleAnalyticsId}");`}
     />
   </head>
-  <body class:list={[immersive ? "immersive-page" : "standard-page"]}>
+  <body class:list={[immersive ? "immersive-page" : "standard-page", immersiveScrollable && "immersive-scroll-page"]}>
     {
       !immersive && <UtilityTopbar locale={locale} path={path} />
     }
-    <main class:list={[immersive && "immersive-main"]}>
+    <main class:list={[immersive && "immersive-main", immersiveScrollable && "immersive-scroll-main"]}>
       <slot />
     </main>
     {

@@ -18,8 +18,8 @@ const locale = Astro.props.locale as Locale;
 const cocktail = getDailyCocktail(locale);
 const dailyCocktails = getAllCocktails(locale);
 const currentPath = "/";
-const title = t(locale, "siteName");
-const description = t(locale, "siteDescription");
+const title = t(locale, "homeSeoTitle");
+const description = t(locale, "homeSeoDescription");
 const pageUrl = pageUrlForLocalePath(locale, currentPath);
 const structuredData = homeStructuredData({ locale, url: pageUrl, title, description });
 ---

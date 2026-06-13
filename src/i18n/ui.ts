@@ -6,6 +6,13 @@ export const ui = {
     brandShort: "JOS",
     siteDescription:
       "A daily cocktail poster site: one drink, one visual, every day.",
+    homeSeoTitle: "Daily Cocktail Posters & Simple Cocktail Recipes | Just One Sip",
+    homeSeoDescription:
+      "Discover one cocktail each day with a visual poster, simple ingredients, and clear mixing steps.",
+    cocktailRecipeTitleSuffix: "Cocktail Recipe",
+    cocktailRecipeDescriptionSuffix:
+      "Includes ingredients, glass, garnish, and mixing steps.",
+
     todaysCocktail: "Today's Cocktail",
     dailyPour: "Daily pour",
     pourNotes: "Pour notes",
@@ -53,6 +60,12 @@ export const ui = {
     brandShort: "JOS",
     siteDescription:
       "每天一杯，一张视觉海报，一份简洁鸡尾酒指南。",
+    homeSeoTitle: "每日鸡尾酒海报与简洁配方 | Just One Sip",
+    homeSeoDescription:
+      "每天发现一杯鸡尾酒：视觉海报、简洁配方、清晰调制步骤。",
+    cocktailRecipeTitleSuffix: "鸡尾酒配方",
+    cocktailRecipeDescriptionSuffix: "含配方、杯型、装饰和调制步骤。",
+
     todaysCocktail: "今日鸡尾酒",
     dailyPour: "今日一杯",
     pourNotes: "风味札记",

@@ -5,8 +5,8 @@ import { absoluteUrl, openGraphLocale, socialImageMetadata } from "@/utils/seo";
 
 const target = `/${localeToPath(defaultLocale)}/`;
 const canonical = absoluteUrl(target);
-const title = t(defaultLocale, "siteName");
-const description = t(defaultLocale, "siteDescription");
+const title = t(defaultLocale, "homeSeoTitle");
+const description = t(defaultLocale, "homeSeoDescription");
 const socialImage = socialImageMetadata();
 ---
 

@@ -1,6 +1,6 @@
 ---
 import ImmersiveCocktail from "@/components/ImmersiveCocktail.astro";
-import { getCocktail, getCocktailSlugs } from "@/data/cocktails";
+import { getCocktail, getCocktailSlugs, type Cocktail } from "@/data/cocktails";
 import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -24,9 +24,21 @@ if (!cocktail) {
   return Astro.redirect(`/${localeToPath(locale)}/`);
 }
 
+function recipeTitle(locale: Locale, cocktail: Cocktail) {
+  const suffix = t(locale, "cocktailRecipeTitleSuffix");
+  return locale === "zh-CN" ? `${cocktail.name}${suffix}` : `${cocktail.name} ${suffix}`;
+}
+
+function recipeDescription(locale: Locale, cocktail: Cocktail) {
+  const suffix = t(locale, "cocktailRecipeDescriptionSuffix");
+  return locale === "zh-CN" ? `${cocktail.description}${suffix}` : `${cocktail.description} ${suffix}`;
+}
+
+
 const path = `/cocktails/${cocktail.slug}`;
-const title = `${cocktail.name} | ${t(locale, "siteName")}`;
-const description = cocktail.description;
+const pageRecipeTitle = recipeTitle(locale, cocktail);
+const title = `${pageRecipeTitle} | ${t(locale, "siteName")}`;
+const description = recipeDescription(locale, cocktail);
 const pageUrl = pageUrlForLocalePath(locale, path);
 const structuredData = cocktailStructuredData({ locale, cocktail, url: pageUrl });
 ---
@@ -40,6 +52,52 @@ const structuredData = cocktailStructuredData({ locale, cocktail, url: pageUrl }
   ogType="article"
   structuredData={structuredData}
   immersive
+  immersiveScrollable
 >
-  <ImmersiveCocktail cocktail={cocktail} locale={locale} path={path} variant="detail" />
+  <ImmersiveCocktail cocktail={cocktail} locale={locale} path={path} variant="detail" recipeMode="scroll" recipeTargetId="detail-recipe" />
+  <section class="detail-recipe-stage" id="detail-recipe" aria-labelledby="detail-recipe-title">
+    <div class="detail-recipe-inner">
+      <div class="detail-recipe-layout">
+        <div class="detail-recipe-summary">
+          <h2 class="sr-only" id="detail-recipe-title">{t(locale, "openRecipe")}</h2>
+          <p class="detail-recipe-description">{cocktail.description}</p>
+          <dl class="detail-recipe-facts">
+            <div>
+              <dt>{t(locale, "baseSpirit")}</dt>
+              <dd>{cocktail.baseSpirit}</dd>
+            </div>
+            <div>
+              <dt>{t(locale, "glass")}</dt>
+              <dd>{cocktail.glass}</dd>
+            </div>
+            <div>
+              <dt>{t(locale, "garnish")}</dt>
+              <dd>{cocktail.garnish}</dd>
+            </div>
+            <div>
+              <dt>{t(locale, "flavor")}</dt>
+              <dd>{cocktail.flavor}</dd>
+            </div>
+          </dl>
+          <div class="detail-recipe-tags" aria-label="Tags">
+            {cocktail.tags.map((tag) => <span>{tag}</span>)}
+          </div>
+        </div>
+        <div class="detail-recipe-columns">
+          <section class="detail-recipe-column">
+            <h3>{t(locale, "ingredients")}</h3>
+            <ul class="ingredient-list">
+              {cocktail.ingredients.map((ingredient) => <li>{ingredient}</li>)}
+            </ul>
+          </section>
+          <section class="detail-recipe-column">
+            <h3>{t(locale, "howToMake")}</h3>
+            <ol class="steps-list">
+              {cocktail.steps.map((step, index) => <li id={`recipe-step-${index + 1}`}>{step}</li>)}
+            </ol>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
