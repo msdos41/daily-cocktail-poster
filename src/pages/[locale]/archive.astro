@@ -29,7 +29,7 @@ earliestDate.setDate(earliestDate.getDate() - 14);
 const earliestPastDateKey = getLocalDateKey(earliestDate);
 const maxPastPicks = 14;
 const pastPickCocktails = cocktails.filter(
-  (c) => c.date <= todayKey && c.date >= earliestPastDateKey,
+  (c) => c.date < todayKey && c.date >= earliestPastDateKey,
 ).slice(0, maxPastPicks);
 const archiveImage = pastPickCocktails.find(
   (c) => !c.heroImageMobile.toLowerCase().endsWith(".svg"),
