@@ -455,13 +455,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "gin",
     estimatedCalories: 200,
   },
-  createSceneOnlyCocktail({
+  {
     id: "penicillin",
+    slug: "penicillin",
     date: "2026-06-21",
+    image: "/images/cocktails/penicillin-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/penicillin-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/penicillin-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/penicillin-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/penicillin-scene-mobile.webp",
+    posterImage: "/images/cocktails/penicillin-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/penicillin-scene-mobile.webp",
     glass: "rocks",
     baseSpirit: "scotch",
     estimatedCalories: 210,
-  }),
+  },
   createSceneOnlyCocktail({
     id: "pisco-sour",
     date: "2026-06-26",
