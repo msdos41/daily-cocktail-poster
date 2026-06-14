@@ -55,7 +55,14 @@
     --hero-title-wrap: normal;
   }
 
-  .immersive-stage[data-cocktail-id="corpse-reviver-2"] {
+  .immersive-stage[data-cocktail-id="corpse-reviver-2"],
+  .immersive-stage[data-cocktail-id="boulevardier"],
+  .immersive-stage[data-cocktail-id="old-fashioned"] {
     --hero-title-max: clamp(2.65rem, 13.2vw, 3.85rem);
+  }
+
+  .immersive-stage[data-cocktail-id="pina-colada"],
+  .immersive-stage[data-cocktail-id="bees-knees"] {
+    --hero-title-max: clamp(2.9rem, 14vw, 4.05rem);
   }
 }
