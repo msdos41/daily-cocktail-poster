@@ -1,5 +1,5 @@
 ---
-import ArrowDown from "lucide-astro/ArrowDown";
+import ChevronDown from "lucide-astro/ChevronDown";
 import ChevronUp from "lucide-astro/ChevronUp";
 import Download from "lucide-astro/Download";
 import Share2 from "lucide-astro/Share2";
@@ -271,7 +271,7 @@ const dailyCocktailPrepaintScript = `
     aria-label={t(locale, "openRecipe")}
     data-tooltip={t(locale, "openRecipe")}
   >
-    {usesRecipeScroll ? <ArrowDown size={20} aria-hidden="true" /> : <ChevronUp size={20} aria-hidden="true" />}
+    {usesRecipeScroll ? <ChevronDown size={20} aria-hidden="true" /> : <ChevronUp size={20} aria-hidden="true" />}
   </button>
 
   {
@@ -737,6 +737,7 @@ const dailyCocktailPrepaintScript = `
       behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
       block: "start",
     });
+    scrollRecipe.blur();
   }
 
   function getHeroTitleLineLimit(title: HTMLElement) {

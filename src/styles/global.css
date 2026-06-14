@@ -205,7 +205,7 @@ body.immersive-scroll-page {
 }
 
 .immersive-scroll-page .immersive-stage {
-  width: 100%;
+  width: 100vw;
 }
 
 .immersive-stage {
@@ -695,10 +695,26 @@ summary.icon-button::-webkit-details-marker {
     color 160ms ease;
 }
 
-.recipe-handle:hover {
-  border-color: rgba(247, 239, 229, 0.38);
-  color: var(--ink);
-  background: rgba(247, 239, 229, 0.09);
+.recipe-handle:focus-visible {
+  outline: 2px solid rgba(227, 179, 95, 0.88);
+  outline-offset: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .recipe-handle:hover {
+    border-color: rgba(247, 239, 229, 0.38);
+    color: var(--ink);
+    background: rgba(247, 239, 229, 0.09);
+  }
+}
+
+@media (hover: none) {
+  .recipe-handle:hover {
+    border-color: rgba(247, 239, 229, 0.18);
+    color: rgba(247, 239, 229, 0.9);
+    background: rgba(8, 7, 6, 0.32);
+  }
+
 }
 
 .recipe-dialog {
@@ -1029,10 +1045,10 @@ h2 {
   position: absolute;
   left: 0;
   right: 0;
-  top: -132px;
+  top: 0;
   height: 132px;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(5, 4, 3, 0), #080705 72%);
+  background: linear-gradient(180deg, #080705 0%, rgba(8, 7, 5, 0) 100%);
 }
 
 .detail-recipe-inner {
