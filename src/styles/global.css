@@ -1342,6 +1342,10 @@ h2 {
   object-position: center 30%;
 }
 
+.archive-card[data-cocktail-id="gimlet"] img {
+  object-position: center 30%;
+}
+
 .archive-card div {
   padding: 13px 16px 17px;
 }

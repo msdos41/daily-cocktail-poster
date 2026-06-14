@@ -388,13 +388,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "cognac",
     estimatedCalories: 210,
   },
-  createSceneOnlyCocktail({
+  {
     id: "gimlet",
+    slug: "gimlet",
     date: "2026-06-20",
+    image: "/images/cocktails/gimlet-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/gimlet-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/gimlet-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/gimlet-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/gimlet-scene-mobile.webp",
+    posterImage: "/images/cocktails/gimlet-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/gimlet-scene-mobile.webp",
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 190,
-  }),
+  },
   createSceneOnlyCocktail({
     id: "whiskey-sour",
     date: "2026-06-29",
