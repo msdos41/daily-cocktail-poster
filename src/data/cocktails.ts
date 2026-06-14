@@ -247,13 +247,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "tequila",
     estimatedCalories: 190,
   },
-  createSceneOnlyCocktail({
+  {
     id: "paper-plane",
+    slug: "paper-plane",
     date: "2026-06-19",
+    image: "/images/cocktails/paper-plane-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/paper-plane-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/paper-plane-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/paper-plane-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/paper-plane-scene-mobile.webp",
+    posterImage: "/images/cocktails/paper-plane-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/paper-plane-scene-mobile.webp",
     glass: "coupe",
     baseSpirit: "bourbon",
     estimatedCalories: 170,
-  }),
+  },
   {
     id: "boulevardier",
     slug: "boulevardier",
