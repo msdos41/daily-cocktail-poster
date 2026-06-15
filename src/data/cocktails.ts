@@ -478,13 +478,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "scotch",
     estimatedCalories: 210,
   },
-  createSceneOnlyCocktail({
+  {
     id: "pisco-sour",
+    slug: "pisco-sour",
     date: "2026-06-26",
+    image: "/images/cocktails/pisco-sour-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/pisco-sour-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/pisco-sour-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/pisco-sour-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/pisco-sour-scene-mobile.webp",
+    posterImage: "/images/cocktails/pisco-sour-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/pisco-sour-scene-mobile.webp",
     glass: "coupe",
     baseSpirit: "pisco",
     estimatedCalories: 200,
-  }),
+  },
   {
     id: "painkiller",
     slug: "painkiller",
