@@ -57,7 +57,8 @@
 
   .immersive-stage[data-cocktail-id="corpse-reviver-2"],
   .immersive-stage[data-cocktail-id="boulevardier"],
-  .immersive-stage[data-cocktail-id="old-fashioned"] {
+  .immersive-stage[data-cocktail-id="old-fashioned"],
+  .immersive-stage[data-cocktail-id="aperol-spritz"] {
     --hero-title-max: clamp(2.65rem, 13.2vw, 3.85rem);
   }
 
