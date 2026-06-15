@@ -367,13 +367,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "gin",
     estimatedCalories: 190,
   },
-  createSceneOnlyCocktail({
+  {
     id: "jungle-bird",
+    slug: "jungle-bird",
     date: "2026-06-30",
+    image: "/images/cocktails/jungle-bird-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/jungle-bird-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/jungle-bird-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/jungle-bird-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/jungle-bird-scene-mobile.webp",
+    posterImage: "/images/cocktails/jungle-bird-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/jungle-bird-scene-mobile.webp",
     glass: "rocks",
     baseSpirit: "dark rum",
     estimatedCalories: 250,
-  }),
+  },
   {
     id: "naked-and-famous",
     slug: "naked-and-famous",
