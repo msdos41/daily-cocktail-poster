@@ -522,13 +522,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "gin",
     estimatedCalories: 230,
   },
-  createSceneOnlyCocktail({
+  {
     id: "dark-n-stormy",
+    slug: "dark-n-stormy",
     date: "2026-06-25",
+    image: "/images/cocktails/dark-n-stormy-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/dark-n-stormy-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/dark-n-stormy-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/dark-n-stormy-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/dark-n-stormy-scene-mobile.webp",
+    posterImage: "/images/cocktails/dark-n-stormy-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/dark-n-stormy-scene-mobile.webp",
     glass: "highball",
     baseSpirit: "dark rum",
     estimatedCalories: 210,
-  }),
+  },
   {
     id: "rusty-nail",
     slug: "rusty-nail",
