@@ -6,7 +6,9 @@
   --hero-title-max: clamp(4rem, 9.6vw, 7.6rem);
 }
 
-.immersive-stage[data-cocktail-id="espresso-martini"] {
+.immersive-stage[data-cocktail-id="espresso-martini"],
+.immersive-stage[data-cocktail-id="whiskey-sour"],
+.immersive-stage[data-cocktail-id="dark-n-stormy"] {
   --hero-title-max: clamp(4rem, 9.4vw, 7.5rem);
 }
 
@@ -65,5 +67,9 @@
   .immersive-stage[data-cocktail-id="pina-colada"],
   .immersive-stage[data-cocktail-id="bees-knees"] {
     --hero-title-max: clamp(2.9rem, 14vw, 4.05rem);
+  }
+
+  .immersive-stage[data-cocktail-id="whiskey-sour"] {
+    --hero-title-max: clamp(2.5rem, 12.5vw, 3.85rem);
   }
 }

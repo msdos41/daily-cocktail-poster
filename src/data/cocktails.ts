@@ -419,13 +419,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "gin",
     estimatedCalories: 190,
   },
-  createSceneOnlyCocktail({
+  {
     id: "whiskey-sour",
+    slug: "whiskey-sour",
     date: "2026-06-29",
+    image: "/images/cocktails/whiskey-sour-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/whiskey-sour-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/whiskey-sour-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/whiskey-sour-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/whiskey-sour-scene-mobile.webp",
+    posterImage: "/images/cocktails/whiskey-sour-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/whiskey-sour-scene-mobile.webp",
     glass: "rocks",
     baseSpirit: "bourbon",
     estimatedCalories: 210,
-  }),
+  },
   {
     id: "caipirinha",
     slug: "caipirinha",

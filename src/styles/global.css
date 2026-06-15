@@ -1370,6 +1370,10 @@ h2 {
   object-position: center 30%;
 }
 
+.archive-card[data-cocktail-id="whiskey-sour"] img {
+  object-position: center 20%;
+}
+
 .archive-card div {
   padding: 13px 16px 17px;
 }
