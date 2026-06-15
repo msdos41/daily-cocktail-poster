@@ -337,13 +337,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "gin",
     estimatedCalories: 180,
   },
-  createSceneOnlyCocktail({
+  {
     id: "gin-martini",
+    slug: "gin-martini",
     date: "2026-06-27",
+    image: "/images/cocktails/gin-martini-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/gin-martini-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/gin-martini-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/gin-martini-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/gin-martini-scene-mobile.webp",
+    posterImage: "/images/cocktails/gin-martini-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/gin-martini-scene-mobile.webp",
     glass: "martini",
     baseSpirit: "gin",
     estimatedCalories: 190,
-  }),
+  },
   {
     id: "corpse-reviver-2",
     slug: "corpse-reviver-2",
