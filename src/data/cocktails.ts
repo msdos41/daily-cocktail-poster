@@ -307,13 +307,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "gin",
     estimatedCalories: 210,
   },
-  createSceneOnlyCocktail({
+  {
     id: "aviation",
+    slug: "aviation",
     date: "2026-06-22",
+    image: "/images/cocktails/aviation-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/aviation-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/aviation-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/aviation-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/aviation-scene-mobile.webp",
+    posterImage: "/images/cocktails/aviation-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/aviation-scene-mobile.webp",
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 200,
-  }),
+  },
   {
     id: "french-75",
     slug: "french-75",
