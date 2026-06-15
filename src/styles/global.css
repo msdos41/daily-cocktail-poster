@@ -1343,7 +1343,7 @@ h2 {
 }
 
 .archive-card[data-cocktail-id="gimlet"] img {
-  object-position: center 30%;
+  object-position: center 20%;
 }
 
 .archive-card[data-cocktail-id="penicillin"] img {
@@ -1352,6 +1352,10 @@ h2 {
 
 .archive-card[data-cocktail-id="aviation"] img {
   object-position: center 40%;
+}
+
+.archive-card[data-cocktail-id="daiquiri"] img {
+  object-position: center 35%;
 }
 
 .archive-card div {
