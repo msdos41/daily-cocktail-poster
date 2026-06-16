@@ -532,13 +532,21 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "dark rum",
     estimatedCalories: 430,
   },
-  createSceneOnlyCocktail({
+  {
     id: "vieux-carre",
+    slug: "vieux-carre",
     date: "2026-07-01",
+    image: "/images/cocktails/vieux-carre-scene-mobile.webp",
+    heroImageDesktop: "/images/cocktails/vieux-carre-scene-desktop.webp",
+    heroImageMobile: "/images/cocktails/vieux-carre-scene-mobile.webp",
+    backgroundDownloadDesktop: "/images/cocktails/vieux-carre-scene-desktop.webp",
+    backgroundDownloadMobile: "/images/cocktails/vieux-carre-scene-mobile.webp",
+    posterImage: "/images/cocktails/vieux-carre-scene-mobile.webp",
+    shareBaseImage: "/images/cocktails/vieux-carre-scene-mobile.webp",
     glass: "rocks",
     baseSpirit: "rye whiskey",
     estimatedCalories: 180,
-  }),
+  },
   {
     id: "singapore-sling",
     slug: "singapore-sling",

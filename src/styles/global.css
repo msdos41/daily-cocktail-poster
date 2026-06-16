@@ -1378,6 +1378,10 @@ h2 {
   object-position: center 20%;
 }
 
+.archive-card[data-cocktail-id="vieux-carre"] img {
+  object-position: center 20%;
+}
+
 .archive-card div {
   padding: 13px 16px 17px;
 }
