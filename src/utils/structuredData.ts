@@ -48,6 +48,46 @@ export function homeStructuredData({ locale, url, description }: PageStructuredD
   ];
 }
 
+type CollectionStructuredDataConfig = PageStructuredDataConfig & {
+  cocktails: Cocktail[];
+};
+
+export function collectionStructuredData(config: CollectionStructuredDataConfig): JsonLd[] {
+  const { locale, url, title, description, cocktails } = config;
+  const homeUrl = pageUrlForLocalePath(locale, "/");
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": `${url}#collection`,
+      url,
+      name: title,
+      description,
+      inLanguage: locale,
+      isPartOf: websiteReference,
+      publisher: organization,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "@id": `${url}#itemlist`,
+      name: title,
+      numberOfItems: cocktails.length,
+      itemListElement: cocktails.map((cocktail, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: cocktail.name,
+        url: pageUrlForLocalePath(locale, `/cocktails/${cocktail.slug}`),
+      })),
+    },
+    breadcrumbStructuredData([
+      { name: t(locale, "home"), url: homeUrl },
+      { name: t(locale, "theCollection"), url },
+    ]),
+  ];
+}
+
 export function archiveStructuredData(config: PageStructuredDataConfig): JsonLd[] {
   const { locale, url, title, description } = config;
   const homeUrl = pageUrlForLocalePath(locale, "/");

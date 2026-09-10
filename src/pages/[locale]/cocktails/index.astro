@@ -1,0 +1,167 @@
+---
+import { getAllCocktails, getSpiritCategory } from "@/data/cocktails";
+import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
+import { t } from "@/i18n/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { pageUrlForLocalePath } from "@/utils/seo";
+import { collectionStructuredData } from "@/utils/structuredData";
+
+export function getStaticPaths() {
+  return supportedLocales.map((locale) => ({
+    params: { locale: localeToPath(locale) },
+    props: { locale },
+  }));
+}
+
+const locale = Astro.props.locale as Locale;
+const cocktails = getAllCocktails(locale);
+const collectionImage = cocktails.find(
+  (c) => !c.heroImageMobile.toLowerCase().endsWith(".svg"),
+)?.heroImageMobile;
+const path = "/cocktails";
+const title = `${t(locale, "theCollection")} | ${t(locale, "siteName")}`;
+const description = t(locale, "collectionIntro");
+const pageUrl = pageUrlForLocalePath(locale, path);
+const structuredData = collectionStructuredData({
+  locale,
+  url: pageUrl,
+  title,
+  description,
+  cocktails,
+});
+
+const spiritFilters = [
+  { key: "all", label: t(locale, "all") },
+  { key: "gin", label: locale === "zh-CN" ? "金酒" : "Gin" },
+  { key: "whiskey", label: locale === "zh-CN" ? "威士忌" : "Bourbon / Whiskey" },
+  { key: "rum", label: locale === "zh-CN" ? "朗姆" : "Rum" },
+  { key: "tequila", label: locale === "zh-CN" ? "龙舌兰" : "Tequila" },
+  { key: "vodka", label: locale === "zh-CN" ? "伏特加" : "Vodka" },
+  { key: "mezcal", label: locale === "zh-CN" ? "梅斯卡尔" : "Mezcal" },
+  { key: "cognac", label: locale === "zh-CN" ? "干邑" : "Cognac" },
+  { key: "cachaca", label: locale === "zh-CN" ? "卡莎萨" : "Cachaça" },
+  { key: "pisco", label: locale === "zh-CN" ? "皮斯科" : "Pisco" },
+  { key: "aperol", label: locale === "zh-CN" ? "阿佩罗" : "Aperol" },
+];
+---
+
+<BaseLayout
+  locale={locale}
+  title={title}
+  description={description}
+  path={path}
+  image={collectionImage}
+  structuredData={structuredData}
+>
+  <section class="archive-heading">
+    <h1>{t(locale, "theCollection")}</h1>
+    <p class="archive-intro">{t(locale, "collectionIntro")}</p>
+  </section>
+
+  <div class="filter-chips-wrapper">
+    <div class="filter-chips" role="toolbar" aria-label={t(locale, "filterBySpirit")}>
+      {
+        spiritFilters.map((filter, index) => (
+          <button
+            type="button"
+            class:list={["filter-chip", index === 0 && "active"]}
+            data-spirit-filter={filter.key}
+            aria-pressed={index === 0 ? "true" : "false"}
+          >
+            {filter.label}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <section class="archive-grid" data-collection-grid>
+    {
+      cocktails.map((cocktail, i) => {
+        const spiritCategory = getSpiritCategory(cocktail.baseSpirit);
+        return (
+          <a
+            class="archive-card"
+            href={`/${localeToPath(locale)}/cocktails/${cocktail.slug}`}
+            data-cocktail-id={cocktail.id}
+            data-spirit={spiritCategory}
+            data-archive-featured={i === 0 ? "true" : undefined}
+          >
+            {i === 0 ? (
+              <picture>
+                <source media="(min-width: 721px)" srcset={cocktail.heroImageDesktop} />
+                <img
+                  src={cocktail.heroImageMobile}
+                  alt={`${t(locale, "visualAlt")} ${cocktail.name}`}
+                  width="1080"
+                  height="1920"
+                  fetchpriority="high"
+                  decoding="async"
+                />
+              </picture>
+            ) : (
+              <img
+                src={cocktail.heroImageMobile}
+                alt={`${t(locale, "visualAlt")} ${cocktail.name}`}
+                width="1080"
+                height="1920"
+                loading="lazy"
+                decoding="async"
+              />
+            )}
+            <div>
+              <time datetime={cocktail.date}>{cocktail.baseSpirit}</time>
+              <h2>{cocktail.name}</h2>
+              <p>{cocktail.subtitle}</p>
+            </div>
+          </a>
+        );
+      })
+    }
+  </section>
+  <p class="archive-empty" data-collection-empty hidden>{t(locale, "noPastPicks")}</p>
+</BaseLayout>
+
+<script>
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>("[data-spirit-filter]");
+  const cards = Array.from(document.querySelectorAll<HTMLElement>(".archive-card[data-spirit]"));
+  const emptyState = document.querySelector<HTMLElement>("[data-collection-empty]");
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const selectedSpirit = btn.dataset.spiritFilter || "all";
+
+      filterButtons.forEach((other) => {
+        const isActive = other === btn;
+        other.classList.toggle("active", isActive);
+        other.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+
+      let firstVisible = true;
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const cardSpirit = card.dataset.spirit;
+        const matches = selectedSpirit === "all" || cardSpirit === selectedSpirit;
+
+        if (matches) {
+          card.hidden = false;
+          visibleCount++;
+          if (firstVisible) {
+            card.setAttribute("data-archive-featured", "true");
+            firstVisible = false;
+          } else {
+            card.removeAttribute("data-archive-featured");
+          }
+        } else {
+          card.hidden = true;
+          card.removeAttribute("data-archive-featured");
+        }
+      });
+
+      if (emptyState) {
+        emptyState.hidden = visibleCount > 0;
+      }
+    });
+  });
+</script>
