@@ -1,4 +1,4 @@
-﻿import type { Locale } from "@/i18n/config";
+import type { Locale } from "@/i18n/config";
 
 export type CocktailId =
   | "negroni"
@@ -1866,9 +1866,77 @@ export function getCocktail(locale: Locale, slug: string): Cocktail | undefined 
   return getAllCocktails(locale).find((cocktail) => cocktail.slug === slug);
 }
 
-type ScheduledItem = {
-  date: string;
-};
+export const DAILY_POUR_SEQUENCE: CocktailId[] = [
+  "negroni",
+  "whiskey-sour",
+  "daiquiri",
+  "paloma",
+  "espresso-martini",
+  "boulevardier",
+  "french-75",
+  "mai-tai",
+  "sazerac",
+  "margarita",
+  "corpse-reviver-2",
+  "dark-n-stormy",
+  "paper-plane",
+  "aviation",
+  "caipirinha",
+  "old-fashioned",
+  "last-word",
+  "pina-colada",
+  "naked-and-famous",
+  "manhattan",
+  "gimlet",
+  "painkiller",
+  "penicillin",
+  "bees-knees",
+  "sidecar",
+  "mojito",
+  "vieux-carre",
+  "singapore-sling",
+  "jungle-bird",
+  "rusty-nail",
+  "pisco-sour",
+  "gin-martini",
+  "aperol-spritz",
+];
+
+export type SpiritCategory =
+  | "gin"
+  | "whiskey"
+  | "rum"
+  | "tequila"
+  | "vodka"
+  | "mezcal"
+  | "cognac"
+  | "cachaca"
+  | "pisco"
+  | "aperol";
+
+export function getSpiritCategory(baseSpirit: string): SpiritCategory {
+  const s = baseSpirit.toLowerCase();
+  if (s.includes("gin") || s.includes("金酒")) return "gin";
+  if (
+    s.includes("whiskey") ||
+    s.includes("bourbon") ||
+    s.includes("scotch") ||
+    s.includes("rye") ||
+    s.includes("威士忌") ||
+    s.includes("波本")
+  ) {
+    return "whiskey";
+  }
+  if (s.includes("cachaca") || s.includes("cachaça") || s.includes("卡莎萨")) return "cachaca";
+  if (s.includes("rum") || s.includes("朗姆")) return "rum";
+  if (s.includes("tequila") || s.includes("龙舌兰")) return "tequila";
+  if (s.includes("vodka") || s.includes("伏特加")) return "vodka";
+  if (s.includes("mezcal") || s.includes("梅斯卡尔")) return "mezcal";
+  if (s.includes("cognac") || s.includes("干邑")) return "cognac";
+  if (s.includes("pisco") || s.includes("皮斯科")) return "pisco";
+  if (s.includes("aperol") || s.includes("阿佩罗")) return "aperol";
+  return "whiskey";
+}
 
 export function getLocalDateKey(date = new Date()): string {
   const year = date.getFullYear();
@@ -1877,26 +1945,28 @@ export function getLocalDateKey(date = new Date()): string {
   return `${year}-${month}-${day}`;
 }
 
-export function getScheduledCocktail<T extends ScheduledItem>(cocktails: T[], date = new Date()): T {
-  const today = getLocalDateKey(date);
-  const scheduled = cocktails.slice().sort((a, b) => a.date.localeCompare(b.date));
-  const exact = scheduled.find((cocktail) => cocktail.date === today);
-
-  if (exact) return exact;
-
-  const published = scheduled.filter((cocktail) => cocktail.date <= today);
-  return published[published.length - 1] ?? scheduled[0];
+export function getDayNumber(dateKey: string): number {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  const utcDate = Date.UTC(year, month - 1, day);
+  const epoch = Date.UTC(2026, 0, 1);
+  return Math.floor((utcDate - epoch) / 86400000);
 }
 
-export function getPublishedCocktails<T extends ScheduledItem>(cocktails: T[], date = new Date()): T[] {
-  const today = getLocalDateKey(date);
-  return cocktails
-    .filter((cocktail) => cocktail.date <= today)
-    .sort((a, b) => b.date.localeCompare(a.date));
+export function getDailyCocktailSlug(date: Date | string = new Date()): string {
+  const dateKey = typeof date === "string" ? date : getLocalDateKey(date);
+  const dayNumber = getDayNumber(dateKey);
+  const n = DAILY_POUR_SEQUENCE.length;
+  const index = ((dayNumber % n) + n) % n;
+  return DAILY_POUR_SEQUENCE[index];
 }
 
-export function getDailyCocktail(locale: Locale, date = new Date()): Cocktail {
-  return getScheduledCocktail(getAllCocktails(locale), date);
+export function getDailyCocktail(locale: Locale, date: Date | string = new Date()): Cocktail {
+  const slug = getDailyCocktailSlug(date);
+  const cocktail = getCocktail(locale, slug);
+  if (!cocktail) {
+    return getAllCocktails(locale)[0];
+  }
+  return cocktail;
 }
 
 export function getCocktailSlugs() {
