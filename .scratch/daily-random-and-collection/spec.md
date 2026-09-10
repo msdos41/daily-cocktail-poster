@@ -1,4 +1,5 @@
-Status: ready-for-agent
+Status: closed
+Completed: 2026-09-10
 
 # Specification: Daily Seeded Pseudo-Random Selection and The Collection Catalog
 

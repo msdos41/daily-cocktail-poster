@@ -5,11 +5,12 @@ Decouple the cocktail dataset from calendar dates and implement a deterministic 
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** closed
+Completed: 2026-09-10
 
-- [ ] The cocktail data model treats all 33 cocktails as permanently active, removing date-based publication gating.
-- [ ] The selection algorithm accepts a date and returns a deterministic cocktail index/slug.
-- [ ] Multiple calls with the same date key produce the exact same cocktail recommendation.
-- [ ] Adjacent dates yield different cocktails, preventing back-to-back duplicate recommendations.
-- [ ] Full cycle traversal presents every cocktail in the catalog before restarting.
-- [ ] User timezone offsets at date boundaries resolve to the correct local calendar day.
+- [x] The cocktail data model treats all 33 cocktails as permanently active, removing date-based publication gating.
+- [x] The selection algorithm accepts a date and returns a deterministic cocktail index/slug.
+- [x] Multiple calls with the same date key produce the exact same cocktail recommendation.
+- [x] Adjacent dates yield different cocktails, preventing back-to-back duplicate recommendations.
+- [x] Full cycle traversal presents every cocktail in the catalog before restarting.
+- [x] User timezone offsets at date boundaries resolve to the correct local calendar day.
