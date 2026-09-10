@@ -57,6 +57,15 @@ const structuredData = cocktailStructuredData({ locale, cocktail, url: pageUrl }
   <ImmersiveCocktail cocktail={cocktail} locale={locale} path={path} variant="detail" recipeMode="scroll" recipeTargetId="detail-recipe" />
   <section class="detail-recipe-stage" id="detail-recipe" aria-labelledby="detail-recipe-title">
     <div class="detail-recipe-inner">
+      <nav class="detail-breadcrumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href={`/${localeToPath(locale)}/`}>{t(locale, "home")}</a></li>
+          <li class="separator" aria-hidden="true">/</li>
+          <li><a href={`/${localeToPath(locale)}/cocktails/`}>{t(locale, "theCollection")}</a></li>
+          <li class="separator" aria-hidden="true">/</li>
+          <li aria-current="page">{cocktail.name}</li>
+        </ol>
+      </nav>
       <div class="detail-recipe-layout">
         <div class="detail-recipe-summary">
           <h2 class="sr-only" id="detail-recipe-title">{t(locale, "openRecipe")}</h2>

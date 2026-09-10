@@ -1,8 +1,8 @@
 ---
-import ArchiveIcon from "lucide-astro/Archive";
 import Globe2 from "lucide-astro/Globe2";
 import Home from "lucide-astro/Home";
 import Info from "lucide-astro/Info";
+import Library from "lucide-astro/Library";
 import Menu from "lucide-astro/Menu";
 import ShieldCheck from "lucide-astro/ShieldCheck";
 import BrandMark from "@/components/BrandMark.astro";
@@ -53,9 +53,9 @@ function localeHref(item: Locale) {
           <Home size={16} aria-hidden="true" />
           <span>{t(locale, "home")}</span>
         </a>
-        <a class:list={[path === "/archive" && "active"]} href={`/${localeToPath(locale)}/archive`}>
-          <ArchiveIcon size={16} aria-hidden="true" />
-          <span>{t(locale, "pastPicks")}</span>
+        <a class:list={[(path === "/cocktails" || path === "/cocktails/") && "active"]} href={`/${localeToPath(locale)}/cocktails/`}>
+          <Library size={16} aria-hidden="true" />
+          <span>{t(locale, "theCollection")}</span>
         </a>
         <span class="menu-label">{t(locale, "info")}</span>
         <a class:list={[path === "/about" && "active"]} href={`/${localeToPath(locale)}/about`}>

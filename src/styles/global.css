@@ -1070,6 +1070,42 @@ h2 {
   margin: 0 auto;
 }
 
+.detail-breadcrumbs {
+  margin-bottom: 28px;
+}
+
+.detail-breadcrumbs ol {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.detail-breadcrumbs a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.detail-breadcrumbs a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+.detail-breadcrumbs .separator {
+  opacity: 0.4;
+}
+
+.detail-breadcrumbs [aria-current="page"] {
+  color: var(--accent-2);
+  font-weight: 600;
+}
+
 .detail-recipe-layout {
   display: grid;
   gap: clamp(42px, 6vw, 76px);
