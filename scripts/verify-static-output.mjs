@@ -306,6 +306,8 @@ function verifyCollectionPages(slugs) {
       assert(cardIdPattern.test(html), `${publicPath} static markup must include card for cocktail id ${slug}.`);
     }
 
+    assert(html.includes('archive-card-featured-visual'), `${publicPath} must include featured responsive visual.`);
+    assert(html.includes('archive-card-standard-visual'), `${publicPath} must include standard visual.`);
     assert(html.includes('data-archive-featured="true"'), `${publicPath} must include featured card presentation.`);
     assert(html.includes('data-spirit-filter="all"'), `${publicPath} must include spirit filter chips.`);
 
