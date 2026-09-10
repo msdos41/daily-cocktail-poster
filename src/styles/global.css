@@ -244,6 +244,18 @@ body.immersive-scroll-page {
   object-position: var(--hero-img-position);
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .immersive-bg img,
+  .immersive-copy {
+    transition: opacity 0.18s ease-in-out;
+  }
+
+  .immersive-stage.is-shuffling .immersive-bg img,
+  .immersive-stage.is-shuffling .immersive-copy {
+    opacity: 0.25;
+  }
+}
+
 .immersive-shade {
   position: absolute;
   inset: 0;

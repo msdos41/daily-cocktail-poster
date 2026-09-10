@@ -3,10 +3,11 @@ import ChevronDown from "lucide-astro/ChevronDown";
 import ChevronUp from "lucide-astro/ChevronUp";
 import Download from "lucide-astro/Download";
 import Share2 from "lucide-astro/Share2";
+import Shuffle from "lucide-astro/Shuffle";
 import XIcon from "lucide-astro/X";
 import UtilityTopbar from "@/components/UtilityTopbar.astro";
-import type { Cocktail } from "@/data/cocktails";
-import { type Locale } from "@/i18n/config";
+import { DAILY_POUR_SEQUENCE, type Cocktail } from "@/data/cocktails";
+import { localeToPath, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import { publicHomeUrl, shareUrlForLocalePath } from "@/utils/seo";
 
@@ -62,6 +63,7 @@ const dailyCocktailPrepaintScript = `
   const locale = ${JSON.stringify(locale)};
   const metadataLabel = ${JSON.stringify(t(locale, "dailyPour"))};
   const monthLabels = ${JSON.stringify(monthLabels)};
+  const sequence = ${JSON.stringify(DAILY_POUR_SEQUENCE)};
   const dailyCocktailsNode = document.querySelector("[data-daily-cocktails]");
   if (!dailyCocktailsNode) return;
 
@@ -73,12 +75,11 @@ const dailyCocktailPrepaintScript = `
   }
 
   const today = getLocalDateKey(new Date());
-  const scheduled = cocktails.slice().sort((a, b) => a.date.localeCompare(b.date));
-  const published = scheduled.filter((item) => item.date <= today);
-  const cocktail =
-    scheduled.find((item) => item.date === today) ||
-    published[published.length - 1] ||
-    scheduled[0];
+  const dayNumber = getDayNumber(today);
+  const n = sequence.length;
+  const index = ((dayNumber % n) + n) % n;
+  const targetId = sequence[index];
+  const cocktail = cocktails.find((item) => item.id === targetId) || cocktails[0];
 
   if (!cocktail) return;
 
@@ -134,6 +135,13 @@ const dailyCocktailPrepaintScript = `
     return year + "-" + month + "-" + day;
   }
 
+  function getDayNumber(dateKey) {
+    const parts = dateKey.split("-").map(Number);
+    const utc = Date.UTC(parts[0], parts[1] - 1, parts[2]);
+    const epoch = Date.UTC(2026, 0, 1);
+    return Math.floor((utc - epoch) / 86400000);
+  }
+
   function formatHeroMetadata(dateKey) {
     const parts = dateKey.split("-");
     const month = parts[1] || "";
@@ -163,6 +171,8 @@ const dailyCocktailPrepaintScript = `
   data-hero-variant={variant}
   data-desktop-download={cocktail.backgroundDownloadDesktop}
   data-mobile-download={cocktail.backgroundDownloadMobile}
+  data-sequence={JSON.stringify(DAILY_POUR_SEQUENCE)}
+  data-locale-prefix={`/${localeToPath(locale)}`}
   data-fallback-share-url={publicHomeUrl()}
 >
   <picture class="immersive-bg">
@@ -194,6 +204,19 @@ const dailyCocktailPrepaintScript = `
   </div>
 
   <div class="floating-actions" aria-label={t(locale, "share")}>
+    {
+      variant === "home" && (
+        <button
+          class="icon-button action-button"
+          type="button"
+          data-surprise-me
+          data-tooltip={t(locale, "surpriseMe")}
+          aria-label={t(locale, "surpriseMe")}
+        >
+          <Shuffle size={20} aria-hidden="true" />
+        </button>
+      )
+    }
 
     <div class="share-action" data-share-action>
       <button
@@ -606,14 +629,36 @@ const dailyCocktailPrepaintScript = `
     const fallbackTimer = window.setTimeout(finish, 300);
   }
 
+  const surpriseButton = document.querySelector("[data-surprise-me]");
+  surpriseButton?.addEventListener("click", () => {
+    if (!dailyCocktails.length) return;
+    const currentId = stage?.getAttribute("data-cocktail-id");
+    const candidates = dailyCocktails.filter((c) => c.id !== currentId);
+    if (!candidates.length) return;
+    const nextCocktail = candidates[Math.floor(Math.random() * candidates.length)];
+    applyDailyCocktail(nextCocktail, true);
+  });
+
+  function getDayNumber(dateKey: string): number {
+    const parts = dateKey.split("-").map(Number);
+    const utcDate = Date.UTC(parts[0], parts[1] - 1, parts[2]);
+    const epoch = Date.UTC(2026, 0, 1);
+    return Math.floor((utcDate - epoch) / 86400000);
+  }
+
   function pickDailyCocktail(cocktails: DailyCocktailPayload[], date: Date) {
     const today = getLocalDateKey(date);
-    const scheduled = cocktails.slice().sort((a, b) => a.date.localeCompare(b.date));
-    const exact = scheduled.find((cocktail) => cocktail.date === today);
-    if (exact) return exact;
-
-    const published = scheduled.filter((cocktail) => cocktail.date <= today);
-    return published[published.length - 1] ?? scheduled[0];
+    const dayNumber = getDayNumber(today);
+    let sequence: string[] = [];
+    try {
+      sequence = JSON.parse(stage?.getAttribute("data-sequence") || "[]");
+    } catch {
+      sequence = [];
+    }
+    const n = sequence.length || cocktails.length;
+    const index = ((dayNumber % n) + n) % n;
+    const targetId = sequence[index];
+    return cocktails.find((cocktail) => cocktail.id === targetId) || cocktails[0];
   }
 
   function getLocalDateKey(date: Date) {
@@ -623,8 +668,15 @@ const dailyCocktailPrepaintScript = `
     return `${year}-${month}-${day}`;
   }
 
-  function applyDailyCocktail(cocktail: DailyCocktailPayload) {
+  function applyDailyCocktail(cocktail: DailyCocktailPayload, isShuffle = false) {
     if (!stage) return;
+
+    if (isShuffle && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      stage.classList.add("is-shuffling");
+      window.setTimeout(() => {
+        stage.classList.remove("is-shuffling");
+      }, 200);
+    }
 
     stage.setAttribute("data-cocktail-id", cocktail.id);
     stage.setAttribute("data-desktop-download", cocktail.backgroundDownloadDesktop);
@@ -652,10 +704,15 @@ const dailyCocktailPrepaintScript = `
     replaceList("[data-recipe-ingredients]", cocktail.ingredients, "li");
     replaceList("[data-recipe-steps]", cocktail.steps, "li");
 
+    const localePrefix = (stage instanceof HTMLElement && stage.dataset.localePrefix) || "";
+    const shareUrl = isShuffle
+      ? `${window.location.origin}${localePrefix}/cocktails/${cocktail.slug}/`
+      : currentSharePayload.shareUrl || fallbackShareUrl;
+
     currentSharePayload = {
-      ...currentSharePayload,
       name: cocktail.name,
       filenameBase: cocktail.slug,
+      shareUrl,
     };
 
     if (sharePayloadNode) {
