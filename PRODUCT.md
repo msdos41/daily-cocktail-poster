@@ -14,7 +14,7 @@ The audience values mood first and clarity second: a memorable poster should dra
 
 Just One Sip presents one cocktail, one visual, and one concise recipe every day. The site exists to make cocktail discovery feel like encountering a new poster, not searching a catalog.
 
-Success means the first viewport feels immersive and specific, the daily recommendation is obvious, the recipe is easy to reach, and the archive remains a curated set of past picks rather than an exhaustive database.
+Success means the first viewport feels immersive and specific, the Daily Pour is obvious and fresh, the recipe is easy to reach, and The Collection provides an elegant gallery of all cocktails with quick base-spirit orientation.
 
 ## Brand Personality
 

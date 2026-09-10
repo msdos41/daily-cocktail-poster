@@ -23,15 +23,14 @@ Just One Sip is a bilingual daily cocktail poster experience ("Midnight Pour" br
 1. **Pure Static Architecture:**
    - No runtime server, no database, no CMS, no backend API, no scheduled server rebuilds.
    - All dynamic scheduling is evaluated client-side in the user's local timezone.
-2. **Daily Scheduling Source of Truth:**
-   - The `date` field in `src/data/cocktails.ts` governs the schedule.
-   - **Home page (`/[locale]/`):** Selects the cocktail matching today's local date (`date <= today`).
-   - **Archive page (`/[locale]/archive`):** Shows only published cocktails (`date <= today`). **Future cocktails must NOT leak into static archive HTML markup or sitemap archive URLs.**
-   - **Detail pages (`/[locale]/cocktails/[slug]`):** Fixed, permanent URLs that do not depend on the daily schedule.
+2. **Daily Selection & Collection Architecture:**
+   - **Home page (`/[locale]/`):** Selects the featured Daily Pour via deterministic date-seeded pseudo-random selection evaluated in the user's local timezone, with an interactive "Surprise Me" shuffle action.
+   - **Collection page (`/[locale]/cocktails/`):** Comprehensive gallery statically pre-rendering all cocktails with base-spirit filtering. Replaces the legacy `/[locale]/archive` (which 301-redirects to `/[locale]/cocktails/`).
+   - **Detail pages (`/[locale]/cocktails/[slug]`):** Fixed, permanent URLs linked directly from the Collection hub.
 3. **Bilingual by Default (`en` and `zh-CN`):**
    - Active locales: English (`en`) and Simplified Chinese (`zh-CN`).
    - Root `/` redirects to `/en/`.
-   - Locales have symmetrical routing: `/[locale]/`, `/[locale]/archive`, `/[locale]/cocktails/[slug]`, `/[locale]/about`, `/[locale]/privacy`.
+   - Locales have symmetrical routing: `/[locale]/`, `/[locale]/cocktails/`, `/[locale]/cocktails/[slug]`, `/[locale]/about`, `/[locale]/privacy`.
    - Any cocktail data change in `src/data/cocktails.ts` must provide complete and accurate translations for both `en` and `zh-CN`.
 4. **Strict SEO & Metadata Standards:**
    - Canonical URLs on every page.
@@ -133,7 +132,7 @@ Before concluding any task involving pages, data, routing, SEO, or layout:
    - Canonical and hreflang alternates are valid and reciprocal.
    - Detail pages contain valid Schema.org Recipe JSON-LD.
    - Immersive pages contain valid `data-share-payload`.
-   - No future-dated cocktail titles/slugs leak into static archive HTML or sitemap archive links.
+   - The Collection page statically pre-renders all library cocktails with valid `ItemList` structured data.
 3. Check mobile responsiveness: ensure no horizontal scrollbars or word clipping occur on mobile viewports.
 
 ---

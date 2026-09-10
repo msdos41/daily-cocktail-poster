@@ -13,8 +13,8 @@ The site is designed around an immersive full-screen cocktail image. Each day ha
 - Locale URLs: `/en/` and `/zh-cn/`.
 - Root URL `/` redirects to `/en/`.
 - Immersive home and detail pages with full-bleed cocktail visuals.
-- Client-side local-date scheduling for the daily pick.
-- Past Picks page that only shows published recommendations (`date <= local today`).
+- Daily Pour recommendation selected via deterministic date-seeded pseudo-random rotation with on-demand "Surprise Me" shuffle.
+- The Collection page exhibiting all cocktails with base-spirit filter chips and static pre-rendering.
 - Recipe bottom sheet on immersive pages.
 - HD background download.
 - Compact X and Reddit share tray on immersive pages.
@@ -50,32 +50,24 @@ npm run dev -- --host 127.0.0.1 --port 4321
 /                         -> redirects to /en/
 /en/                      -> daily immersive home
 /zh-cn/                   -> daily immersive home
-/en/archive               -> Past Picks
-/zh-cn/archive            -> Past Picks
+/en/cocktails             -> The Collection (all cocktails)
+/zh-cn/cocktails          -> The Collection (all cocktails)
+/en/archive               -> redirects to /en/cocktails
+/zh-cn/archive            -> redirects to /zh-cn/cocktails
 /en/cocktails/[slug]      -> fixed cocktail detail page
 /zh-cn/cocktails/[slug]   -> fixed cocktail detail page
 /sitemap.xml              -> static sitemap
 ```
 
-Current cocktail slugs are defined in `src/data/cocktails.ts`. The content library includes the published launch set plus scheduled upcoming recommendations.
+Current cocktail slugs are defined in `src/data/cocktails.ts`. The library contains all 33 cocktails pre-rendered across supported locales.
 
-## Daily Scheduling
+## Daily Recommendation & The Collection
 
-The `date` field in `src/data/cocktails.ts` is the source of truth for the daily recommendation schedule.
+Selection architecture:
 
-Home page behavior:
-
-- Select the cocktail whose `date` equals the user's local calendar date.
-- If there is no exact match, use the latest cocktail with `date <= today`.
-- If all scheduled cocktails are in the future, use the earliest scheduled cocktail.
-
-Past Picks behavior:
-
-- Show only cocktails with `date <= today`.
-- Sort by date descending.
-- Hide future scheduled cocktails on the client so the site can remain fully static.
-
-Detail pages are fixed by slug and do not change with the daily schedule.
+- **Home page (`/[locale]/`)**: Selects the Daily Pour using a deterministic date-seeded pseudo-random permutation based on the visitor's local calendar date. An on-demand "Surprise Me" action allows cycling to an alternate cocktail without waiting for the next calendar day.
+- **The Collection (`/[locale]/cocktails/`)**: A pure static pre-rendered gallery displaying all 33 cocktails with responsive 6-column grid cards, tuned image crops, and client-side Base Spirit filter chips. Legacy `/archive` URLs redirect here.
+- **Detail pages (`/[locale]/cocktails/[slug]`)**: Permanent canonical recipe URLs linked directly from The Collection hub.
 
 ## Project Structure
 
