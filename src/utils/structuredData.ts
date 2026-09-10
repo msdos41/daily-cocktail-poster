@@ -149,6 +149,7 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
     },
     breadcrumbStructuredData([
       { name: t(locale, "home"), url: homeUrl },
+      { name: t(locale, "theCollection"), url: pageUrlForLocalePath(locale, "/cocktails") },
       { name: cocktail.name, url },
     ]),
   ];

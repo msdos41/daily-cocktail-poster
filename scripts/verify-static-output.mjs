@@ -12,15 +12,16 @@ const locales = [
   { locale: "en", path: "en" },
   { locale: "zh-CN", path: "zh-cn" },
 ];
-const staticContentPaths = ["/", "/archive", "/about", "/privacy"];
+const staticContentPaths = ["/", "/cocktails", "/about", "/privacy"];
 const requiredPublicPaths = ["/", "/404.html", "/sitemap.xml"];
 const errors = [];
 const summary = {
   pages: 0,
   sitemapUrls: 0,
   recipes: 0,
+  itemLists: 0,
   sharePayloads: 0,
-  archiveFuturePayloadItems: 0,
+  collectionsVerified: 0,
 };
 
 main();
@@ -35,7 +36,8 @@ function main() {
   verifyRequiredPages(slugs);
   verify404(sitemapXml);
   verifyContentPages(slugs);
-  verifyArchiveFutureExposure(sitemapXml);
+  verifyCollectionPages(slugs);
+  verifyLegacyArchiveRedirects();
 
   if (errors.length > 0) {
     console.error(`Static verification failed with ${errors.length} issue${errors.length === 1 ? "" : "s"}:`);
@@ -49,10 +51,9 @@ function main() {
   console.log(`- Checked ${summary.pages} content pages.`);
   console.log(`- Checked ${summary.sitemapUrls || sitemapEntries.length} sitemap URLs.`);
   console.log(`- Checked ${summary.recipes} Recipe JSON-LD blocks.`);
+  console.log(`- Checked ${summary.itemLists} ItemList JSON-LD blocks.`);
   console.log(`- Checked ${summary.sharePayloads} share payloads.`);
-  console.log(
-    `- Archive future payload: accepted and constrained (${summary.archiveFuturePayloadItems} future inline item${summary.archiveFuturePayloadItems === 1 ? "" : "s"}).`,
-  );
+  console.log(`- Verified The Collection catalog pre-renders all ${slugs.length} cocktails.`);
 }
 
 function verifyRequiredPages(slugs) {
@@ -117,7 +118,7 @@ function verifyContentPages(slugs) {
 
     const canonical = urlForLocalePath(page.locale, page.contentPath);
     verifyCanonicalAndHreflang(html, page, canonical);
-    verifyJsonLd(html, page, canonical);
+    verifyJsonLd(html, page, canonical, slugs);
 
     if (page.kind === "home" || page.kind === "detail") {
       verifySharePayload(html, page, canonical);
@@ -190,9 +191,35 @@ function verifyCanonicalAndHreflang(html, page, canonical) {
   verifyAlternates(alternates, page.contentPath, pageId);
 }
 
-function verifyJsonLd(html, page, canonical) {
+function verifyJsonLd(html, page, canonical, slugs) {
   const items = parseJsonLd(html, page.publicPath);
   const recipes = items.filter((item) => hasJsonLdType(item, "Recipe"));
+
+  if (page.kind === "cocktails") {
+    const collections = items.filter((item) => hasJsonLdType(item, "CollectionPage"));
+    assert(collections.length === 1, `${page.publicPath} must include CollectionPage JSON-LD.`);
+
+    const itemLists = items.filter((item) => hasJsonLdType(item, "ItemList"));
+    assert(itemLists.length === 1, `${page.publicPath} must include ItemList JSON-LD.`);
+    if (itemLists.length === 1) {
+      const list = itemLists[0].itemListElement;
+      assert(Array.isArray(list), `${page.publicPath} ItemList itemListElement must be an array.`);
+      assert(
+        list.length === slugs.length,
+        `${page.publicPath} ItemList must list all ${slugs.length} cocktails, got ${list ? list.length : 0}.`,
+      );
+      if (Array.isArray(list)) {
+        list.forEach((entry, idx) => {
+          const position = idx + 1;
+          assert(entry["@type"] === "ListItem", `${page.publicPath} ItemList item ${position} must be ListItem.`);
+          assert(entry.position === position, `${page.publicPath} ItemList item ${position} position must be ${position}.`);
+          assert(typeof entry.url === "string" && entry.url.length > 0, `${page.publicPath} ItemList item ${position} url is required.`);
+        });
+      }
+      summary.itemLists = (summary.itemLists || 0) + 1;
+    }
+    return;
+  }
 
   if (page.kind !== "detail") {
     assert(recipes.length === 0, `${page.publicPath} must not include Recipe JSON-LD.`);
@@ -233,6 +260,22 @@ function verifyJsonLd(html, page, canonical) {
     });
   }
 
+  const breadcrumbs = items.filter((item) => hasJsonLdType(item, "BreadcrumbList"));
+  assert(breadcrumbs.length === 1, `${page.publicPath} must include BreadcrumbList JSON-LD.`);
+  if (breadcrumbs.length === 1) {
+    const list = breadcrumbs[0].itemListElement;
+    assert(Array.isArray(list) && list.length === 3, `${page.publicPath} BreadcrumbList must have 3 items.`);
+    if (Array.isArray(list) && list.length === 3) {
+      assert(list[0].position === 1, `${page.publicPath} Breadcrumb step 1 position must be 1.`);
+      assert(list[1].position === 2, `${page.publicPath} Breadcrumb step 2 position must be 2.`);
+      assert(
+        list[1].item === urlForLocalePath(page.locale, "/cocktails"),
+        `${page.publicPath} Breadcrumb step 2 item must point to /cocktails, got ${list[1].item}.`,
+      );
+      assert(list[2].position === 3, `${page.publicPath} Breadcrumb step 3 position must be 3.`);
+    }
+  }
+
   summary.recipes += 1;
 }
 
@@ -249,79 +292,37 @@ function verifySharePayload(html, page, canonical) {
   summary.sharePayloads += 1;
 }
 
-function verifyArchiveFutureExposure(sitemapXml) {
-  const today = getLocalDateKey(new Date());
-  const sitemapEntries = sitemapXml ? parseSitemap(sitemapXml) : [];
-
+function verifyCollectionPages(slugs) {
   for (const locale of locales) {
-    const publicPath = routeForLocalePath(locale.locale, "/archive");
+    const publicPath = routeForLocalePath(locale.locale, "/cocktails");
     const html = readRequired(filePathForPublicPath(publicPath), publicPath);
     if (!html) continue;
 
-    const payload = parseArchivePayload(html, publicPath);
-    const futureItems = payload.filter((item) => item.date > today);
-    summary.archiveFuturePayloadItems += futureItems.length;
+    for (const slug of slugs) {
+      const cardHrefPattern = new RegExp(`href=["'][^"']*/cocktails/${escapeRegExp(slug)}/?["']`);
+      assert(cardHrefPattern.test(html), `${publicPath} static markup must link to cocktail slug ${slug}.`);
 
-    const htmlWithoutPayload = stripArchivePayloadScript(html);
-
-    for (const item of futureItems) {
-      verifyFutureItemNotInArchiveMarkup(item, htmlWithoutPayload, publicPath);
-      verifyFutureItemNotInSitemapArchiveUrls(item, sitemapEntries);
+      const cardIdPattern = new RegExp(`data-cocktail-id=["']${escapeRegExp(slug)}["']`);
+      assert(cardIdPattern.test(html), `${publicPath} static markup must include card for cocktail id ${slug}.`);
     }
 
-    const staticFallbackDates = Array.from(html.matchAll(/<time\b[^>]*\bdatetime="(\d{4}-\d{2}-\d{2})"/g)).map((match) => match[1]);
-    for (const date of staticFallbackDates) {
-      assert(date <= today, `${publicPath} static archive fallback includes future date ${date}; latest allowed is ${today}.`);
-    }
+    assert(html.includes('data-archive-featured="true"'), `${publicPath} must include featured card presentation.`);
+    assert(html.includes('data-spirit-filter="all"'), `${publicPath} must include spirit filter chips.`);
+
+    summary.collectionsVerified += 1;
   }
 }
 
-function verifyFutureItemNotInArchiveMarkup(item, html, publicPath) {
-  if (item.slug) {
-    const futureHrefPattern = new RegExp(`href=["'][^"']*/cocktails/${escapeRegExp(item.slug)}/?["']`);
-    assert(!futureHrefPattern.test(html), `${publicPath} static archive markup links to future slug ${item.slug}.`);
-  }
-
-  if (item.id) {
-    const futureIdPattern = new RegExp(`data-cocktail-id=["']${escapeRegExp(item.id)}["']`);
-    assert(!futureIdPattern.test(html), `${publicPath} static archive markup exposes future cocktail id ${item.id}.`);
-  }
-
-  if (item.name) {
-    const headings = Array.from(html.matchAll(/<h2\b[^>]*>([\s\S]*?)<\/h2>/g)).map((match) =>
-      decodeHtml(stripTags(match[1])).trim(),
-    );
-    const imageAlts = getTags(html, "img").map((tag) => parseAttrs(tag).alt || "");
-
-    assert(!headings.includes(item.name), `${publicPath} static archive markup exposes future cocktail heading ${item.name}.`);
-    assert(
-      !imageAlts.some((alt) => alt.includes(item.name)),
-      `${publicPath} static archive markup exposes future cocktail image alt text ${item.name}.`,
-    );
-  }
-
-  if (item.date) {
-    const futureDatePattern = new RegExp(`<time\\b[^>]*\\bdatetime=["']${escapeRegExp(item.date)}["']`);
-    assert(!futureDatePattern.test(html), `${publicPath} static archive markup exposes future date ${item.date}.`);
-  }
-}
-
-function verifyFutureItemNotInSitemapArchiveUrls(item, sitemapEntries) {
-  for (const entry of sitemapEntries) {
-    const hrefs = [entry.loc, ...entry.alternates.map((alternate) => alternate.href)].filter(Boolean);
-
-    for (const href of hrefs) {
-      if (item.date && href.includes(item.date)) {
-        assert(false, `sitemap.xml exposes future archive date ${item.date} in ${href}.`);
-      }
-
-      if (item.name && href.includes(item.name)) {
-        assert(false, `sitemap.xml exposes future archive name ${item.name} in ${href}.`);
-      }
-
-      if (item.slug && href.includes(item.slug) && !isExpectedCocktailDetailUrl(href, item.slug)) {
-        assert(false, `sitemap.xml exposes future archive slug outside fixed detail URLs: ${href}.`);
-      }
+function verifyLegacyArchiveRedirects() {
+  for (const locale of locales) {
+    const archiveFile = path.join(distDir, locale.path, "archive", "index.html");
+    if (fileExists(archiveFile)) {
+      const html = readRequired(archiveFile, `${locale.path}/archive`);
+      const targetPath = `/${locale.path}/cocktails/`;
+      assert(
+        html.includes(targetPath),
+        `${locale.path}/archive redirect must point to ${targetPath}`,
+      );
     }
   }
 }
@@ -447,26 +448,6 @@ function parseSharePayload(html, pageId) {
     assert(false, `${pageId} contains invalid data-share-payload JSON: ${error.message}`);
     return undefined;
   }
-}
-
-function parseArchivePayload(html, pageId) {
-  const match = html.match(/window\.__ARCHIVE_PAYLOAD__\s*=\s*(\[[\s\S]*?\]);\s*window\.__ARCHIVE_CONFIG__/);
-  assert(Boolean(match), `${pageId} must include window.__ARCHIVE_PAYLOAD__.`);
-
-  if (!match) return [];
-
-  try {
-    const payload = JSON.parse(match[1]);
-    assert(Array.isArray(payload), `${pageId} archive payload must be an array.`);
-    return Array.isArray(payload) ? payload : [];
-  } catch (error) {
-    assert(false, `${pageId} contains invalid archive payload JSON: ${error.message}`);
-    return [];
-  }
-}
-
-function stripArchivePayloadScript(html) {
-  return html.replace(/<script\b[^>]*>window\.__ARCHIVE_PAYLOAD__[\s\S]*?<\/script>/, "");
 }
 
 function getTags(html, tagName) {
