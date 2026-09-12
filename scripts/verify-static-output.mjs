@@ -368,6 +368,12 @@ function verifyJsonLd(html, page, canonical, slugs) {
   assert(typeof recipe.prepTime === "string" && recipe.prepTime.length > 0, `${page.publicPath} Recipe prepTime is required.`);
   assert(typeof recipe.recipeCuisine === "string" && recipe.recipeCuisine.length > 0, `${page.publicPath} Recipe recipeCuisine is required.`);
   assert(Array.isArray(recipe.tool) && recipe.tool.length > 0, `${page.publicPath} Recipe tool must be a non-empty array.`);
+  if (recipe.suitableForDiet !== undefined) {
+    assert(
+      recipe.suitableForDiet === "https://schema.org/VeganDiet",
+      `${page.publicPath} Recipe suitableForDiet must be VeganDiet, got ${recipe.suitableForDiet}.`,
+    );
+  }
 
   const steps = recipe.recipeInstructions;
   assert(Array.isArray(steps) && steps.length > 0, `${page.publicPath} Recipe recipeInstructions must be a non-empty array.`);
