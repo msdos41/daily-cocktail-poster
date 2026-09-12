@@ -1,7 +1,7 @@
-import type { Cocktail } from "@/data/cocktails";
-import type { Locale } from "@/i18n/config";
-import { t } from "@/i18n/ui";
-import { pageUrlForLocalePath, publicHomeUrl, site, socialImageMetadata } from "@/utils/seo";
+import type { Cocktail } from "../data/cocktails.ts";
+import type { Locale } from "../i18n/config.ts";
+import { t } from "../i18n/ui.ts";
+import { pageUrlForLocalePath, publicHomeUrl, site, socialImageMetadata } from "./seo.ts";
 
 export type JsonLd = {
   [key: string]: JsonLdValue;
@@ -27,6 +27,7 @@ const organization = {
   "@id": `${site}/#organization`,
   name: "Just One Sip",
   url: publicHomeUrl(),
+  sameAs: ["https://x.com/justonesip_app"],
 };
 
 const websiteReference = {
@@ -129,11 +130,16 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
       recipeCategory: "Cocktail",
       recipeCuisine: cocktail.recipeCuisine,
       prepTime: "PT3M",
-      cookTime: "PT0M",
       totalTime: "PT3M",
       recipeYield: "1 serving",
       recipeIngredient: cocktail.ingredients,
       tool: cocktail.tools,
+      ...(cocktail.wikidataId && {
+        sameAs: `https://www.wikidata.org/wiki/${cocktail.wikidataId}`,
+      }),
+      ...(cocktail.ibaCategory && {
+        isBasedOn: "https://iba-world.com/iba-official-cocktails/",
+      }),
       ...(cocktail.suitableForDiet && { suitableForDiet: cocktail.suitableForDiet }),
       recipeInstructions: cocktail.steps.map((step, index) => ({
         "@type": "HowToStep",

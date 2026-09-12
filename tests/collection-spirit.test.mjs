@@ -9,9 +9,10 @@ const validCategories = new Set([
   "tequila",
   "vodka",
   "mezcal",
-  "cognac",
-  "cachaca",
+  "brandy",
+  "scotch",
   "pisco",
+  "cachaca",
   "aperol",
 ]);
 

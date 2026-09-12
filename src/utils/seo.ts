@@ -1,4 +1,4 @@
-import { defaultLocale, localeToPath, supportedLocales, type Locale } from "@/i18n/config";
+import { defaultLocale, localeToPath, supportedLocales, type Locale } from "../i18n/config.ts";
 
 export const site = "https://justonesip.today";
 const defaultSocialImage = "/images/og-default-v2.jpg";

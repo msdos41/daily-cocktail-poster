@@ -3,7 +3,7 @@ import {
   cocktailEditorials,
   type CocktailEditorialData,
   type CocktailFAQ,
-} from "./cocktailEditorial";
+} from "./cocktailEditorial.ts";
 
 export type { CocktailFAQ, CocktailEditorialData };
 
@@ -57,6 +57,8 @@ type StableCocktail = {
   glass: string;
   baseSpirit: string;
   estimatedCalories: number;
+  wikidataId?: string;
+  ibaCategory?: string;
 };
 
 type LocalizedCocktail = {
@@ -75,7 +77,13 @@ type LocalizedCocktail = {
 
 export type Cocktail = StableCocktail & LocalizedCocktail & CocktailEditorialData;
 
-type SceneOnlyCocktailConfig = Pick<StableCocktail, "id" | "date" | "glass" | "baseSpirit" | "estimatedCalories">;
+type SceneOnlyCocktailConfig = Pick<
+  StableCocktail,
+  "id" | "date" | "glass" | "baseSpirit" | "estimatedCalories"
+> & {
+  wikidataId?: string;
+  ibaCategory?: string;
+};
 
 function createSceneOnlyCocktail({
   id,
@@ -83,6 +91,8 @@ function createSceneOnlyCocktail({
   glass,
   baseSpirit,
   estimatedCalories,
+  wikidataId,
+  ibaCategory,
 }: SceneOnlyCocktailConfig): StableCocktail {
   const sceneDesktop = `/images/cocktails/${id}-scene-desktop.svg`;
   const sceneMobile = `/images/cocktails/${id}-scene-mobile.svg`;
@@ -102,6 +112,8 @@ function createSceneOnlyCocktail({
     glass,
     baseSpirit,
     estimatedCalories,
+    wikidataId,
+    ibaCategory,
   };
 }
 
@@ -120,6 +132,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "highball",
     baseSpirit: "white rum",
     estimatedCalories: 190,
+    wikidataId: "Q487338",
+    ibaCategory: "Contemporary Classics",
   },
   {
     id: "manhattan",
@@ -135,6 +149,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "rye whiskey",
     estimatedCalories: 190,
+    wikidataId: "Q1414032",
+    ibaCategory: "The Unforgettables",
   },
   {
     id: "sazerac",
@@ -150,6 +166,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "rye whiskey",
     estimatedCalories: 170,
+    wikidataId: "Q921623",
+    ibaCategory: "The Unforgettables",
   },
   {
     id: "paloma",
@@ -165,6 +183,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "highball",
     baseSpirit: "tequila",
     estimatedCalories: 190,
+    wikidataId: "Q7128571",
+    ibaCategory: "Contemporary Classics",
   },
   {
     id: "espresso-martini",
@@ -180,6 +200,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "martini",
     baseSpirit: "vodka",
     estimatedCalories: 200,
+    wikidataId: "Q19904106",
+    ibaCategory: "New Era Drinks",
   },
   {
     id: "last-word",
@@ -195,6 +217,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 210,
+    wikidataId: "Q1806730",
+    ibaCategory: "The Unforgettables",
   },
   {
     id: "mai-tai",
@@ -210,6 +234,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "rum",
     estimatedCalories: 260,
+    wikidataId: "Q280531",
+    ibaCategory: "Contemporary Classics",
   },
   {
     id: "old-fashioned",
@@ -225,6 +251,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "bourbon",
     estimatedCalories: 160,
+    wikidataId: "Q497448",
+    ibaCategory: "The Unforgettables",
   },
   {
     id: "bees-knees",
@@ -240,6 +268,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 200,
+    wikidataId: "Q7716256",
+    ibaCategory: "New Era Drinks",
   },
   {
     id: "caipirinha",
@@ -255,6 +285,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "cachaca",
     estimatedCalories: 170,
+    wikidataId: "Q625152",
+    ibaCategory: "Contemporary Classics",
   },
   {
     id: "boulevardier",
@@ -270,6 +302,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "bourbon",
     estimatedCalories: 220,
+    wikidataId: "Q13516767",
+    ibaCategory: "The Unforgettables",
   },
   {
     id: "singapore-sling",
@@ -285,6 +319,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "highball",
     baseSpirit: "gin",
     estimatedCalories: 230,
+    wikidataId: "Q703910",
+    ibaCategory: "Contemporary Classics",
   },
   {
     id: "sidecar",
@@ -300,6 +336,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "cognac",
     estimatedCalories: 210,
+    wikidataId: "Q1134797",
+    ibaCategory: "The Unforgettables",
   },
   {
     id: "naked-and-famous",
@@ -315,6 +353,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "mezcal",
     estimatedCalories: 200,
+    wikidataId: "Q96394781",
+    ibaCategory: "New Era Drinks",
   },
   {
     id: "french-75",
@@ -330,6 +370,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "flute",
     baseSpirit: "gin",
     estimatedCalories: 180,
+    wikidataId: "Q3753012",
+    ibaCategory: "Contemporary Classics",
   },
   {
     id: "pina-colada",
@@ -345,6 +387,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "hurricane",
     baseSpirit: "rum",
     estimatedCalories: 370,
+    wikidataId: "Q745886",
+    ibaCategory: "Contemporary Classics",
   },
   {
     id: "margarita",
@@ -360,6 +404,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "tequila",
     estimatedCalories: 210,
+    wikidataId: "Q657621",
+    ibaCategory: "Contemporary Classics",
   },
   {
     id: "rusty-nail",
@@ -375,6 +421,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "scotch",
     estimatedCalories: 180,
+    wikidataId: "Q1754978",
+    ibaCategory: "The Unforgettables",
   },
   {
     id: "corpse-reviver-2",
@@ -390,6 +438,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 190,
+    wikidataId: "Q5172602",
+    ibaCategory: "The Unforgettables",
   },
   {
     id: "painkiller",
@@ -405,6 +455,7 @@ const stableCocktails: StableCocktail[] = [
     glass: "tiki mug",
     baseSpirit: "dark rum",
     estimatedCalories: 430,
+    wikidataId: "Q3889022",
   },
   {
     id: "paper-plane",
@@ -420,6 +471,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "bourbon",
     estimatedCalories: 170,
+    wikidataId: "Q96398368",
+    ibaCategory: "New Era Drinks",
   },
   {
     id: "gimlet",
@@ -435,6 +488,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 190,
+    wikidataId: "Q1524752",
+    ibaCategory: "Contemporary Classics",
   },
   {
     id: "penicillin",
@@ -450,6 +505,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "scotch",
     estimatedCalories: 210,
+    wikidataId: "Q96398751",
+    ibaCategory: "New Era Drinks",
   },
   {
     id: "aviation",
@@ -465,6 +522,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 200,
+    wikidataId: "Q790813",
+    ibaCategory: "The Unforgettables",
   },
   {
     id: "daiquiri",
@@ -480,6 +539,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "white rum",
     estimatedCalories: 170,
+    wikidataId: "Q917361",
+    ibaCategory: "The Unforgettables",
   },
   {
     id: "negroni",
@@ -495,6 +556,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "gin",
     estimatedCalories: 190,
+    wikidataId: "Q1401202",
+    ibaCategory: "The Unforgettables",
   },
   {
     id: "dark-n-stormy",
@@ -510,6 +573,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "highball",
     baseSpirit: "dark rum",
     estimatedCalories: 210,
+    wikidataId: "Q5223103",
+    ibaCategory: "New Era Drinks",
   },
   {
     id: "pisco-sour",
@@ -525,6 +590,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "pisco",
     estimatedCalories: 200,
+    wikidataId: "Q673012",
+    ibaCategory: "Contemporary Classics",
   },
   {
     id: "gin-martini",
@@ -540,6 +607,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "martini",
     baseSpirit: "gin",
     estimatedCalories: 190,
+    wikidataId: "Q273027",
+    ibaCategory: "The Unforgettables",
   },
   {
     id: "aperol-spritz",
@@ -555,6 +624,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "wine",
     baseSpirit: "aperol",
     estimatedCalories: 180,
+    wikidataId: "Q668635",
+    ibaCategory: "Contemporary Classics",
   },
   {
     id: "whiskey-sour",
@@ -570,6 +641,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "bourbon",
     estimatedCalories: 210,
+    wikidataId: "Q2279429",
+    ibaCategory: "The Unforgettables",
   },
   {
     id: "jungle-bird",
@@ -585,6 +658,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "dark rum",
     estimatedCalories: 250,
+    wikidataId: "Q131985862",
+    ibaCategory: "New Era Drinks",
   },
   {
     id: "vieux-carre",
@@ -600,6 +675,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "rye whiskey",
     estimatedCalories: 180,
+    wikidataId: "Q33076576",
+    ibaCategory: "The Unforgettables",
   },
 ];
 
@@ -1913,25 +1990,30 @@ export const DAILY_POUR_SEQUENCE: CocktailId[] = [
   "aperol-spritz",
 ];
 
-export type SpiritCategory =
-  | "gin"
-  | "whiskey"
-  | "rum"
-  | "tequila"
-  | "vodka"
-  | "mezcal"
-  | "cognac"
-  | "cachaca"
-  | "pisco"
-  | "aperol";
+export const SUPPORTED_SPIRITS = [
+  "gin",
+  "whiskey",
+  "rum",
+  "tequila",
+  "vodka",
+  "mezcal",
+  "brandy",
+  "scotch",
+  "pisco",
+  "cachaca",
+  "aperol",
+] as const;
 
-export function getSpiritCategory(baseSpirit: string): SpiritCategory {
+export type SupportedSpirit = (typeof SUPPORTED_SPIRITS)[number];
+export type SpiritCategory = SupportedSpirit;
+
+export function getSpiritCategory(baseSpirit: string): SupportedSpirit {
   const s = baseSpirit.toLowerCase();
   if (s.includes("gin") || s.includes("金酒")) return "gin";
+  if (s.includes("scotch") || s.includes("苏格兰")) return "scotch";
   if (
     s.includes("whiskey") ||
     s.includes("bourbon") ||
-    s.includes("scotch") ||
     s.includes("rye") ||
     s.includes("威士忌") ||
     s.includes("波本")
@@ -1943,7 +2025,7 @@ export function getSpiritCategory(baseSpirit: string): SpiritCategory {
   if (s.includes("tequila") || s.includes("龙舌兰")) return "tequila";
   if (s.includes("vodka") || s.includes("伏特加")) return "vodka";
   if (s.includes("mezcal") || s.includes("梅斯卡尔")) return "mezcal";
-  if (s.includes("cognac") || s.includes("干邑")) return "cognac";
+  if (s.includes("brandy") || s.includes("cognac") || s.includes("干邑") || s.includes("白兰地")) return "brandy";
   if (s.includes("pisco") || s.includes("皮斯科")) return "pisco";
   if (s.includes("aperol") || s.includes("阿佩罗")) return "aperol";
   return "whiskey";
@@ -1989,22 +2071,6 @@ export type SpiritTaxonomy = {
   name: string;
   description: string;
 };
-
-export const SUPPORTED_SPIRITS = [
-  "gin",
-  "whiskey",
-  "rum",
-  "tequila",
-  "vodka",
-  "mezcal",
-  "brandy",
-  "scotch",
-  "pisco",
-  "cachaca",
-  "aperol",
-] as const;
-
-export type SupportedSpirit = (typeof SUPPORTED_SPIRITS)[number];
 
 const spiritTaxonomyData: Record<Locale, Record<SupportedSpirit, { name: string; description: string }>> = {
   en: {
