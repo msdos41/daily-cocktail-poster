@@ -1,0 +1,157 @@
+---
+import {
+  getCocktailsBySpirit,
+  getSpiritTaxonomy,
+  SUPPORTED_SPIRITS,
+  type SupportedSpirit,
+} from "@/data/cocktails";
+import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
+import { t } from "@/i18n/ui";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { pageUrlForLocalePath } from "@/utils/seo";
+import { spiritTaxonomyStructuredData } from "@/utils/structuredData";
+
+export function getStaticPaths() {
+  return supportedLocales.flatMap((locale) =>
+    SUPPORTED_SPIRITS.map((spirit) => ({
+      params: { locale: localeToPath(locale), spirit },
+      props: { locale, spirit },
+    })),
+  );
+}
+
+const locale = Astro.props.locale as Locale;
+const spirit = Astro.props.spirit as SupportedSpirit;
+const spiritTaxonomy = getSpiritTaxonomy(locale, spirit);
+
+if (!spiritTaxonomy) {
+  return Astro.redirect(`/${localeToPath(locale)}/cocktails/`);
+}
+
+const cocktails = getCocktailsBySpirit(locale, spirit);
+const collectionImage = cocktails.find(
+  (c) => !c.heroImageMobile.toLowerCase().endsWith(".svg"),
+)?.heroImageMobile;
+const path = `/cocktails/spirit/${spirit}`;
+const title = `${spiritTaxonomy.name} | ${t(locale, "siteName")}`;
+const description = spiritTaxonomy.description;
+const pageUrl = pageUrlForLocalePath(locale, path);
+const structuredData = spiritTaxonomyStructuredData({
+  locale,
+  url: pageUrl,
+  title,
+  description,
+  cocktails,
+  spiritName: spiritTaxonomy.name,
+});
+
+const spiritFilterLabels: Record<SupportedSpirit, { en: string; "zh-CN": string }> = {
+  gin: { en: "Gin", "zh-CN": "金酒" },
+  whiskey: { en: "Bourbon / Whiskey", "zh-CN": "威士忌" },
+  rum: { en: "Rum", "zh-CN": "朗姆" },
+  tequila: { en: "Tequila", "zh-CN": "龙舌兰" },
+  vodka: { en: "Vodka", "zh-CN": "伏特加" },
+  mezcal: { en: "Mezcal", "zh-CN": "梅斯卡尔" },
+  brandy: { en: "Cognac", "zh-CN": "干邑" },
+  scotch: { en: "Scotch", "zh-CN": "苏格兰" },
+  pisco: { en: "Pisco", "zh-CN": "皮斯科" },
+  cachaca: { en: "Cachaça", "zh-CN": "卡莎萨" },
+  aperol: { en: "Aperol", "zh-CN": "阿佩罗" },
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title={title}
+  description={description}
+  path={path}
+  image={collectionImage}
+  structuredData={structuredData}
+>
+  <nav class="detail-breadcrumbs" aria-label="Breadcrumb" style="margin-top: 1rem;">
+    <ol>
+      <li><a href={`/${localeToPath(locale)}/`}>{t(locale, "home")}</a></li>
+      <li class="separator" aria-hidden="true">/</li>
+      <li><a href={`/${localeToPath(locale)}/cocktails/`}>{t(locale, "theCollection")}</a></li>
+      <li class="separator" aria-hidden="true">/</li>
+      <li aria-current="page">{spiritTaxonomy.name}</li>
+    </ol>
+  </nav>
+
+  <header class="spirit-taxonomy-header" style="margin: 1.5rem 0 1rem;">
+    <h1 style="font-family: var(--font-display, serif); font-size: clamp(2rem, 5vw, 2.75rem); line-height: 1.1; margin: 0 0 0.5rem; color: var(--color-ink, #f7efe5);">
+      {spiritTaxonomy.name}
+    </h1>
+    <p style="color: var(--muted, rgba(247, 239, 229, 0.65)); font-size: 0.95rem; max-width: 65ch; line-height: 1.6; margin: 0;">
+      {spiritTaxonomy.description}
+    </p>
+  </header>
+
+  <div class="filter-chips-wrapper">
+    <div class="filter-chips" role="navigation" aria-label={t(locale, "filterBySpirit")}>
+      <a
+        href={`/${localeToPath(locale)}/cocktails/`}
+        class="filter-chip"
+        style="text-decoration: none;"
+      >
+        {t(locale, "all")}
+      </a>
+      {
+        SUPPORTED_SPIRITS.map((s) => {
+          const isActive = s === spirit;
+          const label = spiritFilterLabels[s][locale];
+          return (
+            <a
+              href={`/${localeToPath(locale)}/cocktails/spirit/${s}/`}
+              class:list={["filter-chip", isActive && "active"]}
+              style="text-decoration: none;"
+              aria-current={isActive ? "page" : undefined}
+            >
+              {label}
+            </a>
+          );
+        })
+      }
+    </div>
+  </div>
+
+  <section class="archive-grid" data-collection-grid>
+    {
+      cocktails.map((cocktail, i) => (
+        <a
+          class="archive-card"
+          href={`/${localeToPath(locale)}/cocktails/${cocktail.slug}`}
+          data-cocktail-id={cocktail.id}
+          data-archive-featured={i === 0 ? "true" : undefined}
+        >
+          <picture class="archive-card-featured-visual">
+            <source media="(min-width: 721px)" srcset={cocktail.heroImageDesktop} />
+            <img
+              src={cocktail.heroImageMobile}
+              alt={`${t(locale, "visualAlt")} ${cocktail.name}`}
+              width="1080"
+              height="1920"
+              fetchpriority={i === 0 ? "high" : undefined}
+              loading={i === 0 ? undefined : "lazy"}
+              decoding="async"
+            />
+          </picture>
+          <img
+            class="archive-card-standard-visual"
+            src={cocktail.heroImageMobile}
+            alt={`${t(locale, "visualAlt")} ${cocktail.name}`}
+            width="1080"
+            height="1920"
+            loading="lazy"
+            decoding="async"
+          />
+          <div>
+            <time datetime={cocktail.date}>{cocktail.baseSpirit}</time>
+            <h2>{cocktail.name}</h2>
+            <p>{cocktail.subtitle}</p>
+          </div>
+        </a>
+      ))
+    }
+  </section>
+</BaseLayout>
