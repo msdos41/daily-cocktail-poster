@@ -112,10 +112,10 @@ export function archiveStructuredData(config: PageStructuredDataConfig): JsonLd[
 }
 
 export function cocktailStructuredData({ locale, cocktail, url }: CocktailStructuredDataConfig): JsonLd[] {
-  const image = socialImageMetadata(cocktail.posterImage).url;
+  const image = socialImageMetadata(cocktail.ogImage || cocktail.posterImage).url;
   const homeUrl = pageUrlForLocalePath(locale, "/");
 
-  return [
+  const items: JsonLd[] = [
     {
       "@context": "https://schema.org",
       "@type": "Recipe",
@@ -127,11 +127,14 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
       inLanguage: locale,
       datePublished: cocktail.date,
       recipeCategory: "Cocktail",
-      prepTime: "PT2M",
-      cookTime: "PT3M",
-      totalTime: "PT5M",
-      recipeYield: "1",
+      recipeCuisine: cocktail.recipeCuisine,
+      prepTime: "PT3M",
+      cookTime: "PT0M",
+      totalTime: "PT3M",
+      recipeYield: "1 serving",
       recipeIngredient: cocktail.ingredients,
+      tool: cocktail.tools,
+      ...(cocktail.suitableForDiet && { suitableForDiet: cocktail.suitableForDiet }),
       recipeInstructions: cocktail.steps.map((step, index) => ({
         "@type": "HowToStep",
         position: index + 1,
@@ -151,6 +154,67 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
       { name: t(locale, "home"), url: homeUrl },
       { name: t(locale, "theCollection"), url: pageUrlForLocalePath(locale, "/cocktails") },
       { name: cocktail.name, url },
+    ]),
+  ];
+
+  if (cocktail.faqs && cocktail.faqs.length > 0) {
+    items.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": `${url}#faq`,
+      mainEntity: cocktail.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    });
+  }
+
+  return items;
+}
+
+type SpiritTaxonomyStructuredDataConfig = PageStructuredDataConfig & {
+  cocktails: Cocktail[];
+  spiritName: string;
+};
+
+export function spiritTaxonomyStructuredData(config: SpiritTaxonomyStructuredDataConfig): JsonLd[] {
+  const { locale, url, title, description, cocktails, spiritName } = config;
+  const homeUrl = pageUrlForLocalePath(locale, "/");
+  const collectionUrl = pageUrlForLocalePath(locale, "/cocktails");
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": `${url}#collection`,
+      url,
+      name: title,
+      description,
+      inLanguage: locale,
+      isPartOf: websiteReference,
+      publisher: organization,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "@id": `${url}#itemlist`,
+      name: title,
+      numberOfItems: cocktails.length,
+      itemListElement: cocktails.map((cocktail, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: cocktail.name,
+        url: pageUrlForLocalePath(locale, `/cocktails/${cocktail.slug}`),
+      })),
+    },
+    breadcrumbStructuredData([
+      { name: t(locale, "home"), url: homeUrl },
+      { name: t(locale, "theCollection"), url: collectionUrl },
+      { name: spiritName, url },
     ]),
   ];
 }

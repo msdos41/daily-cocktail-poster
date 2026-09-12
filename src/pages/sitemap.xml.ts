@@ -1,4 +1,4 @@
-import { getCocktailSlugs } from "@/data/cocktails";
+import { getAllCocktails, getCocktailSlugs, SUPPORTED_SPIRITS } from "@/data/cocktails";
 import { supportedLocales, type Locale } from "@/i18n/config";
 import { alternateLinks, pageUrlForLocalePath } from "@/utils/seo";
 
@@ -7,15 +7,27 @@ const staticPaths = ["/", "/cocktails", "/about", "/privacy"];
 type SitemapEntry = {
   path: string;
   url: string;
+  lastmod: string;
 };
 
 export function GET() {
+  const defaultDate = "2026-09-12";
+  const cocktails = getAllCocktails("en");
+  const cocktailDateMap = new Map(cocktails.map((c) => [c.slug, c.date || defaultDate]));
+
   const entries: SitemapEntry[] = [
     ...supportedLocales.flatMap((locale) =>
-      staticPaths.map((path) => sitemapEntry(locale, path)),
+      staticPaths.map((path) => sitemapEntry(locale, path, defaultDate)),
     ),
     ...supportedLocales.flatMap((locale) =>
-      getCocktailSlugs().map((slug) => sitemapEntry(locale, `/cocktails/${slug}`)),
+      SUPPORTED_SPIRITS.map((spirit) =>
+        sitemapEntry(locale, `/cocktails/spirit/${spirit}`, defaultDate),
+      ),
+    ),
+    ...supportedLocales.flatMap((locale) =>
+      getCocktailSlugs().map((slug) =>
+        sitemapEntry(locale, `/cocktails/${slug}`, cocktailDateMap.get(slug) || defaultDate),
+      ),
     ),
   ];
 
@@ -31,10 +43,11 @@ ${entries.map((entry) => renderUrl(entry)).join("\n")}
   });
 }
 
-function sitemapEntry(locale: Locale, path: string): SitemapEntry {
+function sitemapEntry(locale: Locale, path: string, lastmod: string): SitemapEntry {
   return {
     path,
     url: pageUrlForLocalePath(locale, path),
+    lastmod,
   };
 }
 
@@ -48,6 +61,7 @@ function renderUrl(entry: SitemapEntry) {
 
   return `  <url>
     <loc>${escapeXml(entry.url)}</loc>
+    <lastmod>${escapeXml(entry.lastmod)}</lastmod>
 ${alternates}
   </url>`;
 }

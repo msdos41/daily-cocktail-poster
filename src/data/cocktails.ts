@@ -1,4 +1,11 @@
 import type { Locale } from "@/i18n/config";
+import {
+  cocktailEditorials,
+  type CocktailEditorialData,
+  type CocktailFAQ,
+} from "./cocktailEditorial";
+
+export type { CocktailFAQ, CocktailEditorialData };
 
 export type CocktailId =
   | "negroni"
@@ -66,7 +73,7 @@ type LocalizedCocktail = {
   baseSpirit: string;
 };
 
-export type Cocktail = StableCocktail & LocalizedCocktail;
+export type Cocktail = StableCocktail & LocalizedCocktail & CocktailEditorialData;
 
 type SceneOnlyCocktailConfig = Pick<StableCocktail, "id" | "date" | "glass" | "baseSpirit" | "estimatedCalories">;
 
@@ -1862,6 +1869,7 @@ export function getAllCocktails(locale: Locale): Cocktail[] {
     ...stable,
     ogImage: stable.ogImage || `/images/cocktails/${stable.id}-og.webp`,
     ...localizedCocktails[locale][stable.id],
+    ...cocktailEditorials[locale][stable.id],
   }));
 }
 
@@ -1975,3 +1983,184 @@ export function getDailyCocktail(locale: Locale, date: Date | string = new Date(
 export function getCocktailSlugs() {
   return stableCocktails.map((cocktail) => cocktail.slug);
 }
+
+export type SpiritTaxonomy = {
+  slug: string;
+  name: string;
+  description: string;
+};
+
+export const SUPPORTED_SPIRITS = [
+  "gin",
+  "whiskey",
+  "rum",
+  "tequila",
+  "vodka",
+  "mezcal",
+  "brandy",
+  "scotch",
+  "pisco",
+  "cachaca",
+  "aperol",
+] as const;
+
+export type SupportedSpirit = (typeof SUPPORTED_SPIRITS)[number];
+
+const spiritTaxonomyData: Record<Locale, Record<SupportedSpirit, { name: string; description: string }>> = {
+  en: {
+    gin: {
+      name: "Classic Gin Cocktails",
+      description: "Explore timeless gin cocktails crafted with botanical precision and crisp juniper elegance.",
+    },
+    whiskey: {
+      name: "Classic Whiskey & Bourbon Cocktails",
+      description: "Explore rich bourbon and spicy rye whiskey cocktail recipes steeped in heritage.",
+    },
+    rum: {
+      name: "Classic Rum Cocktails",
+      description: "Discover classic rum cocktails from Havana highballs to tropical Tiki standards.",
+    },
+    tequila: {
+      name: "Classic Tequila Cocktails",
+      description: "Sip crisp, citrus-forward 100% blue agave tequila classics.",
+    },
+    vodka: {
+      name: "Classic Vodka Cocktails",
+      description: "Explore clean, velvety vodka cocktails crafted for sophisticated evenings.",
+    },
+    mezcal: {
+      name: "Artisanal Mezcal Cocktails",
+      description: "Savor smoky, complex cocktails featuring artisanal agave mezcal.",
+    },
+    brandy: {
+      name: "Classic Cognac & Brandy Cocktails",
+      description: "Discover luxurious cocktails showcasing refined French Cognac and fruit brandies.",
+    },
+    scotch: {
+      name: "Classic Scotch Whisky Cocktails",
+      description: "Warm peat smoke, heather honey, and rich malt scotch cocktail recipes.",
+    },
+    pisco: {
+      name: "Classic Pisco Cocktails",
+      description: "Bright, floral grape brandy cocktails from the Andes.",
+    },
+    cachaca: {
+      name: "Authentic Cachaça Cocktails",
+      description: "Taste the raw, vibrant soul of Brazilian sugarcane cocktails.",
+    },
+    aperol: {
+      name: "Aperol & Aperitivo Cocktails",
+      description: "Bright bittersweet aperitifs made for golden hour and quiet sunsets.",
+    },
+  },
+  "zh-CN": {
+    gin: {
+      name: "经典金酒鸡尾酒特辑",
+      description: "探索植物草本与杜松子香气交织的经典金酒特调。",
+    },
+    whiskey: {
+      name: "经典威士忌与波本鸡尾酒特辑",
+      description: "探索沉稳橡木、焦糖与辛辣黑麦风味的经典威士忌特调。",
+    },
+    rum: {
+      name: "经典朗姆酒鸡尾酒特辑",
+      description: "从古巴风味到热带提基，领略甘蔗蒸馏酒的丰富风味。",
+    },
+    tequila: {
+      name: "经典龙舌兰鸡尾酒特辑",
+      description: "品味纯蓝色龙舌兰与柑橘盐粒碰撞出的清新旷野之味。",
+    },
+    vodka: {
+      name: "经典伏特加鸡尾酒特辑",
+      description: "纯净丝滑，为静谧夜色而生的经典伏特加特调。",
+    },
+    mezcal: {
+      name: "手工梅斯卡尔烟熏龙舌兰特辑",
+      description: "品鉴手工原生态龙舌兰带来的泥土、矿物与深邃烟熏气息。",
+    },
+    brandy: {
+      name: "经典干邑与白兰地鸡尾酒特辑",
+      description: "感受法国干邑陈年橡木、干果与果香交织的奢华天鹅绒质感。",
+    },
+    scotch: {
+      name: "苏格兰威士忌鸡尾酒特辑",
+      description: "泥煤烟熏、石楠花蜜与大麦醇厚交融的苏格兰特调。",
+    },
+    pisco: {
+      name: "经典皮斯科葡萄白兰地特辑",
+      description: "源自安第斯山脉的纯天然葡萄果香蒸馏烈酒特调。",
+    },
+    cachaca: {
+      name: "巴西卡莎萨甘蔗烈酒特辑",
+      description: "感受原生甘蔗原汁带来的青葱奔放与南美热情。",
+    },
+    aperol: {
+      name: "阿佩罗与餐前开胃酒特辑",
+      description: "日落微醺时刻，苦甜交织、气泡跳跃的意式开胃酒选。",
+    },
+  },
+};
+
+export function getSpiritTaxonomy(locale: Locale, spirit: string): SpiritTaxonomy | undefined {
+  const data = spiritTaxonomyData[locale]?.[spirit as SupportedSpirit];
+  if (!data) return undefined;
+  return {
+    slug: spirit,
+    name: data.name,
+    description: data.description,
+  };
+}
+
+export function getAllSpiritTaxonomies(locale: Locale): SpiritTaxonomy[] {
+  return SUPPORTED_SPIRITS.map((spirit) => ({
+    slug: spirit,
+    name: spiritTaxonomyData[locale][spirit].name,
+    description: spiritTaxonomyData[locale][spirit].description,
+  }));
+}
+
+export function getCocktailsBySpirit(locale: Locale, spiritSlug: string): Cocktail[] {
+  const all = getAllCocktails(locale);
+  return all.filter((c) => {
+    const s = c.baseSpirit.toLowerCase();
+    switch (spiritSlug) {
+      case "gin":
+        return s.includes("gin") || s.includes("金酒");
+      case "whiskey":
+        return (
+          s.includes("whiskey") ||
+          s.includes("bourbon") ||
+          s.includes("rye") ||
+          s.includes("scotch") ||
+          s.includes("威士忌") ||
+          s.includes("波本")
+        );
+      case "rum":
+        return s.includes("rum") || s.includes("朗姆");
+      case "tequila":
+        return s.includes("tequila") || s.includes("龙舌兰");
+      case "vodka":
+        return s.includes("vodka") || s.includes("伏特加");
+      case "mezcal":
+        return s.includes("mezcal") || s.includes("梅斯卡尔");
+      case "brandy":
+        return (
+          s.includes("cognac") ||
+          s.includes("brandy") ||
+          s.includes("干邑") ||
+          s.includes("白兰地")
+        );
+      case "scotch":
+        return s.includes("scotch") || s.includes("苏格兰");
+      case "pisco":
+        return s.includes("pisco") || s.includes("皮斯科");
+      case "cachaca":
+        return s.includes("cachaca") || s.includes("cachaça") || s.includes("卡莎萨");
+      case "aperol":
+        return s.includes("aperol") || s.includes("阿佩罗");
+      default:
+        return false;
+    }
+  });
+}
+
