@@ -1347,6 +1347,22 @@ h2 {
   grid-column: span 4;
 }
 
+.archive-card .archive-card-featured-visual {
+  display: none;
+}
+
+.archive-card[data-archive-featured="true"] .archive-card-featured-visual {
+  display: block;
+}
+
+.archive-card .archive-card-standard-visual {
+  display: block;
+}
+
+.archive-card[data-archive-featured="true"] .archive-card-standard-visual {
+  display: none;
+}
+
 .archive-card picture {
   display: block;
 }

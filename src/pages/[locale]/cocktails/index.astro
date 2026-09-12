@@ -87,28 +87,27 @@ const spiritFilters = [
             data-spirit={spiritCategory}
             data-archive-featured={i === 0 ? "true" : undefined}
           >
-            {i === 0 ? (
-              <picture>
-                <source media="(min-width: 721px)" srcset={cocktail.heroImageDesktop} />
-                <img
-                  src={cocktail.heroImageMobile}
-                  alt={`${t(locale, "visualAlt")} ${cocktail.name}`}
-                  width="1080"
-                  height="1920"
-                  fetchpriority="high"
-                  decoding="async"
-                />
-              </picture>
-            ) : (
+            <picture class="archive-card-featured-visual">
+              <source media="(min-width: 721px)" srcset={cocktail.heroImageDesktop} />
               <img
                 src={cocktail.heroImageMobile}
                 alt={`${t(locale, "visualAlt")} ${cocktail.name}`}
                 width="1080"
                 height="1920"
-                loading="lazy"
+                fetchpriority={i === 0 ? "high" : undefined}
+                loading={i === 0 ? undefined : "lazy"}
                 decoding="async"
               />
-            )}
+            </picture>
+            <img
+              class="archive-card-standard-visual"
+              src={cocktail.heroImageMobile}
+              alt={`${t(locale, "visualAlt")} ${cocktail.name}`}
+              width="1080"
+              height="1920"
+              loading="lazy"
+              decoding="async"
+            />
             <div>
               <time datetime={cocktail.date}>{cocktail.baseSpirit}</time>
               <h2>{cocktail.name}</h2>
