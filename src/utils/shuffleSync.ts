@@ -13,12 +13,11 @@ export function getTargetHeroImageUrl(
 export function selectShuffleCandidate<T extends { id: string }>(
   candidates: T[],
   currentId?: string | null,
-  randomFn: () => number = Math.random,
 ): T | null {
   const eligible = candidates.filter((item) => item.id !== currentId);
   if (eligible.length === 0) return null;
-  const index = Math.floor(randomFn() * eligible.length);
-  return eligible[index] ?? eligible[0] ?? null;
+  const index = Math.floor(Math.random() * eligible.length);
+  return eligible[index] ?? null;
 }
 
 export function pickIdlePreloadTargets<
@@ -31,9 +30,10 @@ export function pickIdlePreloadTargets<
   limit = 3,
 ): string[] {
   const eligible = candidates.filter((item) => item.id !== currentId);
+  const pool = [...eligible].sort(() => 0.5 - Math.random());
   const targets: string[] = [];
 
-  for (const item of eligible) {
+  for (const item of pool) {
     const url = getTargetHeroImageUrl(item, isMobile);
     if (!preloadedUrls.has(url) && !targets.includes(url)) {
       targets.push(url);
@@ -49,7 +49,6 @@ export function pickIdlePreloadTargets<
 export interface ShuffleTokenManager {
   next(): number;
   isCurrent(token: number): boolean;
-  current(): number;
 }
 
 export function createShuffleTokenManager(): ShuffleTokenManager {
@@ -62,9 +61,6 @@ export function createShuffleTokenManager(): ShuffleTokenManager {
     },
     isCurrent(token: number) {
       return token === activeToken;
-    },
-    current() {
-      return activeToken;
     },
   };
 }

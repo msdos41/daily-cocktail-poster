@@ -419,6 +419,7 @@ const dailyCocktailPrepaintScript = `
   const isMobileMedia = window.matchMedia("(max-width: 720px)");
   let heroTitleFrame = 0;
   let shareToastTimer = 0;
+  let activeTargetId: string | null = null;
   const shuffleTokenManager = createShuffleTokenManager();
   const preloadedImageUrls = new Set<string>();
 
@@ -427,104 +428,60 @@ const dailyCocktailPrepaintScript = `
       const img = new Image();
       let settled = false;
 
-      const timer = window.setTimeout(() => {
+      const finish = (ok: boolean) => {
         if (!settled) {
           settled = true;
-          resolve(false);
+          window.clearTimeout(timer);
+          resolve(ok);
         }
-      }, timeoutMs);
+      };
 
+      const timer = window.setTimeout(() => finish(false), timeoutMs);
       img.src = url;
 
       if (typeof img.decode === "function") {
-        img
-          .decode()
-          .then(() => {
-            if (!settled) {
-              settled = true;
-              window.clearTimeout(timer);
-              resolve(true);
-            }
-          })
-          .catch(() => {
-            if (!settled) {
-              settled = true;
-              window.clearTimeout(timer);
-              resolve(false);
-            }
-          });
+        img.decode().then(() => finish(true)).catch(() => finish(false));
       } else {
-        img.onload = () => {
-          if (!settled) {
-            settled = true;
-            window.clearTimeout(timer);
-            resolve(true);
-          }
-        };
-        img.onerror = () => {
-          if (!settled) {
-            settled = true;
-            window.clearTimeout(timer);
-            resolve(false);
-          }
-        };
+        img.onload = () => finish(true);
+        img.onerror = () => finish(false);
       }
     });
   }
 
-  function scheduleIdlePreload() {
+  function preloadCandidates(limit: number) {
     const nav = navigator as unknown as { connection?: { saveData?: boolean } };
-    if (nav.connection?.saveData) return;
+    if (nav.connection?.saveData || !dailyCocktails.length) return;
 
-    const runPreload = () => {
-      if (!dailyCocktails.length) return;
-      const currentId = stage?.getAttribute("data-cocktail-id");
-      const targets = pickIdlePreloadTargets(
-        dailyCocktails,
-        currentId,
-        isMobileMedia.matches,
-        preloadedImageUrls,
-        3,
-      );
-
-      targets.forEach((url) => {
-        preloadedImageUrls.add(url);
-        const img = new Image();
-        img.src = url;
-        if (typeof img.decode === "function") {
-          img.decode().catch(() => {});
-        }
-      });
-    };
-
-    const win = window as Window & { requestIdleCallback?: (cb: () => void) => number };
-    if (typeof win.requestIdleCallback === "function") {
-      win.requestIdleCallback(runPreload);
-    } else {
-      window.setTimeout(runPreload, 1500);
-    }
-  }
-
-  function primeNextCandidate() {
-    const nav = navigator as unknown as { connection?: { saveData?: boolean } };
-    if (nav.connection?.saveData) return;
-    const currentId = stage?.getAttribute("data-cocktail-id");
+    const currentId = activeTargetId || stage?.getAttribute("data-cocktail-id");
     const targets = pickIdlePreloadTargets(
       dailyCocktails,
       currentId,
       isMobileMedia.matches,
       preloadedImageUrls,
-      1,
+      limit,
     );
-    if (targets.length > 0 && targets[0]) {
-      const url = targets[0];
+
+    targets.forEach((url) => {
       preloadedImageUrls.add(url);
       const img = new Image();
       img.src = url;
       if (typeof img.decode === "function") {
         img.decode().catch(() => {});
       }
+    });
+  }
+
+  function scheduleIdlePreload() {
+    const win = window as Window & { requestIdleCallback?: (cb: () => void) => number };
+    if (typeof win.requestIdleCallback === "function") {
+      win.requestIdleCallback(() => preloadCandidates(3));
+    } else {
+      window.setTimeout(() => preloadCandidates(3), 1500);
     }
+  }
+
+  function primeNextCandidate() {
+    preloadCandidates(1);
   }
 
   function updateDownloadTarget() {
@@ -755,18 +712,20 @@ const dailyCocktailPrepaintScript = `
 
   surpriseButton?.addEventListener("click", async () => {
     if (!dailyCocktails.length || !stage) return;
-    const currentId = stage.getAttribute("data-cocktail-id");
+    const currentId = activeTargetId || stage.getAttribute("data-cocktail-id");
     const nextCocktail = selectShuffleCandidate(dailyCocktails, currentId);
     if (!nextCocktail) return;
 
+    activeTargetId = nextCocktail.id;
     const token = shuffleTokenManager.next();
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const targetUrl = getTargetHeroImageUrl(nextCocktail, isMobileMedia.matches);
+    const isCached = preloadedImageUrls.has(targetUrl);
 
-    if (!prefersReducedMotion) {
+    if (!prefersReducedMotion && !isCached) {
       stage.classList.add("is-shuffling");
     }
 
-    const targetUrl = getTargetHeroImageUrl(nextCocktail, isMobileMedia.matches);
     await preloadAndDecodeImage(targetUrl, 2500);
 
     if (!shuffleTokenManager.isCurrent(token)) {
@@ -776,7 +735,7 @@ const dailyCocktailPrepaintScript = `
     preloadedImageUrls.add(targetUrl);
     applyDailyCocktail(nextCocktail, true);
 
-    if (!prefersReducedMotion) {
+    if (!prefersReducedMotion && !isCached) {
       window.requestAnimationFrame(() => {
         stage?.classList.remove("is-shuffling");
       });
@@ -815,6 +774,7 @@ const dailyCocktailPrepaintScript = `
   function applyDailyCocktail(cocktail: DailyCocktailPayload, isShuffle = false) {
     if (!stage) return;
 
+    activeTargetId = cocktail.id;
     stage.setAttribute("data-cocktail-id", cocktail.id);
     stage.setAttribute("data-desktop-download", cocktail.backgroundDownloadDesktop);
     stage.setAttribute("data-mobile-download", cocktail.backgroundDownloadMobile);
