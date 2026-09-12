@@ -247,12 +247,20 @@ body.immersive-scroll-page {
 @media (prefers-reduced-motion: no-preference) {
   .immersive-bg img,
   .immersive-copy {
-    transition: opacity 0.18s ease-in-out;
+    transition: opacity 0.22s ease-in-out;
   }
 
   .immersive-stage.is-shuffling .immersive-bg img,
   .immersive-stage.is-shuffling .immersive-copy {
     opacity: 0.25;
+  }
+
+  .immersive-stage.is-shuffling [data-surprise-me] svg {
+    transform: rotate(180deg);
+  }
+
+  [data-surprise-me] svg {
+    transition: transform 0.35s ease;
   }
 }
 

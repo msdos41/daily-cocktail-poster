@@ -364,6 +364,13 @@ const dailyCocktailPrepaintScript = `
 </section>
 
 <script>
+  import {
+    createShuffleTokenManager,
+    getTargetHeroImageUrl,
+    pickIdlePreloadTargets,
+    selectShuffleCandidate,
+  } from "@/utils/shuffleSync";
+
   const stage = document.querySelector(".immersive-stage");
   const fallbackShareUrl =
     stage instanceof HTMLElement ? stage.dataset.fallbackShareUrl || window.location.href : window.location.href;
@@ -412,6 +419,113 @@ const dailyCocktailPrepaintScript = `
   const isMobileMedia = window.matchMedia("(max-width: 720px)");
   let heroTitleFrame = 0;
   let shareToastTimer = 0;
+  const shuffleTokenManager = createShuffleTokenManager();
+  const preloadedImageUrls = new Set<string>();
+
+  function preloadAndDecodeImage(url: string, timeoutMs = 2500): Promise<boolean> {
+    return new Promise((resolve) => {
+      const img = new Image();
+      let settled = false;
+
+      const timer = window.setTimeout(() => {
+        if (!settled) {
+          settled = true;
+          resolve(false);
+        }
+      }, timeoutMs);
+
+      img.src = url;
+
+      if (typeof img.decode === "function") {
+        img
+          .decode()
+          .then(() => {
+            if (!settled) {
+              settled = true;
+              window.clearTimeout(timer);
+              resolve(true);
+            }
+          })
+          .catch(() => {
+            if (!settled) {
+              settled = true;
+              window.clearTimeout(timer);
+              resolve(false);
+            }
+          });
+      } else {
+        img.onload = () => {
+          if (!settled) {
+            settled = true;
+            window.clearTimeout(timer);
+            resolve(true);
+          }
+        };
+        img.onerror = () => {
+          if (!settled) {
+            settled = true;
+            window.clearTimeout(timer);
+            resolve(false);
+          }
+        };
+      }
+    });
+  }
+
+  function scheduleIdlePreload() {
+    const nav = navigator as unknown as { connection?: { saveData?: boolean } };
+    if (nav.connection?.saveData) return;
+
+    const runPreload = () => {
+      if (!dailyCocktails.length) return;
+      const currentId = stage?.getAttribute("data-cocktail-id");
+      const targets = pickIdlePreloadTargets(
+        dailyCocktails,
+        currentId,
+        isMobileMedia.matches,
+        preloadedImageUrls,
+        3,
+      );
+
+      targets.forEach((url) => {
+        preloadedImageUrls.add(url);
+        const img = new Image();
+        img.src = url;
+        if (typeof img.decode === "function") {
+          img.decode().catch(() => {});
+        }
+      });
+    };
+
+    const win = window as Window & { requestIdleCallback?: (cb: () => void) => number };
+    if (typeof win.requestIdleCallback === "function") {
+      win.requestIdleCallback(runPreload);
+    } else {
+      window.setTimeout(runPreload, 1500);
+    }
+  }
+
+  function primeNextCandidate() {
+    const nav = navigator as unknown as { connection?: { saveData?: boolean } };
+    if (nav.connection?.saveData) return;
+    const currentId = stage?.getAttribute("data-cocktail-id");
+    const targets = pickIdlePreloadTargets(
+      dailyCocktails,
+      currentId,
+      isMobileMedia.matches,
+      preloadedImageUrls,
+      1,
+    );
+    if (targets.length > 0 && targets[0]) {
+      const url = targets[0];
+      preloadedImageUrls.add(url);
+      const img = new Image();
+      img.src = url;
+      if (typeof img.decode === "function") {
+        img.decode().catch(() => {});
+      }
+    }
+  }
 
   function updateDownloadTarget() {
     const link = document.querySelector("[data-download-background]");
@@ -432,7 +546,10 @@ const dailyCocktailPrepaintScript = `
   }
 
   if (dailyCocktails.length) {
-    applyDailyCocktail(pickDailyCocktail(dailyCocktails, new Date()));
+    const initialCocktail = pickDailyCocktail(dailyCocktails, new Date());
+    applyDailyCocktail(initialCocktail);
+    preloadedImageUrls.add(getTargetHeroImageUrl(initialCocktail, isMobileMedia.matches));
+    scheduleIdlePreload();
   }
 
   updateDownloadTarget();
@@ -633,13 +750,37 @@ const dailyCocktailPrepaintScript = `
   }
 
   const surpriseButton = document.querySelector("[data-surprise-me]");
-  surpriseButton?.addEventListener("click", () => {
-    if (!dailyCocktails.length) return;
-    const currentId = stage?.getAttribute("data-cocktail-id");
-    const candidates = dailyCocktails.filter((c) => c.id !== currentId);
-    if (!candidates.length) return;
-    const nextCocktail = candidates[Math.floor(Math.random() * candidates.length)];
+  surpriseButton?.addEventListener("mouseenter", primeNextCandidate, { passive: true });
+  surpriseButton?.addEventListener("focus", primeNextCandidate, { passive: true });
+
+  surpriseButton?.addEventListener("click", async () => {
+    if (!dailyCocktails.length || !stage) return;
+    const currentId = stage.getAttribute("data-cocktail-id");
+    const nextCocktail = selectShuffleCandidate(dailyCocktails, currentId);
+    if (!nextCocktail) return;
+
+    const token = shuffleTokenManager.next();
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!prefersReducedMotion) {
+      stage.classList.add("is-shuffling");
+    }
+
+    const targetUrl = getTargetHeroImageUrl(nextCocktail, isMobileMedia.matches);
+    await preloadAndDecodeImage(targetUrl, 2500);
+
+    if (!shuffleTokenManager.isCurrent(token)) {
+      return;
+    }
+
+    preloadedImageUrls.add(targetUrl);
     applyDailyCocktail(nextCocktail, true);
+
+    if (!prefersReducedMotion) {
+      window.requestAnimationFrame(() => {
+        stage?.classList.remove("is-shuffling");
+      });
+    }
   });
 
   function getDayNumber(dateKey: string): number {
@@ -673,13 +814,6 @@ const dailyCocktailPrepaintScript = `
 
   function applyDailyCocktail(cocktail: DailyCocktailPayload, isShuffle = false) {
     if (!stage) return;
-
-    if (isShuffle && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      stage.classList.add("is-shuffling");
-      window.setTimeout(() => {
-        stage.classList.remove("is-shuffling");
-      }, 200);
-    }
 
     stage.setAttribute("data-cocktail-id", cocktail.id);
     stage.setAttribute("data-desktop-download", cocktail.backgroundDownloadDesktop);
