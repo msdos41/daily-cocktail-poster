@@ -41,6 +41,10 @@ const title = `${pageRecipeTitle} | ${t(locale, "siteName")}`;
 const description = recipeDescription(locale, cocktail);
 const pageUrl = pageUrlForLocalePath(locale, path);
 const structuredData = cocktailStructuredData({ locale, cocktail, url: pageUrl });
+
+const relatedCocktails = (cocktail.relatedSlugs || [])
+  .map((relatedSlug) => getCocktail(locale, relatedSlug))
+  .filter((c): c is Cocktail => Boolean(c));
 ---
 
 <BaseLayout
@@ -107,6 +111,79 @@ const structuredData = cocktailStructuredData({ locale, cocktail, url: pageUrl }
           </section>
         </div>
       </div>
+
+      {cocktail.originLore && (
+        <section class="detail-editorial-section" aria-label={locale === "zh-CN" ? "鸡尾酒志与问答" : "Cocktail Lore & FAQ"}>
+          <div class="editorial-capsule">
+            <span class="editorial-kicker">{locale === "zh-CN" ? "渊源与传奇" : "Origin & Lore"}</span>
+            <p class="editorial-text">{cocktail.originLore}</p>
+          </div>
+
+          <div class="editorial-capsule">
+            <span class="editorial-kicker">{locale === "zh-CN" ? "风味与匠艺" : "Craft & Flavor Profile"}</span>
+            <p class="editorial-flavor-lead">
+              <strong>{locale === "zh-CN" ? "风味特征：" : "Tasting Notes: "}</strong>
+              {cocktail.flavorNotes}
+            </p>
+            {cocktail.barTips && cocktail.barTips.length > 0 && (
+              <div class="editorial-tips">
+                <span class="editorial-tips-label">{locale === "zh-CN" ? "调酒秘诀" : "Bartender Secrets"}</span>
+                <ul>
+                  {cocktail.barTips.map((tip) => (
+                    <li>{tip}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          {cocktail.faqs && cocktail.faqs.length > 0 && (
+            <div class="editorial-capsule">
+              <span class="editorial-kicker">{locale === "zh-CN" ? "常见问答" : "Frequently Asked Questions"}</span>
+              <div class="faq-list">
+                {cocktail.faqs.map((faq) => (
+                  <details class="faq-item">
+                    <summary class="faq-question">
+                      <span>{faq.question}</span>
+                      <span class="faq-icon" aria-hidden="true">+</span>
+                    </summary>
+                    <p class="faq-answer">{faq.answer}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+      )}
+
+      {relatedCocktails.length > 0 && (
+        <section class="detail-sister-shelf" aria-labelledby="sister-shelf-title">
+          <div class="sister-shelf-header">
+            <span class="editorial-kicker">{locale === "zh-CN" ? "灵感延伸" : "Sister Pours"}</span>
+            <h3 id="sister-shelf-title">{locale === "zh-CN" ? "同调之选" : "If You Enjoy This"}</h3>
+          </div>
+          <div class="sister-cards">
+            {relatedCocktails.map((related) => (
+              <a href={`/${localeToPath(locale)}/cocktails/${related.slug}`} class="sister-card">
+                <img
+                  src={related.heroImageMobile}
+                  alt={`${t(locale, "visualAlt")} ${related.name}`}
+                  width="480"
+                  height="270"
+                  loading="lazy"
+                  decoding="async"
+                  class="sister-card-img"
+                />
+                <div class="sister-card-meta">
+                  <span class="sister-card-spirit">{related.baseSpirit}</span>
+                  <h4 class="sister-card-title">{related.name}</h4>
+                  <p class="sister-card-subtitle">{related.subtitle}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   </section>
 </BaseLayout>
