@@ -16,3 +16,5 @@ Allow: /
 
 Sitemap: https://justonesip.today/sitemap.xml
 LLMs-Txt: https://justonesip.today/llms.txt
+LLMs-Txt: https://justonesip.today/en/llms.txt
+LLMs-Txt: https://justonesip.today/zh-cn/llms.txt

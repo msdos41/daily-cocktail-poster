@@ -18,6 +18,14 @@
 - Standard Dash: ~0.8 ml (approx. 1/32 oz)
 - Technique Rule: Stir spirit-forward drinks with clear ice for 30–45 seconds; shake citrus/juice/egg white drinks with cubes for 10–12 seconds until frosty.
 
+## Dedicated Language Feeds (Language Parity)
+- **English Feeds**:
+  - [English Knowledge Summary Index](https://justonesip.today/en/llms.txt): Concise markdown catalog organized by Base Spirit Hub.
+  - [English Full Knowledge Base](https://justonesip.today/en/llms-full.txt): Complete recipes, lore, bartender secrets, FAQs, and Wikidata/IBA entity references.
+- **Simplified Chinese Feeds (简体中文)**:
+  - [中文知识库摘要索引](https://justonesip.today/zh-cn/llms.txt): 按 11 大基酒特辑分类的简明中文鸡尾酒索引。
+  - [中文完整知识库](https://justonesip.today/zh-cn/llms-full.txt): 包含全部 33 款特调的公制配方、历史故事、调酒技巧、常见问答及知识图谱标识符。
+
 ## Full Knowledge Base
 - [Full Cocktail Knowledge Base](https://justonesip.today/llms-full.txt): Complete structured recipes, exact measurements, historical lore, bartender secrets, and FAQs for all 33 cocktails in Markdown.
 
