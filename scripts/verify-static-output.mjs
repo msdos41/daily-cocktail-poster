@@ -672,7 +672,7 @@ function filePathForPublicPath(publicPath) {
     return path.join(distDir, "index.html");
   }
 
-  if (publicPath.endsWith(".html") || publicPath.endsWith(".xml")) {
+  if (publicPath.endsWith(".html") || publicPath.endsWith(".xml") || publicPath.endsWith(".txt")) {
     return path.join(distDir, publicPath.replace(/^\//, ""));
   }
 
