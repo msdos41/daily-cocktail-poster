@@ -18,6 +18,10 @@ _Avoid_: Reroll, randomizer, lucky pick
 The comprehensive gallery page presenting all cocktails in the library.
 _Avoid_: Archive, Past Picks, catalog, cocktail list
 
+**Base Spirit Hub**:
+The dedicated static taxonomy page grouping all library cocktails sharing a specific base spirit.
+_Avoid_: Spirit category, spirit page, tag page
+
 **Midnight Pour**:
 The brand personality evoking an intimate night bar under low, atmospheric bar light.
 _Avoid_: Dark mode, night theme, speakeasy theme
@@ -35,3 +39,8 @@ _Avoid_: Liquor, alcohol type, main ingredient
 **Hero Ingredients**:
 The signature 2 to 3 components highlighted directly on the visual poster.
 _Avoid_: Key ingredients, main ingredients, highlights
+
+**Sister Pours**:
+Curated companion cocktails sharing stylistic, flavor, or historical kinship with the current drink.
+_Avoid_: Related drinks, suggestions, similar cocktails, recommendations
+
