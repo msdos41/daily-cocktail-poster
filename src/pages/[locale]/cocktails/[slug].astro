@@ -48,7 +48,7 @@ const structuredData = cocktailStructuredData({ locale, cocktail, url: pageUrl }
   title={title}
   description={description}
   path={path}
-  image={cocktail.posterImage}
+  image={cocktail.ogImage || cocktail.posterImage}
   ogType="article"
   structuredData={structuredData}
   immersive

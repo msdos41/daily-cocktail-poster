@@ -39,7 +39,7 @@ export function socialImageMetadata(image = defaultSocialImage): SocialImageMeta
   return {
     url: url.toString(),
     type: socialImageType(pathname),
-    ...(pathname === defaultSocialImage && {
+    ...((pathname === defaultSocialImage || pathname.includes("-og.")) && {
       width: defaultSocialImageWidth,
       height: defaultSocialImageHeight,
     }),

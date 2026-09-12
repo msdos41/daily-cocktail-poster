@@ -46,6 +46,7 @@ type StableCocktail = {
   backgroundDownloadMobile: string;
   posterImage: string;
   shareBaseImage: string;
+  ogImage?: string;
   glass: string;
   baseSpirit: string;
   estimatedCalories: number;
@@ -90,6 +91,7 @@ function createSceneOnlyCocktail({
     backgroundDownloadMobile: sceneMobile,
     posterImage: sceneMobile,
     shareBaseImage: sceneMobile,
+    ogImage: `/images/cocktails/${id}-og.webp`,
     glass,
     baseSpirit,
     estimatedCalories,
@@ -1858,6 +1860,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
 export function getAllCocktails(locale: Locale): Cocktail[] {
   return stableCocktails.map((stable) => ({
     ...stable,
+    ogImage: stable.ogImage || `/images/cocktails/${stable.id}-og.webp`,
     ...localizedCocktails[locale][stable.id],
   }));
 }
