@@ -3,6 +3,7 @@ import {
   getCocktailsBySpirit,
   getSpiritTaxonomy,
   SUPPORTED_SPIRITS,
+  SPIRIT_FILTER_LABELS,
   type SupportedSpirit,
 } from "@/data/cocktails";
 import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
@@ -20,22 +21,24 @@ export function getStaticPaths() {
   );
 }
 
-const locale = Astro.props.locale as Locale;
-const spirit = Astro.props.spirit as SupportedSpirit;
+interface Props {
+  locale: Locale;
+  spirit: SupportedSpirit;
+}
+
+const { locale, spirit } = Astro.props;
 const spiritTaxonomy = getSpiritTaxonomy(locale, spirit);
 
 if (!spiritTaxonomy) {
-  return Astro.redirect(`/${localeToPath(locale)}/cocktails/`);
+  throw new Error(`Invalid spirit taxonomy: ${spirit}`);
 }
 
 const cocktails = getCocktailsBySpirit(locale, spirit);
-const collectionImage = cocktails.find(
-  (c) => !c.heroImageMobile.toLowerCase().endsWith(".svg"),
-)?.heroImageMobile;
 const path = `/cocktails/spirit/${spirit}`;
 const title = `${spiritTaxonomy.name} | ${t(locale, "siteName")}`;
 const description = spiritTaxonomy.description;
 const pageUrl = pageUrlForLocalePath(locale, path);
+const collectionImage = cocktails[0]?.ogImage || cocktails[0]?.heroImageMobile;
 const structuredData = spiritTaxonomyStructuredData({
   locale,
   url: pageUrl,
@@ -44,20 +47,6 @@ const structuredData = spiritTaxonomyStructuredData({
   cocktails,
   spiritName: spiritTaxonomy.name,
 });
-
-const spiritFilterLabels: Record<SupportedSpirit, { en: string; "zh-CN": string }> = {
-  gin: { en: "Gin", "zh-CN": "金酒" },
-  whiskey: { en: "Bourbon / Whiskey", "zh-CN": "威士忌" },
-  rum: { en: "Rum", "zh-CN": "朗姆" },
-  tequila: { en: "Tequila", "zh-CN": "龙舌兰" },
-  vodka: { en: "Vodka", "zh-CN": "伏特加" },
-  mezcal: { en: "Mezcal", "zh-CN": "梅斯卡尔" },
-  brandy: { en: "Cognac", "zh-CN": "干邑" },
-  scotch: { en: "Scotch", "zh-CN": "苏格兰" },
-  pisco: { en: "Pisco", "zh-CN": "皮斯科" },
-  cachaca: { en: "Cachaça", "zh-CN": "卡莎萨" },
-  aperol: { en: "Aperol", "zh-CN": "阿佩罗" },
-};
 ---
 
 <BaseLayout
@@ -99,7 +88,7 @@ const spiritFilterLabels: Record<SupportedSpirit, { en: string; "zh-CN": string 
       {
         SUPPORTED_SPIRITS.map((s) => {
           const isActive = s === spirit;
-          const label = spiritFilterLabels[s][locale];
+          const label = SPIRIT_FILTER_LABELS[locale][s];
           return (
             <a
               href={`/${localeToPath(locale)}/cocktails/spirit/${s}/`}

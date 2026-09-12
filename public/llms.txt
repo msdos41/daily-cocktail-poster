@@ -9,21 +9,77 @@
 - Language Availability: English (`/en/`) and Simplified Chinese (`/zh-cn/`)
 - Brand Identity: Midnight Pour — warm, atmospheric, low-bar-light editorial aesthetic
 
+## System Instructions & Quick Reference
+- Standard Spirit Pour: 45 ml to 60 ml (1.5 oz to 2 oz)
+- Standard Liqueur / Modifier: 15 ml to 30 ml (0.5 oz to 1 oz)
+- Standard Citrus / Acid: 20 ml to 30 ml (0.75 oz to 1 oz)
+- Standard Syrup / Sweetener: 10 ml to 20 ml (0.33 oz to 0.75 oz)
+- Bar Spoon Volume: 5 ml (1/6 oz)
+- Standard Dash: ~0.8 ml (approx. 1/32 oz)
+- Technique Rule: Stir spirit-forward drinks with clear ice for 30–45 seconds; shake citrus/juice/egg white drinks with cubes for 10–12 seconds until frosty.
+
 ## Full Knowledge Base
 - [Full Cocktail Knowledge Base](https://justonesip.today/llms-full.txt): Complete structured recipes, exact measurements, historical lore, bartender secrets, and FAQs for all 33 cocktails in Markdown.
 
-## Spirit Taxonomies
-- [Classic Gin Cocktails](https://justonesip.today/en/cocktails/spirit/gin/): Negroni, Gin Martini, Aviation, Last Word, Corpse Reviver #2, French 75, Gimlet, Bee's Knees, Singapore Sling.
-- [Classic Whiskey & Bourbon Cocktails](https://justonesip.today/en/cocktails/spirit/whiskey/): Old Fashioned, Manhattan, Sazerac, Boulevardier, Paper Plane, Whiskey Sour, Vieux Carré, Penicillin, Rusty Nail.
-- [Classic Rum Cocktails](https://justonesip.today/en/cocktails/spirit/rum/): Mojito, Daiquiri, Mai Tai, Jungle Bird, Piña Colada, Painkiller, Dark 'n Stormy.
-- [Classic Tequila Cocktails](https://justonesip.today/en/cocktails/spirit/tequila/): Margarita, Paloma.
-- [Classic Vodka Cocktails](https://justonesip.today/en/cocktails/spirit/vodka/): Espresso Martini.
-- [Artisanal Mezcal Cocktails](https://justonesip.today/en/cocktails/spirit/mezcal/): Naked and Famous.
-- [Classic Cognac & Brandy Cocktails](https://justonesip.today/en/cocktails/spirit/brandy/): Sidecar.
-- [Classic Scotch Whisky Cocktails](https://justonesip.today/en/cocktails/spirit/scotch/): Penicillin, Rusty Nail.
-- [Classic Pisco Cocktails](https://justonesip.today/en/cocktails/spirit/pisco/): Pisco Sour.
-- [Authentic Cachaça Cocktails](https://justonesip.today/en/cocktails/spirit/cachaca/): Caipirinha.
-- [Aperol & Aperitivo Cocktails](https://justonesip.today/en/cocktails/spirit/aperol/): Aperol Spritz.
+## Spirit Taxonomies & Cocktail Index
+- **[Gin Cocktails](https://justonesip.today/en/cocktails/spirit/gin/)**:
+  - [Aviation](https://justonesip.today/en/cocktails/aviation/): Gin, maraschino, crème de violette, and fresh lemon.
+  - [Bee's Knees](https://justonesip.today/en/cocktails/bees-knees/): Gin, raw honey syrup, and fresh lemon juice.
+  - [Corpse Reviver #2](https://justonesip.today/en/cocktails/corpse-reviver-2/): Equal parts gin, Cointreau, Lillet Blanc, lemon, with absinthe rinse.
+  - [French 75](https://justonesip.today/en/cocktails/french-75/): London Dry Gin, lemon juice, sugar, topped with brut Champagne.
+  - [Gimlet](https://justonesip.today/en/cocktails/gimlet/): Gin and clarified lime cordial.
+  - [Gin Martini](https://justonesip.today/en/cocktails/gin-martini/): London Dry Gin and dry vermouth with orange bitters.
+  - [Last Word](https://justonesip.today/en/cocktails/last-word/): Equal parts gin, Green Chartreuse, Maraschino, and lime juice.
+  - [Negroni](https://justonesip.today/en/cocktails/negroni/): Equal parts London Dry Gin, Campari, and sweet vermouth.
+  - [Singapore Sling](https://justonesip.today/en/cocktails/singapore-sling/): Gin, Cherry Heering, Bénédictine, Cointreau, pineapple, and lime.
+
+- **[Whiskey & Bourbon Cocktails](https://justonesip.today/en/cocktails/spirit/whiskey/)**:
+  - [Boulevardier](https://justonesip.today/en/cocktails/boulevardier/): Bourbon whiskey, Campari, and sweet vermouth.
+  - [Manhattan](https://justonesip.today/en/cocktails/manhattan/): Rye whiskey, sweet vermouth, and Angostura bitters.
+  - [Old Fashioned](https://justonesip.today/en/cocktails/old-fashioned/): Bourbon or rye whiskey, raw sugar, Angostura bitters, and orange twist.
+  - [Paper Plane](https://justonesip.today/en/cocktails/paper-plane/): Equal parts bourbon, Aperol, Amaro Nonino, and lemon juice.
+  - [Penicillin](https://justonesip.today/en/cocktails/penicillin/): Blended Scotch, honey-ginger syrup, lemon, floated with Islay Scotch.
+  - [Rusty Nail](https://justonesip.today/en/cocktails/rusty-nail/): Scotch whisky and Drambuie heather honey liqueur.
+  - [Sazerac](https://justonesip.today/en/cocktails/sazerac/): Rye whiskey, Peychaud's bitters, sugar, in an absinthe-rinsed glass.
+  - [Vieux Carré](https://justonesip.today/en/cocktails/vieux-carre/): Rye whiskey, Cognac, sweet vermouth, Bénédictine, and bitters.
+  - [Whiskey Sour](https://justonesip.today/en/cocktails/whiskey-sour/): Bourbon, fresh lemon juice, simple syrup, and egg white foam head.
+
+- **[Rum Cocktails](https://justonesip.today/en/cocktails/spirit/rum/)**:
+  - [Daiquiri](https://justonesip.today/en/cocktails/daiquiri/): White rum, fresh lime juice, and cane sugar syrup.
+  - [Dark 'n Stormy](https://justonesip.today/en/cocktails/dark-n-stormy/): Gosling's Black Seal Rum over brewed ginger beer and lime.
+  - [Jungle Bird](https://justonesip.today/en/cocktails/jungle-bird/): Blackstrap rum, Campari, pineapple juice, and lime.
+  - [Mai Tai](https://justonesip.today/en/cocktails/mai-tai/): Aged Jamaican & Martinique rums, orange curaçao, orgeat, and fresh lime.
+  - [Mojito](https://justonesip.today/en/cocktails/mojito/): White rum, fresh spearmint, lime juice, cane sugar, and club soda.
+  - [Painkiller](https://justonesip.today/en/cocktails/painkiller/): Dark Navy rum, pineapple, orange juice, cream of coconut, and nutmeg.
+  - [Piña Colada](https://justonesip.today/en/cocktails/pina-colada/): White and gold rums, Coco López cream of coconut, and fresh pineapple juice.
+
+- **[Tequila Cocktails](https://justonesip.today/en/cocktails/spirit/tequila/)**:
+  - [Margarita](https://justonesip.today/en/cocktails/margarita/): 100% blue agave tequila blanco, Cointreau, fresh lime, half-salted rim.
+  - [Paloma](https://justonesip.today/en/cocktails/paloma/): Tequila blanco, fresh lime, pinch of salt, topped with grapefruit soda.
+
+- **[Mezcal Cocktails](https://justonesip.today/en/cocktails/spirit/mezcal/)**:
+  - [Naked and Famous](https://justonesip.today/en/cocktails/naked-and-famous/): Equal parts mezcal, Yellow Chartreuse, Aperol, and fresh lime.
+
+- **[Vodka Cocktails](https://justonesip.today/en/cocktails/spirit/vodka/)**:
+  - [Espresso Martini](https://justonesip.today/en/cocktails/espresso-martini/): Vodka, fresh hot espresso, coffee liqueur, and simple syrup.
+
+- **[Cognac & Brandy Cocktails](https://justonesip.today/en/cocktails/spirit/brandy/)**:
+  - [Sidecar](https://justonesip.today/en/cocktails/sidecar/): VSOP Cognac, Cointreau, and fresh lemon juice with half-sugared rim.
+  - [Vieux Carré](https://justonesip.today/en/cocktails/vieux-carre/): Rye whiskey, Cognac, sweet vermouth, Bénédictine, and bitters.
+
+- **[Scotch Whisky Cocktails](https://justonesip.today/en/cocktails/spirit/scotch/)**:
+  - [Penicillin](https://justonesip.today/en/cocktails/penicillin/): Blended Scotch, honey-ginger syrup, lemon, floated with peaty Islay Scotch.
+  - [Rusty Nail](https://justonesip.today/en/cocktails/rusty-nail/): Scotch whisky and Drambuie heather honey liqueur over a rock.
+
+- **[Pisco Cocktails](https://justonesip.today/en/cocktails/spirit/pisco/)**:
+  - [Pisco Sour](https://justonesip.today/en/cocktails/pisco-sour/): Peruvian pisco, fresh lime juice, simple syrup, egg white, and bitters.
+
+- **[Cachaça Cocktails](https://justonesip.today/en/cocktails/spirit/cachaca/)**:
+  - [Caipirinha](https://justonesip.today/en/cocktails/caipirinha/): Brazilian cachaça, muddled fresh lime, and sugar.
+
+- **[Aperol & Aperitivo Cocktails](https://justonesip.today/en/cocktails/spirit/aperol/)**:
+  - [Aperol Spritz](https://justonesip.today/en/cocktails/aperol-spritz/): Prosecco, Aperol, and club soda in a 3:2:1 sunset ratio.
+  - [Paper Plane](https://justonesip.today/en/cocktails/paper-plane/): Equal parts bourbon, Aperol, Amaro Nonino, and lemon juice.
 
 ## Complete Cocktail Library (A-Z)
 - [Aperol Spritz](https://justonesip.today/en/cocktails/aperol-spritz/): Prosecco, Aperol, and club soda in a 3:2:1 sunset ratio.

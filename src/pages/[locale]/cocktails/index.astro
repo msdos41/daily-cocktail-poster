@@ -1,5 +1,5 @@
 ---
-import { getAllCocktails, getSpiritCategory } from "@/data/cocktails";
+import { getAllCocktails, getSpiritCategory, SPIRIT_FILTER_LABELS } from "@/data/cocktails";
 import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -13,7 +13,11 @@ export function getStaticPaths() {
   }));
 }
 
-const locale = Astro.props.locale as Locale;
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 const cocktails = getAllCocktails(locale);
 const collectionImage = cocktails.find(
   (c) => !c.heroImageMobile.toLowerCase().endsWith(".svg"),
@@ -32,16 +36,16 @@ const structuredData = collectionStructuredData({
 
 const spiritFilters = [
   { key: "all", label: t(locale, "all") },
-  { key: "gin", label: locale === "zh-CN" ? "金酒" : "Gin" },
-  { key: "whiskey", label: locale === "zh-CN" ? "威士忌" : "Bourbon / Whiskey" },
-  { key: "rum", label: locale === "zh-CN" ? "朗姆" : "Rum" },
-  { key: "tequila", label: locale === "zh-CN" ? "龙舌兰" : "Tequila" },
-  { key: "vodka", label: locale === "zh-CN" ? "伏特加" : "Vodka" },
-  { key: "mezcal", label: locale === "zh-CN" ? "梅斯卡尔" : "Mezcal" },
-  { key: "cognac", label: locale === "zh-CN" ? "干邑" : "Cognac" },
-  { key: "cachaca", label: locale === "zh-CN" ? "卡莎萨" : "Cachaça" },
-  { key: "pisco", label: locale === "zh-CN" ? "皮斯科" : "Pisco" },
-  { key: "aperol", label: locale === "zh-CN" ? "阿佩罗" : "Aperol" },
+  { key: "gin", label: SPIRIT_FILTER_LABELS[locale].gin },
+  { key: "whiskey", label: SPIRIT_FILTER_LABELS[locale].whiskey },
+  { key: "rum", label: SPIRIT_FILTER_LABELS[locale].rum },
+  { key: "tequila", label: SPIRIT_FILTER_LABELS[locale].tequila },
+  { key: "vodka", label: SPIRIT_FILTER_LABELS[locale].vodka },
+  { key: "mezcal", label: SPIRIT_FILTER_LABELS[locale].mezcal },
+  { key: "cognac", label: SPIRIT_FILTER_LABELS[locale].brandy },
+  { key: "cachaca", label: SPIRIT_FILTER_LABELS[locale].cachaca },
+  { key: "pisco", label: SPIRIT_FILTER_LABELS[locale].pisco },
+  { key: "aperol", label: SPIRIT_FILTER_LABELS[locale].aperol },
 ];
 ---
 

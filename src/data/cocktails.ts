@@ -2101,6 +2101,35 @@ const spiritTaxonomyData: Record<Locale, Record<SupportedSpirit, { name: string;
   },
 };
 
+export const SPIRIT_FILTER_LABELS: Record<Locale, Record<SupportedSpirit, string>> = {
+  en: {
+    gin: "Gin",
+    whiskey: "Bourbon / Whiskey",
+    rum: "Rum",
+    tequila: "Tequila",
+    vodka: "Vodka",
+    mezcal: "Mezcal",
+    brandy: "Cognac",
+    scotch: "Scotch",
+    pisco: "Pisco",
+    cachaca: "Cachaça",
+    aperol: "Aperol",
+  },
+  "zh-CN": {
+    gin: "金酒",
+    whiskey: "威士忌",
+    rum: "朗姆",
+    tequila: "龙舌兰",
+    vodka: "伏特加",
+    mezcal: "梅斯卡尔",
+    brandy: "干邑",
+    scotch: "苏格兰",
+    pisco: "皮斯科",
+    cachaca: "卡莎萨",
+    aperol: "阿佩罗",
+  },
+};
+
 export function getSpiritTaxonomy(locale: Locale, spirit: string): SpiritTaxonomy | undefined {
   const data = spiritTaxonomyData[locale]?.[spirit as SupportedSpirit];
   if (!data) return undefined;

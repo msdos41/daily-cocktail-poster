@@ -11,7 +11,7 @@ type SitemapEntry = {
 };
 
 export function GET() {
-  const defaultDate = "2026-09-12";
+  const defaultDate = new Date().toISOString().slice(0, 10);
   const cocktails = getAllCocktails("en");
   const cocktailDateMap = new Map(cocktails.map((c) => [c.slug, c.date || defaultDate]));
 

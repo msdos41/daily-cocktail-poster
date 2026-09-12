@@ -14,5 +14,8 @@
     "astro": "^5.16.2",
     "lucide-astro": "^0.556.0",
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
   }
 }

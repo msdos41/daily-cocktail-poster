@@ -113,21 +113,21 @@ const relatedCocktails = (cocktail.relatedSlugs || [])
       </div>
 
       {cocktail.originLore && (
-        <section class="detail-editorial-section" aria-label={locale === "zh-CN" ? "鸡尾酒志与问答" : "Cocktail Lore & FAQ"}>
+        <section class="detail-editorial-section" aria-label={t(locale, "loreAndFaqAria")}>
           <div class="editorial-capsule">
-            <span class="editorial-kicker">{locale === "zh-CN" ? "渊源与传奇" : "Origin & Lore"}</span>
+            <h3 class="editorial-heading">{t(locale, "originLoreTitle")}</h3>
             <p class="editorial-text">{cocktail.originLore}</p>
           </div>
 
           <div class="editorial-capsule">
-            <span class="editorial-kicker">{locale === "zh-CN" ? "风味与匠艺" : "Craft & Flavor Profile"}</span>
+            <h3 class="editorial-heading">{t(locale, "craftProfileTitle")}</h3>
             <p class="editorial-flavor-lead">
-              <strong>{locale === "zh-CN" ? "风味特征：" : "Tasting Notes: "}</strong>
+              <strong>{t(locale, "tastingNotesLabel")}</strong>
               {cocktail.flavorNotes}
             </p>
             {cocktail.barTips && cocktail.barTips.length > 0 && (
               <div class="editorial-tips">
-                <span class="editorial-tips-label">{locale === "zh-CN" ? "调酒秘诀" : "Bartender Secrets"}</span>
+                <span class="editorial-tips-label">{t(locale, "bartenderSecrets")}</span>
                 <ul>
                   {cocktail.barTips.map((tip) => (
                     <li>{tip}</li>
@@ -139,7 +139,7 @@ const relatedCocktails = (cocktail.relatedSlugs || [])
 
           {cocktail.faqs && cocktail.faqs.length > 0 && (
             <div class="editorial-capsule">
-              <span class="editorial-kicker">{locale === "zh-CN" ? "常见问答" : "Frequently Asked Questions"}</span>
+              <h3 class="editorial-heading">{t(locale, "faqTitle")}</h3>
               <div class="faq-list">
                 {cocktail.faqs.map((faq) => (
                   <details class="faq-item">
@@ -159,8 +159,8 @@ const relatedCocktails = (cocktail.relatedSlugs || [])
       {relatedCocktails.length > 0 && (
         <section class="detail-sister-shelf" aria-labelledby="sister-shelf-title">
           <div class="sister-shelf-header">
-            <span class="editorial-kicker">{locale === "zh-CN" ? "灵感延伸" : "Sister Pours"}</span>
-            <h3 id="sister-shelf-title">{locale === "zh-CN" ? "同调之选" : "If You Enjoy This"}</h3>
+            <span class="editorial-kicker">{t(locale, "sisterPoursSubtitle")}</span>
+            <h3 id="sister-shelf-title">{t(locale, "sisterPoursTitle")}</h3>
           </div>
           <div class="sister-cards">
             {relatedCocktails.map((related) => (
