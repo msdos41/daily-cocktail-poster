@@ -13,15 +13,30 @@ const locales = [
   { locale: "zh-CN", path: "zh-cn" },
 ];
 const staticContentPaths = ["/", "/cocktails", "/about", "/privacy"];
-const requiredPublicPaths = ["/", "/404.html", "/sitemap.xml"];
+const requiredPublicPaths = ["/", "/404.html", "/sitemap.xml", "/robots.txt", "/llms.txt", "/llms-full.txt"];
+const spiritSlugs = [
+  "gin",
+  "whiskey",
+  "rum",
+  "tequila",
+  "vodka",
+  "mezcal",
+  "brandy",
+  "scotch",
+  "pisco",
+  "cachaca",
+  "aperol",
+];
 const errors = [];
 const summary = {
   pages: 0,
   sitemapUrls: 0,
   recipes: 0,
   itemLists: 0,
+  faqPages: 0,
   sharePayloads: 0,
   collectionsVerified: 0,
+  spiritTaxonomiesVerified: 0,
 };
 
 main();
@@ -35,8 +50,11 @@ function main() {
 
   verifyRequiredPages(slugs);
   verify404(sitemapXml);
+  verifyRobots();
+  verifyLLMs(slugs);
   verifyContentPages(slugs);
   verifyCollectionPages(slugs);
+  verifySpiritTaxonomyPages(slugs);
   verifyLegacyArchiveRedirects();
 
   if (errors.length > 0) {
@@ -51,9 +69,11 @@ function main() {
   console.log(`- Checked ${summary.pages} content pages.`);
   console.log(`- Checked ${summary.sitemapUrls || sitemapEntries.length} sitemap URLs.`);
   console.log(`- Checked ${summary.recipes} Recipe JSON-LD blocks.`);
+  console.log(`- Checked ${summary.faqPages} FAQPage JSON-LD blocks.`);
   console.log(`- Checked ${summary.itemLists} ItemList JSON-LD blocks.`);
   console.log(`- Checked ${summary.sharePayloads} share payloads.`);
   console.log(`- Verified The Collection catalog pre-renders all ${slugs.length} cocktails.`);
+  console.log(`- Verified ${summary.spiritTaxonomiesVerified} spirit taxonomy landing pages.`);
 }
 
 function verifyRequiredPages(slugs) {
@@ -65,6 +85,11 @@ function verifyRequiredPages(slugs) {
     for (const contentPath of staticContentPaths) {
       const publicPath = routeForLocalePath(locale.locale, contentPath);
       assert(fileExists(filePathForPublicPath(publicPath)), `Missing required generated page: ${publicPath}`);
+    }
+
+    for (const spirit of spiritSlugs) {
+      const publicPath = routeForLocalePath(locale.locale, `/cocktails/spirit/${spirit}`);
+      assert(fileExists(filePathForPublicPath(publicPath)), `Missing required spirit taxonomy page: ${publicPath}`);
     }
 
     for (const slug of slugs) {
@@ -87,6 +112,32 @@ function verify404(sitemapXml) {
   }
 }
 
+function verifyRobots() {
+  const robotsTxt = readRequired(path.join(distDir, "robots.txt"), "robots.txt");
+  if (!robotsTxt) return;
+
+  assert(robotsTxt.includes("Sitemap: https://justonesip.today/sitemap.xml"), "robots.txt must include Sitemap directive.");
+  assert(robotsTxt.includes("LLMs-Txt: https://justonesip.today/llms.txt"), "robots.txt must include LLMs-Txt directive.");
+  assert(robotsTxt.includes("GPTBot"), "robots.txt must include GPTBot directive.");
+  assert(robotsTxt.includes("PerplexityBot"), "robots.txt must include PerplexityBot directive.");
+}
+
+function verifyLLMs(slugs) {
+  const llmsTxt = readRequired(path.join(distDir, "llms.txt"), "llms.txt");
+  if (llmsTxt) {
+    for (const slug of slugs) {
+      assert(llmsTxt.includes(slug), `llms.txt must mention cocktail slug ${slug}.`);
+    }
+  }
+
+  const llmsFullTxt = readRequired(path.join(distDir, "llms-full.txt"), "llms-full.txt");
+  if (llmsFullTxt) {
+    for (const slug of slugs) {
+      assert(llmsFullTxt.includes(slug), `llms-full.txt must mention cocktail slug ${slug}.`);
+    }
+  }
+}
+
 function verifyContentPages(slugs) {
   const pages = [];
 
@@ -97,6 +148,16 @@ function verifyContentPages(slugs) {
         contentPath,
         publicPath: routeForLocalePath(locale.locale, contentPath),
         kind: contentPath === "/" ? "home" : contentPath.slice(1),
+      });
+    }
+
+    for (const spirit of spiritSlugs) {
+      pages.push({
+        locale: locale.locale,
+        contentPath: `/cocktails/spirit/${spirit}`,
+        publicPath: routeForLocalePath(locale.locale, `/cocktails/spirit/${spirit}`),
+        kind: "spirit",
+        spirit,
       });
     }
 
@@ -119,6 +180,19 @@ function verifyContentPages(slugs) {
     const canonical = urlForLocalePath(page.locale, page.contentPath);
     verifyCanonicalAndHreflang(html, page, canonical);
     verifyJsonLd(html, page, canonical, slugs);
+
+    if (page.kind === "detail") {
+      const ogImage = getMetaContent(html, "property", "og:image", pageId);
+      assert(Boolean(ogImage), `${pageId} must include og:image.`);
+      if (ogImage) {
+        assert(!ogImage.endsWith(".svg"), `${pageId} og:image must not be SVG.`);
+        assert(!ogImage.includes("og-default-v2.jpg"), `${pageId} og:image must not fall back to default: ${ogImage}`);
+      }
+      const ogWidth = getMetaContent(html, "property", "og:image:width", pageId);
+      const ogHeight = getMetaContent(html, "property", "og:image:height", pageId);
+      assert(ogWidth === "1200", `${pageId} og:image:width must be 1200, got ${ogWidth}`);
+      assert(ogHeight === "630", `${pageId} og:image:height must be 630, got ${ogHeight}`);
+    }
 
     if (page.kind === "home" || page.kind === "detail") {
       verifySharePayload(html, page, canonical);
@@ -158,6 +232,11 @@ function verifySitemap(sitemapXml, slugs) {
   }
 
   for (const entry of entries) {
+    assert(
+      /^\d{4}-\d{2}-\d{2}/.test(entry.lastmod),
+      `sitemap entry ${entry.loc} must have valid ISO 8601 lastmod, got "${entry.lastmod}".`,
+    );
+
     const parsed = parseLocalePath(new URL(entry.loc).pathname);
     if (!parsed) {
       assert(false, `sitemap URL is not locale-scoped: ${entry.loc}`);
@@ -221,6 +300,44 @@ function verifyJsonLd(html, page, canonical, slugs) {
     return;
   }
 
+  if (page.kind === "spirit") {
+    const collections = items.filter((item) => hasJsonLdType(item, "CollectionPage"));
+    assert(collections.length === 1, `${page.publicPath} must include CollectionPage JSON-LD.`);
+
+    const itemLists = items.filter((item) => hasJsonLdType(item, "ItemList"));
+    assert(itemLists.length === 1, `${page.publicPath} must include ItemList JSON-LD.`);
+    if (itemLists.length === 1) {
+      const list = itemLists[0].itemListElement;
+      assert(Array.isArray(list) && list.length > 0, `${page.publicPath} ItemList itemListElement must be a non-empty array.`);
+      if (Array.isArray(list)) {
+        list.forEach((entry, idx) => {
+          const position = idx + 1;
+          assert(entry["@type"] === "ListItem", `${page.publicPath} ItemList item ${position} must be ListItem.`);
+          assert(entry.position === position, `${page.publicPath} ItemList item ${position} position must be ${position}.`);
+          assert(typeof entry.url === "string" && entry.url.length > 0, `${page.publicPath} ItemList item ${position} url is required.`);
+        });
+      }
+      summary.itemLists = (summary.itemLists || 0) + 1;
+    }
+
+    const breadcrumbs = items.filter((item) => hasJsonLdType(item, "BreadcrumbList"));
+    assert(breadcrumbs.length === 1, `${page.publicPath} must include BreadcrumbList JSON-LD.`);
+    if (breadcrumbs.length === 1) {
+      const list = breadcrumbs[0].itemListElement;
+      assert(Array.isArray(list) && list.length === 3, `${page.publicPath} BreadcrumbList must have 3 items.`);
+      if (Array.isArray(list) && list.length === 3) {
+        assert(list[0].position === 1, `${page.publicPath} Breadcrumb step 1 position must be 1.`);
+        assert(list[1].position === 2, `${page.publicPath} Breadcrumb step 2 position must be 2.`);
+        assert(
+          list[1].item === urlForLocalePath(page.locale, "/cocktails"),
+          `${page.publicPath} Breadcrumb step 2 item must point to /cocktails, got ${list[1].item}.`,
+        );
+        assert(list[2].position === 3, `${page.publicPath} Breadcrumb step 3 position must be 3.`);
+      }
+    }
+    return;
+  }
+
   if (page.kind !== "detail") {
     assert(recipes.length === 0, `${page.publicPath} must not include Recipe JSON-LD.`);
     return;
@@ -246,6 +363,11 @@ function verifyJsonLd(html, page, canonical, slugs) {
     `${page.publicPath} Recipe nutrition.calories must be present.`,
   );
   assert(recipe.publisher && recipe.publisher["@type"] === "Organization", `${page.publicPath} Recipe publisher must be an Organization.`);
+
+  assert(recipe.cookTime === "PT0M" || recipe.cookTime === undefined, `${page.publicPath} Recipe cookTime must be PT0M or omitted, got ${recipe.cookTime}.`);
+  assert(typeof recipe.prepTime === "string" && recipe.prepTime.length > 0, `${page.publicPath} Recipe prepTime is required.`);
+  assert(typeof recipe.recipeCuisine === "string" && recipe.recipeCuisine.length > 0, `${page.publicPath} Recipe recipeCuisine is required.`);
+  assert(Array.isArray(recipe.tool) && recipe.tool.length > 0, `${page.publicPath} Recipe tool must be a non-empty array.`);
 
   const steps = recipe.recipeInstructions;
   assert(Array.isArray(steps) && steps.length > 0, `${page.publicPath} Recipe recipeInstructions must be a non-empty array.`);
@@ -274,6 +396,13 @@ function verifyJsonLd(html, page, canonical, slugs) {
       );
       assert(list[2].position === 3, `${page.publicPath} Breadcrumb step 3 position must be 3.`);
     }
+  }
+
+  const faqPages = items.filter((item) => hasJsonLdType(item, "FAQPage"));
+  assert(faqPages.length === 1, `${page.publicPath} must include FAQPage JSON-LD.`);
+  if (faqPages.length === 1) {
+    assert(Array.isArray(faqPages[0].mainEntity) && faqPages[0].mainEntity.length >= 2, `${page.publicPath} FAQPage mainEntity must have at least 2 questions.`);
+    summary.faqPages = (summary.faqPages || 0) + 1;
   }
 
   summary.recipes += 1;
@@ -312,6 +441,20 @@ function verifyCollectionPages(slugs) {
     assert(html.includes('data-spirit-filter="all"'), `${publicPath} must include spirit filter chips.`);
 
     summary.collectionsVerified += 1;
+  }
+}
+
+function verifySpiritTaxonomyPages(slugs) {
+  for (const locale of locales) {
+    for (const spirit of spiritSlugs) {
+      const publicPath = routeForLocalePath(locale.locale, `/cocktails/spirit/${spirit}`);
+      const html = readRequired(filePathForPublicPath(publicPath), publicPath);
+      if (!html) continue;
+
+      assert(html.includes('class="archive-grid"'), `${publicPath} must include archive-grid.`);
+      assert(html.includes('class="filter-chips"'), `${publicPath} must include filter chips.`);
+      summary.spiritTaxonomiesVerified += 1;
+    }
   }
 }
 
@@ -358,6 +501,12 @@ function expectedSitemapUrls(slugs) {
   for (const locale of locales) {
     for (const contentPath of staticContentPaths) {
       urls.push(urlForLocalePath(locale.locale, contentPath));
+    }
+  }
+
+  for (const locale of locales) {
+    for (const spirit of spiritSlugs) {
+      urls.push(urlForLocalePath(locale.locale, `/cocktails/spirit/${spirit}`));
     }
   }
 
@@ -412,6 +561,7 @@ function parseSitemap(sitemapXml) {
   return Array.from(sitemapXml.matchAll(/<url>([\s\S]*?)<\/url>/g)).map((match) => {
     const block = match[1];
     const loc = decodeXml(textBetween(block, "loc") || "");
+    const lastmod = decodeXml(textBetween(block, "lastmod") || "");
     const alternates = Array.from(block.matchAll(/<xhtml:link\b[^>]*>/g)).map((linkMatch) => {
       const attrs = parseAttrs(linkMatch[0]);
       return {
@@ -420,7 +570,7 @@ function parseSitemap(sitemapXml) {
       };
     });
 
-    return { loc, alternates };
+    return { loc, lastmod, alternates };
   });
 }
 
