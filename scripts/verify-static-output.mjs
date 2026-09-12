@@ -13,7 +13,18 @@ const locales = [
   { locale: "zh-CN", path: "zh-cn" },
 ];
 const staticContentPaths = ["/", "/cocktails", "/about", "/privacy"];
-const requiredPublicPaths = ["/", "/404.html", "/sitemap.xml", "/robots.txt", "/llms.txt", "/llms-full.txt"];
+const requiredPublicPaths = [
+  "/",
+  "/404.html",
+  "/sitemap.xml",
+  "/robots.txt",
+  "/llms.txt",
+  "/llms-full.txt",
+  "/en/llms.txt",
+  "/en/llms-full.txt",
+  "/zh-cn/llms.txt",
+  "/zh-cn/llms-full.txt",
+];
 const spiritSlugs = [
   "gin",
   "whiskey",
@@ -37,6 +48,7 @@ const summary = {
   sharePayloads: 0,
   collectionsVerified: 0,
   spiritTaxonomiesVerified: 0,
+  llmFeeds: 0,
 };
 
 main();
@@ -75,6 +87,7 @@ function main() {
   console.log(`- Checked ${summary.sharePayloads} share payloads.`);
   console.log(`- Verified The Collection catalog pre-renders all ${slugs.length} cocktails.`);
   console.log(`- Verified ${summary.spiritTaxonomiesVerified} spirit taxonomy landing pages.`);
+  console.log(`- Verified ${summary.llmFeeds} LLM knowledge feeds.`);
 }
 
 function verifyRequiredPages(slugs) {
@@ -118,7 +131,9 @@ function verifyRobots() {
   if (!robotsTxt) return;
 
   assert(robotsTxt.includes("Sitemap: https://justonesip.today/sitemap.xml"), "robots.txt must include Sitemap directive.");
-  assert(robotsTxt.includes("LLMs-Txt: https://justonesip.today/llms.txt"), "robots.txt must include LLMs-Txt directive.");
+  assert(robotsTxt.includes("LLMs-Txt: https://justonesip.today/llms.txt"), "robots.txt must include root LLMs-Txt directive.");
+  assert(robotsTxt.includes("LLMs-Txt: https://justonesip.today/en/llms.txt"), "robots.txt must include /en/llms.txt directive.");
+  assert(robotsTxt.includes("LLMs-Txt: https://justonesip.today/zh-cn/llms.txt"), "robots.txt must include /zh-cn/llms.txt directive.");
   assert(robotsTxt.includes("GPTBot"), "robots.txt must include GPTBot directive.");
   assert(robotsTxt.includes("PerplexityBot"), "robots.txt must include PerplexityBot directive.");
 }
@@ -129,12 +144,32 @@ function verifyLLMs(slugs) {
     for (const slug of slugs) {
       assert(llmsTxt.includes(slug), `llms.txt must mention cocktail slug ${slug}.`);
     }
+    summary.llmFeeds += 1;
   }
 
   const llmsFullTxt = readRequired(path.join(distDir, "llms-full.txt"), "llms-full.txt");
   if (llmsFullTxt) {
     for (const slug of slugs) {
       assert(llmsFullTxt.includes(slug), `llms-full.txt must mention cocktail slug ${slug}.`);
+    }
+    summary.llmFeeds += 1;
+  }
+
+  for (const locale of locales) {
+    const localizedLlms = readRequired(path.join(distDir, locale.path, "llms.txt"), `${locale.path}/llms.txt`);
+    if (localizedLlms) {
+      for (const slug of slugs) {
+        assert(localizedLlms.includes(slug), `${locale.path}/llms.txt must mention cocktail slug ${slug}.`);
+      }
+      summary.llmFeeds += 1;
+    }
+
+    const localizedLlmsFull = readRequired(path.join(distDir, locale.path, "llms-full.txt"), `${locale.path}/llms-full.txt`);
+    if (localizedLlmsFull) {
+      for (const slug of slugs) {
+        assert(localizedLlmsFull.includes(slug), `${locale.path}/llms-full.txt must mention cocktail slug ${slug}.`);
+      }
+      summary.llmFeeds += 1;
     }
   }
 }
@@ -207,6 +242,8 @@ function verifyContentPages(slugs) {
       assert(!html.includes('editorial-capsule'), `${pageId} must not use obsolete editorial-capsule class.`);
       assert(html.includes('detail-editorial-columns'), `${pageId} must include detail-editorial-columns.`);
       assert(html.includes('editorial-tips-list'), `${pageId} must include editorial-tips-list.`);
+      assert(html.includes('class="detail-breadcrumbs"'), `${pageId} must include detail-breadcrumbs.`);
+      assert(html.includes('/cocktails/spirit/'), `${pageId} detail-breadcrumbs must link to base spirit hub.`);
     }
 
     if (page.kind === "home" || page.kind === "detail") {
@@ -379,7 +416,7 @@ function verifyJsonLd(html, page, canonical, slugs) {
   );
   assert(recipe.publisher && recipe.publisher["@type"] === "Organization", `${page.publicPath} Recipe publisher must be an Organization.`);
 
-  assert(recipe.cookTime === "PT0M" || recipe.cookTime === undefined, `${page.publicPath} Recipe cookTime must be PT0M or omitted, got ${recipe.cookTime}.`);
+  assert(recipe.cookTime === undefined, `${page.publicPath} Recipe cookTime must be omitted, got ${recipe.cookTime}.`);
   assert(typeof recipe.prepTime === "string" && recipe.prepTime.length > 0, `${page.publicPath} Recipe prepTime is required.`);
   assert(typeof recipe.recipeCuisine === "string" && recipe.recipeCuisine.length > 0, `${page.publicPath} Recipe recipeCuisine is required.`);
   assert(Array.isArray(recipe.tool) && recipe.tool.length > 0, `${page.publicPath} Recipe tool must be a non-empty array.`);
@@ -387,6 +424,25 @@ function verifyJsonLd(html, page, canonical, slugs) {
     assert(
       recipe.suitableForDiet === "https://schema.org/VeganDiet",
       `${page.publicPath} Recipe suitableForDiet must be VeganDiet, got ${recipe.suitableForDiet}.`,
+    );
+  }
+  assert(
+    recipe.publisher &&
+      recipe.publisher["@type"] === "Organization" &&
+      Array.isArray(recipe.publisher.sameAs) &&
+      recipe.publisher.sameAs.includes("https://x.com/justonesip_app"),
+    `${page.publicPath} Recipe publisher must be an Organization with verified sameAs.`,
+  );
+  if (recipe.sameAs !== undefined) {
+    assert(
+      typeof recipe.sameAs === "string" && recipe.sameAs.startsWith("https://www.wikidata.org/wiki/Q"),
+      `${page.publicPath} Recipe sameAs must link to Wikidata, got ${recipe.sameAs}.`,
+    );
+  }
+  if (recipe.isBasedOn !== undefined) {
+    assert(
+      recipe.isBasedOn === "https://iba-world.com/iba-official-cocktails/",
+      `${page.publicPath} Recipe isBasedOn must link to IBA cocktails, got ${recipe.isBasedOn}.`,
     );
   }
 
@@ -407,15 +463,28 @@ function verifyJsonLd(html, page, canonical, slugs) {
   assert(breadcrumbs.length === 1, `${page.publicPath} must include BreadcrumbList JSON-LD.`);
   if (breadcrumbs.length === 1) {
     const list = breadcrumbs[0].itemListElement;
-    assert(Array.isArray(list) && list.length === 3, `${page.publicPath} BreadcrumbList must have 3 items.`);
-    if (Array.isArray(list) && list.length === 3) {
+    assert(Array.isArray(list) && list.length === 4, `${page.publicPath} BreadcrumbList must have 4 items.`);
+    if (Array.isArray(list) && list.length === 4) {
       assert(list[0].position === 1, `${page.publicPath} Breadcrumb step 1 position must be 1.`);
+      assert(
+        list[0].item === urlForLocalePath(page.locale, "/"),
+        `${page.publicPath} Breadcrumb step 1 item must point to home, got ${list[0].item}.`,
+      );
       assert(list[1].position === 2, `${page.publicPath} Breadcrumb step 2 position must be 2.`);
       assert(
         list[1].item === urlForLocalePath(page.locale, "/cocktails"),
         `${page.publicPath} Breadcrumb step 2 item must point to /cocktails, got ${list[1].item}.`,
       );
       assert(list[2].position === 3, `${page.publicPath} Breadcrumb step 3 position must be 3.`);
+      assert(
+        typeof list[2].item === "string" && list[2].item.includes("/cocktails/spirit/"),
+        `${page.publicPath} Breadcrumb step 3 item must point to spirit hub, got ${list[2].item}.`,
+      );
+      assert(list[3].position === 4, `${page.publicPath} Breadcrumb step 4 position must be 4.`);
+      assert(
+        list[3].item === canonical,
+        `${page.publicPath} Breadcrumb step 4 item must point to ${canonical}, got ${list[3].item}.`,
+      );
     }
   }
 
