@@ -1245,26 +1245,8 @@ h2 {
   font-weight: 700;
 }
 
-.archive-heading {
-  padding: 34px 0 20px;
-}
-
-.archive-heading h1 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  line-height: 0.94;
-}
-
-.archive-intro {
-  max-width: 560px;
-  color: rgba(185, 175, 160, 0.82);
-  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
-  line-height: 1.55;
-}
-
 .filter-chips-wrapper {
-  margin: 0 0 32px;
+  margin: 24px 0 32px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
