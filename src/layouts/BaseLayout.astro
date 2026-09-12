@@ -52,9 +52,35 @@ const structuredDataItems = structuredData ? (Array.isArray(structuredData) ? st
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#15120f" />
+    <link rel="preload" href="/fonts/young-serif-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="canonical" href={canonical} />
     {alternates.map((item) => <link rel="alternate" hreflang={item.locale} href={item.href} />)}
+    {immersive && (
+      <style is:inline>
+        .immersive-stage {
+          --hero-title-max: clamp(4.5rem, 10.8vw, 8.8rem);
+          --hero-title-lines: 1;
+          --hero-title-wrap: nowrap;
+        }
+        @media (max-width: 860px) {
+          .immersive-page .immersive-stage {
+            --hero-title-max: clamp(3.8rem, 16vw, 6.4rem);
+          }
+        }
+        @media (max-width: 560px) {
+          .immersive-page .immersive-stage {
+            --hero-title-max: clamp(3.15rem, 15.8vw, 4.55rem);
+          }
+        }
+        .immersive-copy h1 {
+          font-family: var(--font-display, "Young Serif", serif);
+          font-size: var(--hero-title-size, var(--hero-title-max));
+          line-height: 0.96;
+          white-space: var(--hero-title-wrap, nowrap);
+        }
+      </style>
+    )}
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={t(locale, "siteName")} />
     <meta property="og:locale" content={openGraphLocale(locale)} />

@@ -435,11 +435,14 @@ const dailyCocktailPrepaintScript = `
     applyDailyCocktail(pickDailyCocktail(dailyCocktails, new Date()));
   }
 
-  configureHeroTitle();
   updateDownloadTarget();
   isMobileMedia.addEventListener("change", updateDownloadTarget);
   window.addEventListener("resize", scheduleFitHeroTitle);
-  document.fonts?.ready.then(scheduleFitHeroTitle);
+  if (document.fonts) {
+    document.fonts.ready.then(scheduleFitHeroTitle);
+  } else {
+    scheduleFitHeroTitle();
+  }
 
   openShare?.addEventListener("click", (event) => {
     event.stopPropagation();
@@ -774,10 +777,22 @@ const dailyCocktailPrepaintScript = `
     const maxLines = getHeroTitleLineLimit(heroTitle);
     const minFontSize = getMinimumHeroTitleSize();
 
-    heroTitle.style.removeProperty("--hero-title-size");
-    let fontSize = Number.parseFloat(getComputedStyle(heroTitle).fontSize);
-    heroTitle.style.setProperty("--hero-title-size", `${fontSize}px`);
+    if (isHeroTitleFit(heroTitle, maxLines)) {
+      return;
+    }
 
+    const currentSize = Number.parseFloat(getComputedStyle(heroTitle).fontSize);
+    if (!Number.isFinite(currentSize) || currentSize <= minFontSize) return;
+
+    const scrollWidth = heroTitle.scrollWidth;
+    const clientWidth = heroTitle.clientWidth;
+    if (scrollWidth > clientWidth && clientWidth > 0) {
+      const ratio = clientWidth / scrollWidth;
+      const targetSize = Math.max(Math.floor(currentSize * ratio), minFontSize);
+      heroTitle.style.setProperty("--hero-title-size", `${targetSize}px`);
+    }
+
+    let fontSize = Number.parseFloat(getComputedStyle(heroTitle).fontSize);
     while (fontSize > minFontSize && !isHeroTitleFit(heroTitle, maxLines)) {
       fontSize -= 2;
       heroTitle.style.setProperty("--hero-title-size", `${Math.max(fontSize, minFontSize)}px`);
@@ -808,7 +823,7 @@ const dailyCocktailPrepaintScript = `
     const styles = getComputedStyle(title);
     const fontSize = Number.parseFloat(styles.fontSize);
     const lineHeight = Number.parseFloat(styles.lineHeight) || fontSize;
-    const lineCount = Math.ceil(title.getBoundingClientRect().height / lineHeight);
+    const lineCount = Math.round(title.getBoundingClientRect().height / lineHeight);
 
     return title.scrollWidth <= title.clientWidth + 1 && lineCount <= maxLines;
   }
