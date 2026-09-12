@@ -192,6 +192,16 @@ function verifyContentPages(slugs) {
       const ogHeight = getMetaContent(html, "property", "og:image:height", pageId);
       assert(ogWidth === "1200", `${pageId} og:image:width must be 1200, got ${ogWidth}`);
       assert(ogHeight === "630", `${pageId} og:image:height must be 630, got ${ogHeight}`);
+
+      const sisterCardImgs = [...html.matchAll(/<img[^>]+class="sister-card-img"[^>]*>/g)];
+      assert(sisterCardImgs.length > 0, `${pageId} must have sister cards.`);
+      for (const match of sisterCardImgs) {
+        const src = match[0].match(/src="([^"]+)"/)?.[1];
+        assert(
+          Boolean(src && src.includes("desktop")),
+          `${pageId} sister card image must use desktop visual, got: ${src}`,
+        );
+      }
     }
 
     if (page.kind === "home" || page.kind === "detail") {
