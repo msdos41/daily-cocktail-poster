@@ -166,7 +166,7 @@ const relatedCocktails = (cocktail.relatedSlugs || [])
             {relatedCocktails.map((related) => (
               <a href={`/${localeToPath(locale)}/cocktails/${related.slug}`} class="sister-card">
                 <img
-                  src={related.heroImageMobile}
+                  src={related.heroImageDesktop}
                   alt={`${t(locale, "visualAlt")} ${related.name}`}
                   width="480"
                   height="270"
