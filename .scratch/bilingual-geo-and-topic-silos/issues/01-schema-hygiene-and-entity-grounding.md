@@ -5,11 +5,12 @@ Ensure all cocktail detail pages and publisher schema strictly comply with searc
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** closed
+Completed: 2026-09-12
 
-- [ ] Cocktail `Recipe` structured data omits `cookTime` entirely, retaining only `prepTime` and `totalTime`.
-- [ ] Publisher `Organization` structured data includes `sameAs` referencing the official social profile (`https://x.com/justonesip_app`).
-- [ ] Cocktail data model supports universal `wikidataId` and `ibaCategory` attributes across all 33 catalog drinks.
-- [ ] Cocktail `Recipe` structured data renders `sameAs` pointing to canonical Wikidata URIs (e.g., `https://www.wikidata.org/wiki/Q1342603`) and `isBasedOn` pointing to official IBA cocktail classification when present.
-- [ ] Static output verification suite (`npm run verify`) verifies that no `Recipe` block contains `cookTime`, that `Organization` includes valid `sameAs`, and that entity attributes pass schema assertions.
-- [ ] Site builds cleanly with `npm run build` and passes `npm run verify` with zero warnings.
+- [x] Cocktail `Recipe` structured data omits `cookTime` entirely, retaining only `prepTime` and `totalTime`.
+- [x] Publisher `Organization` structured data includes `sameAs` referencing the official social profile (`https://x.com/justonesip_app`).
+- [x] Cocktail data model supports universal `wikidataId` and `ibaCategory` attributes across all 33 catalog drinks.
+- [x] Cocktail `Recipe` structured data renders `sameAs` pointing to canonical Wikidata URIs (e.g., `https://www.wikidata.org/wiki/Q1342603`) and `isBasedOn` pointing to official IBA cocktail classification when present.
+- [x] Static output verification suite (`npm run verify`) verifies that no `Recipe` block contains `cookTime`, that `Organization` includes valid `sameAs`, and that entity attributes pass schema assertions.
+- [x] Site builds cleanly with `npm run build` and passes `npm run verify` with zero warnings.
