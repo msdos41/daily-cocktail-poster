@@ -56,6 +56,7 @@ function main() {
   verifyCollectionPages(slugs);
   verifySpiritTaxonomyPages(slugs);
   verifyLegacyArchiveRedirects();
+  verifyCssTokens();
 
   if (errors.length > 0) {
     console.error(`Static verification failed with ${errors.length} issue${errors.length === 1 ? "" : "s"}:`);
@@ -202,6 +203,10 @@ function verifyContentPages(slugs) {
           `${pageId} sister card image must use desktop visual, got: ${src}`,
         );
       }
+
+      assert(!html.includes('editorial-capsule'), `${pageId} must not use obsolete editorial-capsule class.`);
+      assert(html.includes('detail-editorial-columns'), `${pageId} must include detail-editorial-columns.`);
+      assert(html.includes('editorial-tips-list'), `${pageId} must include editorial-tips-list.`);
     }
 
     if (page.kind === "home" || page.kind === "detail") {
@@ -485,6 +490,17 @@ function verifyLegacyArchiveRedirects() {
         `${locale.path}/archive redirect must point to ${targetPath}`,
       );
     }
+  }
+}
+
+function verifyCssTokens() {
+  const astroDir = path.join(distDir, "_astro");
+  if (!fileExists(astroDir)) return;
+  const files = fs.readdirSync(astroDir).filter((f) => f.endsWith(".css"));
+  for (const file of files) {
+    const css = fs.readFileSync(path.join(astroDir, file), "utf8");
+    assert(!css.includes("--color-ink"), `Bundled CSS ${file} must not reference undefined token --color-ink`);
+    assert(!css.includes("--font-serif"), `Bundled CSS ${file} must not reference undefined token --font-serif`);
   }
 }
 
