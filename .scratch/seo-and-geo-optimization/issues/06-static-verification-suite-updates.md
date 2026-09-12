@@ -27,8 +27,9 @@ Update `scripts/verify-static-output.mjs` to rigorously enforce the new SEO and 
 - 04: Midnight Pour Editorial Expansion
 - 05: GEO LLMs.txt and AI Search Crawler Protocol
 
-**Status:** ready-for-agent
+**Status:** closed
+Completed: 2026-09-12
 
-- [ ] `scripts/verify-static-output.mjs` implements all validation rules for new routes, schemas, OG images, and llms.txt.
-- [ ] `npm run build` succeeds with zero errors.
-- [ ] `npm run verify` passes with 100% assertions green.
+- [x] `scripts/verify-static-output.mjs` implements all validation rules for new routes, schemas, OG images, and llms.txt.
+- [x] `npm run build` succeeds with zero errors.
+- [x] `npm run verify` passes with 100% assertions green.

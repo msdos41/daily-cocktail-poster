@@ -12,10 +12,11 @@ Create statically pre-rendered landing pages for each base spirit (`gin`, `whisk
 **Blocked by:**
 - None
 
-**Status:** ready-for-agent
+**Status:** closed
+Completed: 2026-09-12
 
-- [ ] Routes `/[locale]/cocktails/spirit/[spirit]/` statically generate for all active spirits and locales.
-- [ ] Each spirit page has unique localized SEO title, meta description, and canonical URL.
-- [ ] Each spirit page outputs valid `CollectionPage`, `ItemList`, and `BreadcrumbList` JSON-LD.
-- [ ] `sitemap.xml` contains all spirit taxonomy URLs with reciprocal `hreflang` alternates.
-- [ ] `npm run build` succeeds with zero errors.
+- [x] Routes `/[locale]/cocktails/spirit/[spirit]/` statically generate for all active spirits and locales.
+- [x] Each spirit page has unique localized SEO title, meta description, and canonical URL.
+- [x] Each spirit page outputs valid `CollectionPage`, `ItemList`, and `BreadcrumbList` JSON-LD.
+- [x] `sitemap.xml` contains all spirit taxonomy URLs with reciprocal `hreflang` alternates.
+- [x] `npm run build` succeeds with zero errors.

@@ -16,9 +16,10 @@ Implement modern Generative Engine Optimization (GEO) infrastructure to facilita
 **Blocked by:**
 - 04: Midnight Pour Editorial Expansion (Answer Capsules & Cross-Linking)
 
-**Status:** ready-for-agent
+**Status:** closed
+Completed: 2026-09-12
 
-- [ ] `public/llms.txt` conforms to the llms.txt standard and references the cocktail library.
-- [ ] `/llms-full.txt` compiles statically and outputs structured Markdown for all 33 cocktails.
-- [ ] `public/robots.txt` declares explicit AI search bot access and references both sitemap and llms.txt.
-- [ ] `npm run build` succeeds with zero errors.
+- [x] `public/llms.txt` conforms to the llms.txt standard and references the cocktail library.
+- [x] `/llms-full.txt` compiles statically and outputs structured Markdown for all 33 cocktails.
+- [x] `public/robots.txt` declares explicit AI search bot access and references both sitemap and llms.txt.
+- [x] `npm run build` succeeds with zero errors.

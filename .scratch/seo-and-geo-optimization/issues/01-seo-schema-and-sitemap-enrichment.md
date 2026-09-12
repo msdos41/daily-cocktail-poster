@@ -10,10 +10,11 @@ Refactor Schema.org structured data and static sitemap output to address technic
 **Blocked by:**
 - None
 
-**Status:** ready-for-agent
+**Status:** closed
+Completed: 2026-09-12
 
-- [ ] Detail page `Recipe` Schema removes unrealistic `cookTime` and properly sets `prepTime` / `totalTime`.
-- [ ] Detail page `Recipe` Schema includes `recipeCuisine`, `tool`, and `suitableForDiet` when applicable.
-- [ ] Detail page outputs `FAQPage` Schema with 2-3 structured questions and answers per cocktail.
-- [ ] `sitemap.xml` emits compliant ISO 8601 `<lastmod>` tags for all static paths and detail pages.
-- [ ] `npm run build` succeeds with zero errors.
+- [x] Detail page `Recipe` Schema removes unrealistic `cookTime` and properly sets `prepTime` / `totalTime`.
+- [x] Detail page `Recipe` Schema includes `recipeCuisine`, `tool`, and `suitableForDiet` when applicable.
+- [x] Detail page outputs `FAQPage` Schema with 2-3 structured questions and answers per cocktail.
+- [x] `sitemap.xml` emits compliant ISO 8601 `<lastmod>` tags for all static paths and detail pages.
+- [x] `npm run build` succeeds with zero errors.

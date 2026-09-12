@@ -16,10 +16,11 @@ Enrich cocktail data and detail pages with curated, high-density editorial infor
 **Blocked by:**
 - None
 
-**Status:** ready-for-agent
+**Status:** closed
+Completed: 2026-09-12
 
-- [ ] All 33 cocktails provide complete bilingual (`en` and `zh-CN`) editorial fields in `src/data/cocktails.ts`.
-- [ ] Detail pages render the curated editorial section adhering to the "Midnight Pour" design tokens.
-- [ ] Detail pages display horizontal cross-links to 2 related cocktails.
-- [ ] Mobile responsive layout maintains zero horizontal scroll and high readability.
-- [ ] `npm run build` succeeds with zero errors.
+- [x] All 33 cocktails provide complete bilingual (`en` and `zh-CN`) editorial fields in `src/data/cocktails.ts`.
+- [x] Detail pages render the curated editorial section adhering to the "Midnight Pour" design tokens.
+- [x] Detail pages display horizontal cross-links to 2 related cocktails.
+- [x] Mobile responsive layout maintains zero horizontal scroll and high readability.
+- [x] `npm run build` succeeds with zero errors.

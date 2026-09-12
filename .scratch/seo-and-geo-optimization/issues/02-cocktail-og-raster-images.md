@@ -9,9 +9,10 @@ Resolve the OpenGraph social sharing and Google visual search blindspot where SV
 **Blocked by:**
 - None
 
-**Status:** ready-for-agent
+**Status:** closed
+Completed: 2026-09-12
 
-- [ ] Every cocktail has a 1200x630 raster OG preview asset accessible at build time.
-- [ ] Detail pages output cocktail-specific `og:image`, `og:image:secure_url`, `og:image:width`, `og:image:height`, and `twitter:image`.
-- [ ] No cocktail detail page falls back to the generic `og-default-v2.jpg`.
-- [ ] `npm run build` succeeds with zero errors.
+- [x] Every cocktail has a 1200x630 raster OG preview asset accessible at build time.
+- [x] Detail pages output cocktail-specific `og:image`, `og:image:secure_url`, `og:image:width`, `og:image:height`, and `twitter:image`.
+- [x] No cocktail detail page falls back to the generic `og-default-v2.jpg`.
+- [x] `npm run build` succeeds with zero errors.
