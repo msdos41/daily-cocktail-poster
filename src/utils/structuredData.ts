@@ -1,4 +1,8 @@
-import type { Cocktail } from "../data/cocktails.ts";
+import {
+  getSpiritCategory,
+  getSpiritTaxonomy,
+  type Cocktail,
+} from "../data/cocktails.ts";
 import type { Locale } from "../i18n/config.ts";
 import { t } from "../i18n/ui.ts";
 import { pageUrlForLocalePath, publicHomeUrl, site, socialImageMetadata } from "./seo.ts";
@@ -116,6 +120,11 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
   const image = socialImageMetadata(cocktail.ogImage || cocktail.posterImage).url;
   const homeUrl = pageUrlForLocalePath(locale, "/");
 
+  const spiritCategory = getSpiritCategory(cocktail.baseSpirit);
+  const spiritTaxonomy = getSpiritTaxonomy(locale, spiritCategory);
+  const spiritName = spiritTaxonomy ? spiritTaxonomy.name : cocktail.baseSpirit;
+  const spiritUrl = pageUrlForLocalePath(locale, `/cocktails/spirit/${spiritCategory}`);
+
   const items: JsonLd[] = [
     {
       "@context": "https://schema.org",
@@ -159,6 +168,7 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
     breadcrumbStructuredData([
       { name: t(locale, "home"), url: homeUrl },
       { name: t(locale, "theCollection"), url: pageUrlForLocalePath(locale, "/cocktails") },
+      { name: spiritName, url: spiritUrl },
       { name: cocktail.name, url },
     ]),
   ];

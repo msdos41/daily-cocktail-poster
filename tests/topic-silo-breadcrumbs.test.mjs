@@ -55,7 +55,7 @@ test("cocktailStructuredData outputs a 4-tier BreadcrumbList across all locales 
 
       // Step 2: The Collection
       assert.equal(list[1].position, 2);
-      assert.equal(list[1].item, `https://justonesip.today/${localePath}/cocktails`);
+      assert.equal(list[1].item, `https://justonesip.today/${localePath}/cocktails/`);
 
       // Step 3: Base Spirit Hub
       const spiritCategory = getSpiritCategory(cocktail.baseSpirit);
@@ -65,7 +65,7 @@ test("cocktailStructuredData outputs a 4-tier BreadcrumbList across all locales 
       assert.equal(list[2].name, taxonomy.name);
       assert.equal(
         list[2].item,
-        `https://justonesip.today/${localePath}/cocktails/spirit/${spiritCategory}`,
+        `https://justonesip.today/${localePath}/cocktails/spirit/${spiritCategory}/`,
       );
 
       // Step 4: Cocktail
