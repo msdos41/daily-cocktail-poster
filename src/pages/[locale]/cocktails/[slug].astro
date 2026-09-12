@@ -110,49 +110,48 @@ const relatedCocktails = (cocktail.relatedSlugs || [])
             </ol>
           </section>
         </div>
+
+        {cocktail.originLore && (
+          <div class="detail-recipe-columns detail-editorial-columns" aria-label={t(locale, "loreAndFaqAria")}>
+            <section class="detail-recipe-column detail-lore-column">
+              <h3>{t(locale, "originLoreTitle")}</h3>
+              <p class="editorial-text">{cocktail.originLore}</p>
+            </section>
+            <section class="detail-recipe-column detail-craft-column">
+              <h3>{t(locale, "craftProfileTitle")}</h3>
+              <div class="editorial-flavor-block">
+                <span class="editorial-label">{t(locale, "tastingNotesLabel")}</span>
+                <p class="editorial-flavor-notes">{cocktail.flavorNotes}</p>
+              </div>
+              {cocktail.barTips && cocktail.barTips.length > 0 && (
+                <div class="editorial-tips">
+                  <span class="editorial-label">{t(locale, "bartenderSecrets")}</span>
+                  <ul class="editorial-tips-list">
+                    {cocktail.barTips.map((tip) => (
+                      <li>{tip}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </section>
+          </div>
+        )}
       </div>
 
-      {cocktail.originLore && (
-        <section class="detail-editorial-section" aria-label={t(locale, "loreAndFaqAria")}>
-          <div class="editorial-capsule">
-            <h3 class="editorial-heading">{t(locale, "originLoreTitle")}</h3>
-            <p class="editorial-text">{cocktail.originLore}</p>
+      {cocktail.originLore && cocktail.faqs && cocktail.faqs.length > 0 && (
+        <section class="detail-faq-section" aria-labelledby="detail-faq-title">
+          <h3 class="detail-faq-heading" id="detail-faq-title">{t(locale, "faqTitle")}</h3>
+          <div class="faq-list">
+            {cocktail.faqs.map((faq) => (
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span>{faq.question}</span>
+                  <span class="faq-icon" aria-hidden="true">+</span>
+                </summary>
+                <p class="faq-answer">{faq.answer}</p>
+              </details>
+            ))}
           </div>
-
-          <div class="editorial-capsule">
-            <h3 class="editorial-heading">{t(locale, "craftProfileTitle")}</h3>
-            <p class="editorial-flavor-lead">
-              <strong>{t(locale, "tastingNotesLabel")}</strong>
-              {cocktail.flavorNotes}
-            </p>
-            {cocktail.barTips && cocktail.barTips.length > 0 && (
-              <div class="editorial-tips">
-                <span class="editorial-tips-label">{t(locale, "bartenderSecrets")}</span>
-                <ul>
-                  {cocktail.barTips.map((tip) => (
-                    <li>{tip}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-
-          {cocktail.faqs && cocktail.faqs.length > 0 && (
-            <div class="editorial-capsule">
-              <h3 class="editorial-heading">{t(locale, "faqTitle")}</h3>
-              <div class="faq-list">
-                {cocktail.faqs.map((faq) => (
-                  <details class="faq-item">
-                    <summary class="faq-question">
-                      <span>{faq.question}</span>
-                      <span class="faq-icon" aria-hidden="true">+</span>
-                    </summary>
-                    <p class="faq-answer">{faq.answer}</p>
-                  </details>
-                ))}
-              </div>
-            </div>
-          )}
         </section>
       )}
 

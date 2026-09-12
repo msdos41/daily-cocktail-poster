@@ -1243,112 +1243,115 @@ h2 {
   margin-top: 8px;
 }
 
-/* Detail Editorial & Answer Capsules */
-.detail-editorial-section {
-  display: grid;
-  gap: 24px;
-  margin-top: clamp(36px, 5vw, 56px);
-  padding-top: clamp(32px, 4vw, 48px);
-  border-top: 1px solid var(--line);
+/* Detail Editorial & Craft Profile */
+.detail-editorial-columns {
+  margin-top: 0;
 }
 
-.editorial-capsule {
-  padding: clamp(20px, 3.5vw, 32px);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(33, 27, 23, 0.65);
-}
-
-.editorial-heading {
-  font-family: var(--font-serif, "Playfair Display", Georgia, serif);
-  font-size: 1.15rem;
-  font-weight: 500;
-  color: var(--color-ink, #f7efe5);
-  margin: 0 0 14px;
-}
-
-.editorial-kicker {
-  display: block;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent-2);
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-
+.editorial-story,
 .editorial-text {
-  color: var(--color-ink, #f7efe5);
-  font-size: 0.95rem;
-  line-height: 1.75;
   margin: 0;
+  color: rgba(244, 238, 229, 0.76);
+  font-size: 1.02rem;
+  line-height: 1.8;
 }
 
-.editorial-flavor-lead {
-  color: var(--muted);
-  font-size: 0.95rem;
-  margin: 0 0 16px;
-  line-height: 1.6;
+.editorial-craft-body {
+  display: flex;
+  flex-direction: column;
 }
 
-.editorial-flavor-lead strong {
-  color: var(--color-ink, #f7efe5);
-  font-weight: 600;
+.editorial-flavor-block {
+  margin-bottom: 22px;
 }
 
-.editorial-tips {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(247, 239, 229, 0.08);
-}
-
-.editorial-tips-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--color-ink, #f7efe5);
+.editorial-label {
   display: block;
+  color: rgba(199, 168, 106, 0.82);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   margin-bottom: 8px;
 }
 
-.editorial-tips ul {
+.editorial-flavor-notes {
   margin: 0;
-  padding-left: 1.2rem;
-  color: var(--muted);
-  line-height: 1.7;
+  color: rgba(244, 238, 229, 0.86);
+  font-size: 1.02rem;
+  line-height: 1.6;
 }
 
-.editorial-tips li + li {
-  margin-top: 6px;
+.editorial-tips {
+  padding-top: 18px;
+  border-top: 1px solid rgba(244, 238, 229, 0.08);
+}
+
+.editorial-tips-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: rgba(244, 238, 229, 0.72);
+  line-height: 1.8;
+}
+
+.editorial-tips-list li + li {
+  margin-top: 8px;
+}
+
+.editorial-tips-list li::marker {
+  color: rgba(199, 168, 106, 0.74);
+}
+
+/* Detail FAQ Section */
+.detail-faq-section {
+  margin-top: clamp(38px, 5vw, 60px);
+  padding-top: clamp(28px, 4vw, 42px);
+  border-top: 1px solid rgba(244, 238, 229, 0.1);
+}
+
+.detail-faq-heading {
+  margin: 0 0 20px;
+  color: rgba(244, 238, 229, 0.92);
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2vw, 2rem);
+  font-weight: 400;
+  line-height: 1.05;
 }
 
 .faq-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 12px;
+  border-top: 1px solid rgba(244, 238, 229, 0.08);
 }
 
 .faq-item {
-  border: 1px solid rgba(247, 239, 229, 0.08);
-  border-radius: 6px;
-  background: rgba(21, 18, 15, 0.45);
-  padding: 14px 18px;
+  border-bottom: 1px solid rgba(244, 238, 229, 0.08);
+  padding: 18px 0;
+  background: transparent;
   transition: border-color 0.18s ease;
 }
 
 .faq-item[open] {
-  border-color: rgba(227, 179, 95, 0.35);
+  border-bottom-color: rgba(199, 168, 106, 0.3);
 }
 
 .faq-question {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  font-weight: 600;
-  color: var(--color-ink, #f7efe5);
+  align-items: baseline;
+  gap: 16px;
+  font-family: var(--font-ui);
+  font-size: clamp(1.02rem, 1.5vw, 1.12rem);
+  font-weight: 500;
+  color: rgba(244, 238, 229, 0.9);
   cursor: pointer;
   list-style: none;
-  font-size: 0.95rem;
+  user-select: none;
+  transition: color 0.18s ease;
+}
+
+.faq-question:hover {
+  color: var(--accent-2);
 }
 
 .faq-question::-webkit-details-marker {
@@ -1356,9 +1359,10 @@ h2 {
 }
 
 .faq-icon {
-  font-size: 1.15rem;
+  flex-shrink: 0;
+  font-size: 1.25rem;
   color: var(--accent-2);
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1;
   transition: transform 0.2s ease;
 }
@@ -1368,30 +1372,41 @@ h2 {
 }
 
 .faq-answer {
-  margin: 12px 0 0;
-  color: var(--muted);
-  line-height: 1.7;
-  font-size: 0.9rem;
-  border-top: 1px solid rgba(247, 239, 229, 0.06);
-  padding-top: 12px;
+  margin: 12px 0 2px;
+  color: rgba(244, 238, 229, 0.74);
+  line-height: 1.8;
+  font-size: 0.98rem;
+  max-width: 820px;
 }
 
 /* Detail Sister Shelf */
 .detail-sister-shelf {
   margin-top: clamp(40px, 5vw, 64px);
   padding-top: clamp(32px, 4vw, 48px);
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(244, 238, 229, 0.1);
 }
 
 .sister-shelf-header {
   margin-bottom: 24px;
 }
 
+.editorial-kicker {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(199, 168, 106, 0.82);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
 .sister-shelf-header h3 {
-  font-family: var(--font-display, serif);
-  font-size: clamp(1.4rem, 3vw, 1.85rem);
-  color: var(--color-ink, #f7efe5);
-  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2vw, 2rem);
+  font-weight: 400;
+  line-height: 1.05;
+  color: rgba(244, 238, 229, 0.92);
+  margin: 0;
 }
 
 .sister-cards {
@@ -1404,16 +1419,17 @@ h2 {
   display: flex;
   flex-direction: column;
   background: rgba(33, 27, 23, 0.65);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(244, 238, 229, 0.12);
   border-radius: 8px;
   overflow: hidden;
   text-decoration: none;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .sister-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(227, 179, 95, 0.45);
+  transform: translateY(-3px);
+  border-color: rgba(199, 168, 106, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .sister-card-img {
@@ -1432,22 +1448,23 @@ h2 {
 
 .sister-card-spirit {
   font-size: 0.72rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--accent-2);
+  color: rgba(199, 168, 106, 0.82);
   font-weight: 600;
 }
 
 .sister-card-title {
-  font-family: var(--font-display, serif);
+  font-family: var(--font-display);
   font-size: 1.25rem;
-  color: var(--color-ink, #f7efe5);
+  font-weight: 400;
+  color: rgba(244, 238, 229, 0.92);
   margin: 0;
 }
 
 .sister-card-subtitle {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: rgba(244, 238, 229, 0.65);
   margin: 0;
   line-height: 1.5;
 }
