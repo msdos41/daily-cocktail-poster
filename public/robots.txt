@@ -1,4 +1,18 @@
 User-agent: *
 Allow: /
 
+# Dedicated AI Search Engine Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
 Sitemap: https://justonesip.today/sitemap.xml
+LLMs-Txt: https://justonesip.today/llms.txt
