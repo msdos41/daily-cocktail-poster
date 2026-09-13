@@ -1,218 +1,203 @@
+<div align="center">
+
 # Just One Sip
 
-Just One Sip is a static Astro MVP for a bilingual daily cocktail poster experience.
+*One drink, one visual, one concise recipe every day.*
 
-Live site: https://justonesip.today
+[![Astro](https://img.shields.io/badge/Astro-v5.1-FF5D01?logo=astro&logoColor=white)](https://astro.build/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Status: Active](https://img.shields.io/badge/Status-Active%20MVP-success)](#status)
+[![Live Site](https://img.shields.io/badge/Live-justonesip.today-e3b35f)](https://justonesip.today)
 
-The site is designed around an immersive full-screen cocktail image. Each day has one scheduled recommendation, while detail pages provide fixed recipe URLs for search, sharing, and archive browsing.
+[English](README.md) | [简体中文](README.zh-CN.md)
 
-## Current MVP
+</div>
 
-- Static Astro site with TypeScript and plain CSS.
-- Launch locales: English (`en`) and Simplified Chinese (`zh-CN`).
-- Locale URLs: `/en/` and `/zh-cn/`.
-- Root URL `/` redirects to `/en/`.
-- Immersive home and detail pages with full-bleed cocktail visuals.
-- Daily Pour recommendation selected via deterministic date-seeded pseudo-random rotation with on-demand "Surprise Me" shuffle.
-- The Collection page exhibiting all cocktails with base-spirit filter chips and static pre-rendering.
-- Recipe bottom sheet on immersive pages.
-- HD background download.
-- Compact X and Reddit share tray on immersive pages.
-- SEO basics: canonical URLs, hreflang links, Open Graph, Twitter meta, sitemap, robots.
+---
 
-## Tech Stack
+## Introduction
 
-- [Astro](https://astro.build/)
-- TypeScript
-- CSS
-- npm
-- `lucide-astro` for icons
-- Local content and generated SVG placeholder assets
+### Summary
+**Just One Sip** is a bilingual daily cocktail poster and discovery experience built on a pure static Astro architecture.
+Designed with a "Midnight Pour" editorial personality—warm charred walnut backgrounds, cream ink typography, and subtle bitter ruby accents—the platform makes discovering cocktails feel like encountering an evocative visual poster under low bar light, rather than sifting through a sterile database.
 
-## Commands
+Live site: [https://justonesip.today](https://justonesip.today)
+
+### Features
+- 🍸 **Daily Pour Recommendation**: Evaluated entirely client-side using deterministic, date-seeded pseudo-random rotation aligned with each visitor's local calendar day.
+- 🎲 **On-Demand "Surprise Me" Shuffle**: Instantly cycle through alternative picks without waiting for the next calendar day.
+- 📚 **The Collection Hub**: A statically pre-rendered gallery exhibiting 33 classic cocktails with responsive grid cards and base-spirit filter chips.
+- 📜 **Non-Intrusive Recipe Drawer**: A bottom sheet presenting trustworthy measurements, concise method steps, glassware recommendations, and flavor profile tags.
+- 🖼️ **HD Wallpaper Download & Sharing**: Download device-tailored high-resolution wallpapers and share via streamlined X and Reddit trays.
+- 🌐 **Bilingual by Design**: Full symmetrical parity between English (`en`) and Simplified Chinese (`zh-CN`) with strict typographic overflow prevention.
+- 🚀 **Strict SEO & Metadata Standards**: Canonical links, bidirectional `hreflang` tags, Open Graph meta, and valid Schema.org `Recipe` / `ItemList` JSON-LD blocks.
+
+---
+
+## Requirements
+
+- **Node.js**: `>= 18.17.1` (Recommended: 20.x LTS)
+- **Package Manager**: `npm` (`>= 9.x`)
+
+---
+
+## Configuration
+
+Key configuration files include:
+
+- **`astro.config.mjs`**: Declares static site base URL (`https://justonesip.today`) and static build options.
+- **`src/i18n/config.ts`**: Configures `supportedLocales`, reserved `plannedLocales`, and route mappings.
+- **`src/data/cocktails.ts`**: Central source of truth for cocktail recipes, ingredients, flavor tags, and asset mappings.
+
+---
+
+## Installation
+
+Clone the repository and install dependencies:
 
 ```bash
+git clone https://github.com/msdos41/daily-cocktail-poster.git
+cd daily-cocktail-poster
 npm install
-npm run dev
-npm run build
-npm run preview
 ```
 
-For local browser testing, the project is usually run on:
+---
+
+## Usage
+
+### Local Development
+Start the local development server:
+
+```bash
+npm run dev
+```
+
+To test on mobile devices across the local network:
 
 ```bash
 npm run dev -- --host 127.0.0.1 --port 4321
 ```
 
-## Routes
+### Route Overview
+
+| Path | Type | Description |
+| :--- | :--- | :--- |
+| `/` | Redirect | 302 redirect to default locale `/en/` |
+| `/[locale]/` | Immersive Daily | Deterministically scheduled daily cocktail poster & recipe |
+| `/[locale]/cocktails` | The Collection | Static gallery of all 33 cocktails with base-spirit filter chips |
+| `/[locale]/cocktails/[slug]` | Detail Page | Permanent recipe URL with Schema.org Recipe JSON-LD |
+| `/[locale]/archive` | Redirect | 301 permanent redirect to `/[locale]/cocktails` |
+| `/sitemap.xml` | Sitemap | Pre-rendered static XML sitemap |
+
+---
+
+## Development
+
+### Directory Structure
 
 ```text
-/                         -> redirects to /en/
-/en/                      -> daily immersive home
-/zh-cn/                   -> daily immersive home
-/en/cocktails             -> The Collection (all cocktails)
-/zh-cn/cocktails          -> The Collection (all cocktails)
-/en/archive               -> redirects to /en/cocktails
-/zh-cn/archive            -> redirects to /zh-cn/cocktails
-/en/cocktails/[slug]      -> fixed cocktail detail page
-/zh-cn/cocktails/[slug]   -> fixed cocktail detail page
-/sitemap.xml              -> static sitemap
+daily-cocktail-poster/
+├── DESIGN.md                  # Comprehensive design tokens, colors & typography rules
+├── PRODUCT.md                 # Product definition, audience & brand principles
+├── astro.config.mjs           # Astro SSG configuration
+├── scripts/
+│   └── verify-static-output.mjs # Static build compliance verification suite
+├── src/
+│   ├── components/            # Astro UI components (BrandMark, ImmersiveCocktail, etc.)
+│   ├── data/
+│   │   ├── cocktails.ts       # Source of truth: 33 curated cocktail datasets
+│   │   ├── cocktailCandidates.ts # Internal backlog & scheduling candidate data
+│   │   └── heroAssets.ts      # Visual asset mappings
+│   ├── i18n/                  # Internationalization configs and dictionary
+│   ├── layouts/               # BaseLayout HTML shell, SEO & meta tags
+│   ├── pages/                 # Static page routes
+│   └── styles/
+│       └── global.css         # Global CSS tokens and utility classes
 ```
 
-Current cocktail slugs are defined in `src/data/cocktails.ts`. The library contains all 33 cocktails pre-rendered across supported locales.
-
-## Daily Recommendation & The Collection
-
-Selection architecture:
-
-- **Home page (`/[locale]/`)**: Selects the Daily Pour using a deterministic date-seeded pseudo-random permutation based on the visitor's local calendar date. An on-demand "Surprise Me" action allows cycling to an alternate cocktail without waiting for the next calendar day.
-- **The Collection (`/[locale]/cocktails/`)**: A pure static pre-rendered gallery displaying all 33 cocktails with responsive 6-column grid cards, tuned image crops, and client-side Base Spirit filter chips. Legacy `/archive` URLs redirect here.
-- **Detail pages (`/[locale]/cocktails/[slug]`)**: Permanent canonical recipe URLs linked directly from The Collection hub.
-
-## Project Structure
-
-```text
-src/
-  components/
-    BrandMark.astro
-    ImmersiveCocktail.astro
-  data/
-    cocktailCandidates.ts
-    cocktails.ts
-    heroAssets.ts
-  i18n/
-    config.ts
-    ui.ts
-  layouts/
-    BaseLayout.astro
-  pages/
-    index.astro
-    sitemap.xml.ts
-    images/cocktails/[asset].svg.ts
-    [locale]/index.astro
-    [locale]/archive.astro
-    [locale]/cocktails/[slug].astro
-  styles/
-    global.css
-  utils/
-    seo.ts
-```
-
-## Content Model
-
-Stable cocktail data and localized text are currently kept together in `src/data/cocktails.ts`.
-
-Internal planning data lives in `src/data/cocktailCandidates.ts`. It records candidate source, popularity reason, flavor profile, base spirit, difficulty, scheduled date, and status. It is not imported by the front-end rendering path.
-
-Stable fields include:
-
-- `id`
-- `slug`
-- `date`
-- `heroImageDesktop`
-- `heroImageMobile`
-- `backgroundDownloadDesktop`
-- `backgroundDownloadMobile`
-- `posterImage`
-- `shareBaseImage`
-- `glass`
-- `baseSpirit`
-
-Localized fields include:
-
-- `name`
-- `subtitle`
-- `description`
-- `heroIngredients`
-- `ingredients`
-- `steps`
-- `tags`
-- `flavor`
-- `garnish`
-- localized `glass`
-- localized `baseSpirit`
-
-## Internationalization
-
-Current supported locales are defined in `src/i18n/config.ts`:
-
-```ts
-supportedLocales = ["en", "zh-CN"]
-```
-
-Planned future locales are also reserved there:
-
-```ts
-plannedLocales = ["es", "fr", "de", "pt-BR", "it", "ja", "ko", "zh-Hant"]
-```
-
-To add a new launch locale:
-
-1. Add the locale to `supportedLocales`.
-2. Add its URL path to `localePath`.
-3. Add its display label to `localeLabel`.
-4. Add UI strings in `src/i18n/ui.ts`.
-5. Add localized cocktail content in `src/data/cocktails.ts`.
-6. Run `npm run build`.
-
-The immersive title layout is designed for multilingual expansion:
-
-- CJK and single-word titles prefer one line.
-- Multi-word titles wrap only at natural break points.
-- Runtime fitting reduces title size when needed to avoid overflow.
-
-## Visual Assets
-
-Current images are SVG placeholders.
-
-- Full-screen background visuals are generated by `src/pages/images/cocktails/[asset].svg.ts`.
-- Archive cards use text-free visual images plus localized text below the image.
-- Old poster SVGs in `public/images/cocktails/` are still available for launch cocktails. New scheduled cocktails can use generated scene SVGs as temporary poster/share assets.
-- HD background download uses the current device-specific background image.
-
-Future bitmap or AI-generated assets can replace the current SVG outputs while keeping the same data fields.
-
-## Sharing
-
-The share flow is implemented in `ImmersiveCocktail.astro`.
-
-The immersive action tray currently supports:
-
-- X: opens a post intent with prepared English post copy, the canonical share URL, and three compact hashtags. The post text is copied first so users can paste it if an installed X PWA opens an empty composer.
-- Reddit: opens Reddit submit with the current page URL and an English title.
-
-## SEO
-
-`BaseLayout.astro` and `src/utils/seo.ts` provide:
-
-- Per-locale canonical URLs.
-- `hreflang` alternates for `en`, `zh-CN`, and `x-default`.
-- Open Graph and Twitter meta.
-- Correct HTML `lang`.
-
-`src/pages/sitemap.xml.ts` outputs static URLs for supported locale routes and cocktail detail pages.
-
-## Verification Checklist
-
-Run:
+### Building & Verification
+Compile static output and verify against strict production constraints:
 
 ```bash
+# Type check and build static files to dist/
 npm run build
+
+# Preview static distribution locally
+npm run preview
+
+# Run comprehensive static verification suite
+npm run verify
 ```
 
-Then verify:
+> **The Verification Suite (`verify`) ensures:**
+> 1. All localized routes exist and contain canonical and reciprocal `hreflang` tags.
+> 2. Cocktail detail pages output valid Schema.org `Recipe` JSON-LD blocks.
+> 3. Immersive pages include valid `data-share-payload`.
+> 4. Error page (`404.html`) contains `noindex` and is excluded from `sitemap.xml`.
 
-- `/` redirects to `/en/`.
-- `/en/` and `/zh-cn/` show the same scheduled slug with localized text.
-- `/en/archive` and `/zh-cn/archive` show only published Past Picks.
-- `/en/cocktails/negroni` and `/zh-cn/cocktails/negroni` stay fixed to Negroni.
-- Mobile layouts have no horizontal overflow.
-- Long cocktail names do not break inside words.
-- Download uses the current device background.
-- X and Reddit share links open with the current page URL.
+---
 
-## Deployment
+## Changelog
 
-The project builds to a static `dist/` directory and is suitable for static hosts such as Vercel or Cloudflare Pages.
+### v0.1.0 (MVP) - 2026
+- ✨ Launched static Astro 5 MVP with full bilingual support (`en` and `zh-CN`).
+- 🍸 Introduced deterministic date-seeded pseudo-random Daily Pour rotation with "Surprise Me" shuffle.
+- 📚 Delivered The Collection hub pre-rendering 33 library cocktails with base-spirit filtering.
+- 📱 Integrated non-intrusive recipe bottom sheet, device-specific HD wallpaper download, and share tray.
+- 🔍 Implemented comprehensive SEO infrastructure with Schema.org Recipe JSON-LD.
 
-No database, CMS, API server, scheduled rebuild, or SSR layer is required for the current MVP.
+---
+
+## FAQ
+
+**Q: Why a pure static site (SSG) instead of SSR or a backend database?**  
+A: For blazing performance, zero hosting maintenance, and rock-solid durability. The Daily Pour calculates deterministically in the client's local timezone, delivering a fresh daily experience without requiring dynamic server rendering or database calls.
+
+**Q: What is the current format of cocktail visual assets?**  
+A: High-quality, fast-loading responsive SVG graphics. The data layer is engineered with clean `heroImageDesktop` / `heroImageMobile` contracts, allowing future replacement with high-resolution photography or AI-rendered imagery without code changes.
+
+---
+
+## Support
+
+### Documentation
+- [DESIGN.md](DESIGN.md): Comprehensive design system tokens, color palettes, and UI rules.
+- [PRODUCT.md](PRODUCT.md): Brand voice ("Midnight Pour"), user personas, and accessibility standards.
+
+### Release Planning
+- 🎨 **High-Resolution Imagery**: Transition to refined photographic or rendered visual assets.
+- 🌍 **Language Expansion**: Roll out support for additional planned locales (`es`, `ja`, `fr`).
+- 🔎 **Multi-Dimensional Discovery**: Flavor-based filtering (e.g. smoky, bitter, floral) in The Collection.
+
+### Contact & Community
+- **Website**: [https://justonesip.today](https://justonesip.today)
+- **Feedback & Discussions**: Please open an issue or start a discussion on [GitHub Issues](https://github.com/msdos41/daily-cocktail-poster/issues).
+
+---
+
+## Contributing
+
+Contributions to recipe precision, translation fidelity, and accessibility are warmly welcomed!
+
+1. Fork the repo and create your feature branch (`git checkout -b feat/my-cocktail`).
+2. Update data in `src/data/cocktails.ts` with complete `en` and `zh-CN` translations.
+3. Adhere to Conventional Commits standards (`feat: ...`, `fix: ...`).
+4. Ensure `npm run build` and `npm run verify` pass with zero errors.
+5. Open a Pull Request with a clear summary of your changes.
+
+### Contributors
+Thanks to all contributors and cocktail enthusiasts who help shape Just One Sip!
+
+---
+
+## License
+
+- Source code is released under the [MIT License](LICENSE).
+- Cocktail recipes curation, localized copy, and brand assets retain original copyright.
+
+---
+
+## Status
+
+🟢 **Active (Production MVP)**: The MVP is live and maintained at [https://justonesip.today](https://justonesip.today).
