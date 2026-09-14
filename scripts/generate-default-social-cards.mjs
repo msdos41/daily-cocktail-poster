@@ -55,7 +55,8 @@ const enSvg = `
       font-size: 26px;
       font-style: italic;
       letter-spacing: 0.01em;
-      fill: #e6ded3;
+      fill: #f7efe5;
+      opacity: 0.9;
     }
     .domain-tag {
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -108,7 +109,8 @@ const zhSvg = `
       font-family: "Songti SC", "SimSun", "Noto Serif SC", serif;
       font-size: 24px;
       letter-spacing: 0.16em;
-      fill: #e6ded3;
+      fill: #f7efe5;
+      opacity: 0.9;
     }
     .domain-tag {
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -129,47 +131,33 @@ const zhSvg = `
 </svg>
 `;
 
-export async function generateEnglishCard() {
+async function renderCard(svgOverlay, targetFilenames) {
   const baseBuffer = await sharp(negroniDesktop)
     .resize(1200, 630, { fit: "cover", position: "right" })
     .toBuffer();
 
-  const enJpeg = await sharp(baseBuffer)
+  const jpegBuffer = await sharp(baseBuffer)
     .composite([
       { input: Buffer.from(vignetteSvg) },
-      { input: Buffer.from(enSvg) },
+      { input: Buffer.from(svgOverlay) },
     ])
     .jpeg({ quality: 86, mozjpeg: true })
     .toBuffer();
 
-  const enPath = path.join(imagesDir, "og-default-en.jpg");
-  const v2Path = path.join(imagesDir, "og-default-v2.jpg");
+  for (const filename of targetFilenames) {
+    fs.writeFileSync(path.join(imagesDir, filename), jpegBuffer);
+  }
 
-  fs.writeFileSync(enPath, enJpeg);
-  fs.writeFileSync(v2Path, enJpeg);
+  console.log(`Generated ${targetFilenames.join(", ")} (${jpegBuffer.length} bytes)`);
+  return jpegBuffer;
+}
 
-  console.log(`Generated og-default-en.jpg (${enJpeg.length} bytes) and copied to og-default-v2.jpg`);
-  return enJpeg;
+export async function generateEnglishCard() {
+  return renderCard(enSvg, ["og-default-en.jpg", "og-default-v2.jpg"]);
 }
 
 export async function generateChineseCard() {
-  const baseBuffer = await sharp(negroniDesktop)
-    .resize(1200, 630, { fit: "cover", position: "right" })
-    .toBuffer();
-
-  const zhJpeg = await sharp(baseBuffer)
-    .composite([
-      { input: Buffer.from(vignetteSvg) },
-      { input: Buffer.from(zhSvg) },
-    ])
-    .jpeg({ quality: 86, mozjpeg: true })
-    .toBuffer();
-
-  const zhPath = path.join(imagesDir, "og-default-zh.jpg");
-  fs.writeFileSync(zhPath, zhJpeg);
-
-  console.log(`Generated og-default-zh.jpg (${zhJpeg.length} bytes)`);
-  return zhJpeg;
+  return renderCard(zhSvg, ["og-default-zh.jpg"]);
 }
 
 async function main() {

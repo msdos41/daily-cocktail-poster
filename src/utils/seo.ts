@@ -45,12 +45,12 @@ export function socialImageMetadata(image?: string, locale?: Locale): SocialImag
     return defaultSocialImageMetadata(locale);
   }
 
-  const isKnown1200x630 =
-    pathname === "/images/og-default-en.jpg" ||
-    pathname === "/images/og-default-zh.jpg" ||
-    pathname === "/images/og-default-v2.jpg" ||
-    pathname === defaultSocialImage ||
-    pathname.includes("-og.");
+  const defaultOgImagePaths = new Set([
+    "/images/og-default-en.jpg",
+    "/images/og-default-zh.jpg",
+    "/images/og-default-v2.jpg",
+  ]);
+  const isKnown1200x630 = defaultOgImagePaths.has(pathname) || pathname.includes("-og.");
 
   return {
     url: url.toString(),
