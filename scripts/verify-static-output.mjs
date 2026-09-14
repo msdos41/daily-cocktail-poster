@@ -235,7 +235,7 @@ function verifyContentPages(slugs) {
       assert(Boolean(ogImage), `${pageId} must include og:image.`);
       if (ogImage) {
         assert(!ogImage.endsWith(".svg"), `${pageId} og:image must not be SVG.`);
-        assert(!ogImage.includes("og-default-v2.jpg"), `${pageId} og:image must not fall back to default: ${ogImage}`);
+        assert(!ogImage.includes("og-default"), `${pageId} og:image must not fall back to default: ${ogImage}`);
       }
       const ogWidth = getMetaContent(html, "property", "og:image:width", pageId);
       const ogHeight = getMetaContent(html, "property", "og:image:height", pageId);
