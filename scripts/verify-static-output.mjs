@@ -24,6 +24,9 @@ const requiredPublicPaths = [
   "/en/llms-full.txt",
   "/zh-cn/llms.txt",
   "/zh-cn/llms-full.txt",
+  "/images/og-default-en.jpg",
+  "/images/og-default-zh.jpg",
+  "/images/og-default-v2.jpg",
 ];
 const spiritSlugs = [
   "gin",
@@ -69,6 +72,7 @@ function main() {
   verifySpiritTaxonomyPages(slugs);
   verifyLegacyArchiveRedirects();
   verifyCssTokens();
+  verifyDefaultSocialImages();
 
   if (errors.length > 0) {
     console.error(`Static verification failed with ${errors.length} issue${errors.length === 1 ? "" : "s"}:`);
@@ -93,6 +97,15 @@ function main() {
 function verifyRequiredPages(slugs) {
   for (const publicPath of requiredPublicPaths) {
     assert(fileExists(filePathForPublicPath(publicPath)), `Missing required generated page: ${publicPath}`);
+  }
+
+  const rootHtml = readRequired(filePathForPublicPath("/"), "/");
+  if (rootHtml) {
+    const expectedRootOg = `${site}/images/og-default-en.jpg`;
+    const ogImage = getMetaContent(rootHtml, "property", "og:image", "/");
+    assert(ogImage === expectedRootOg, `/ og:image must be ${expectedRootOg}, got ${ogImage || "none"}`);
+    const twitterImage = getMetaContent(rootHtml, "name", "twitter:image", "/");
+    assert(twitterImage === expectedRootOg, `/ twitter:image must be ${expectedRootOg}, got ${twitterImage || "none"}`);
   }
 
   for (const locale of locales) {
@@ -244,6 +257,16 @@ function verifyContentPages(slugs) {
       assert(html.includes('editorial-tips-list'), `${pageId} must include editorial-tips-list.`);
       assert(html.includes('class="detail-breadcrumbs"'), `${pageId} must include detail-breadcrumbs.`);
       assert(html.includes('/cocktails/spirit/'), `${pageId} detail-breadcrumbs must link to base spirit hub.`);
+    }
+
+    if (page.kind === "home" || page.kind === "cocktails" || page.kind === "about" || page.kind === "privacy") {
+      const expectedOg = page.locale === "zh-CN"
+        ? `${site}/images/og-default-zh.jpg`
+        : `${site}/images/og-default-en.jpg`;
+      const ogImage = getMetaContent(html, "property", "og:image", pageId);
+      assert(ogImage === expectedOg, `${pageId} og:image must be ${expectedOg}, got ${ogImage || "none"}`);
+      const twitterImage = getMetaContent(html, "name", "twitter:image", pageId);
+      assert(twitterImage === expectedOg, `${pageId} twitter:image must be ${expectedOg}, got ${twitterImage || "none"}`);
     }
 
     if (page.kind === "home" || page.kind === "detail") {
@@ -570,6 +593,32 @@ function verifyCssTokens() {
     const css = fs.readFileSync(path.join(astroDir, file), "utf8");
     assert(!css.includes("--color-ink"), `Bundled CSS ${file} must not reference undefined token --color-ink`);
     assert(!css.includes("--font-serif"), `Bundled CSS ${file} must not reference undefined token --font-serif`);
+  }
+}
+
+function verifyDefaultSocialImages() {
+  const enCard = path.join(distDir, "images", "og-default-en.jpg");
+  const zhCard = path.join(distDir, "images", "og-default-zh.jpg");
+  const v2Card = path.join(distDir, "images", "og-default-v2.jpg");
+
+  assert(fileExists(enCard), "Missing dist/images/og-default-en.jpg.");
+  assert(fileExists(zhCard), "Missing dist/images/og-default-zh.jpg.");
+  assert(fileExists(v2Card), "Missing dist/images/og-default-v2.jpg.");
+
+  if (fileExists(enCard)) {
+    const enSize = fs.statSync(enCard).size;
+    assert(enSize < 150000, `og-default-en.jpg must be under 150KB, got ${enSize} bytes.`);
+  }
+
+  if (fileExists(zhCard)) {
+    const zhSize = fs.statSync(zhCard).size;
+    assert(zhSize < 150000, `og-default-zh.jpg must be under 150KB, got ${zhSize} bytes.`);
+  }
+
+  if (fileExists(enCard) && fileExists(v2Card)) {
+    const enBuf = fs.readFileSync(enCard);
+    const v2Buf = fs.readFileSync(v2Card);
+    assert(enBuf.equals(v2Buf), "og-default-v2.jpg must be an exact copy of og-default-en.jpg for backwards compatibility.");
   }
 }
 
