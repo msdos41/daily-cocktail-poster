@@ -822,7 +822,17 @@ function filePathForPublicPath(publicPath) {
     return path.join(distDir, "index.html");
   }
 
-  if (publicPath.endsWith(".html") || publicPath.endsWith(".xml") || publicPath.endsWith(".txt")) {
+  if (
+    publicPath.endsWith(".html") ||
+    publicPath.endsWith(".xml") ||
+    publicPath.endsWith(".txt") ||
+    publicPath.endsWith(".jpg") ||
+    publicPath.endsWith(".jpeg") ||
+    publicPath.endsWith(".png") ||
+    publicPath.endsWith(".webp") ||
+    publicPath.endsWith(".svg") ||
+    publicPath.endsWith(".ico")
+  ) {
     return path.join(distDir, publicPath.replace(/^\//, ""));
   }
 
