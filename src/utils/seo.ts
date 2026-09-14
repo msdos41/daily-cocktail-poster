@@ -1,9 +1,16 @@
 import { defaultLocale, localeToPath, supportedLocales, type Locale } from "../i18n/config.ts";
 
 export const site = "https://justonesip.today";
-const defaultSocialImage = "/images/og-default-v2.jpg";
+export const defaultSocialImage = "/images/og-default-en.jpg";
 const defaultSocialImageWidth = 1200;
 const defaultSocialImageHeight = 630;
+
+export function defaultSocialImageForLocale(locale: Locale): string {
+  if (locale === "zh-CN") {
+    return "/images/og-default-zh.jpg";
+  }
+  return "/images/og-default-en.jpg";
+}
 
 export type SocialImageMetadata = {
   url: string;
@@ -24,31 +31,41 @@ export function shareUrlForLocalePath(locale: Locale, path: string) {
   return pageUrlForLocalePath(locale, path);
 }
 
-export function socialImageUrl(image = defaultSocialImage) {
-  return socialImageMetadata(image).url;
+export function socialImageUrl(image?: string, locale?: Locale) {
+  return socialImageMetadata(image, locale).url;
 }
 
-export function socialImageMetadata(image = defaultSocialImage): SocialImageMetadata {
-  const url = new URL(image || defaultSocialImage, site);
+export function socialImageMetadata(image?: string, locale?: Locale): SocialImageMetadata {
+  const fallbackImage = locale ? defaultSocialImageForLocale(locale) : defaultSocialImage;
+  const resolvedImage = image || fallbackImage;
+  const url = new URL(resolvedImage, site);
   const pathname = url.pathname.toLowerCase();
 
   if (pathname.endsWith(".svg")) {
-    return defaultSocialImageMetadata();
+    return defaultSocialImageMetadata(locale);
   }
+
+  const isKnown1200x630 =
+    pathname === "/images/og-default-en.jpg" ||
+    pathname === "/images/og-default-zh.jpg" ||
+    pathname === "/images/og-default-v2.jpg" ||
+    pathname === defaultSocialImage ||
+    pathname.includes("-og.");
 
   return {
     url: url.toString(),
     type: socialImageType(pathname),
-    ...((pathname === defaultSocialImage || pathname.includes("-og.")) && {
+    ...(isKnown1200x630 && {
       width: defaultSocialImageWidth,
       height: defaultSocialImageHeight,
     }),
   };
 }
 
-function defaultSocialImageMetadata(): SocialImageMetadata {
+function defaultSocialImageMetadata(locale?: Locale): SocialImageMetadata {
+  const imagePath = locale ? defaultSocialImageForLocale(locale) : defaultSocialImage;
   return {
-    url: absoluteUrl(defaultSocialImage),
+    url: absoluteUrl(imagePath),
     type: "image/jpeg",
     width: defaultSocialImageWidth,
     height: defaultSocialImageHeight,

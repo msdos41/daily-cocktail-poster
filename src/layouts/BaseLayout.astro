@@ -8,6 +8,7 @@ import type { JsonLd } from "@/utils/structuredData";
 import {
   alternateLinks,
   alternateOpenGraphLocales,
+  defaultSocialImageForLocale,
   openGraphLocale,
   pageUrlForLocalePath,
   socialImageMetadata,
@@ -31,7 +32,7 @@ const {
   title,
   description,
   path,
-  image = "/images/og-default-v2.jpg",
+  image,
   immersive = false,
   immersiveScrollable = false,
   ogType = "website",
@@ -40,7 +41,8 @@ const {
 const googleAnalyticsId = "G-RLJPSW8NWV";
 const alternates = alternateLinks(path);
 const canonical = pageUrlForLocalePath(locale, path);
-const socialImage = socialImageMetadata(image);
+const resolvedImage = image || defaultSocialImageForLocale(locale);
+const socialImage = socialImageMetadata(resolvedImage, locale);
 const imageAlt = title;
 const structuredDataItems = structuredData ? (Array.isArray(structuredData) ? structuredData : [structuredData]) : [];
 ---

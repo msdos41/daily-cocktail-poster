@@ -19,9 +19,6 @@ interface Props {
 
 const { locale } = Astro.props;
 const cocktails = getAllCocktails(locale);
-const collectionImage = cocktails.find(
-  (c) => !c.heroImageMobile.toLowerCase().endsWith(".svg"),
-)?.heroImageMobile;
 const path = "/cocktails";
 const title = `${t(locale, "theCollection")} | ${t(locale, "siteName")}`;
 const description = t(locale, "collectionIntro");
@@ -54,7 +51,6 @@ const spiritFilters = [
   title={title}
   description={description}
   path={path}
-  image={collectionImage}
   structuredData={structuredData}
 >
   <h1 class="sr-only">{t(locale, "theCollection")}</h1>
