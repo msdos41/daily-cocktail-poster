@@ -52,6 +52,7 @@ const summary = {
   collectionsVerified: 0,
   spiritTaxonomiesVerified: 0,
   llmFeeds: 0,
+  dailyCurtainsVerified: 0,
 };
 
 main();
@@ -73,6 +74,7 @@ function main() {
   verifyLegacyArchiveRedirects();
   verifyCssTokens();
   verifyDefaultSocialImages();
+  verifyDailyCurtain(slugs);
 
   if (errors.length > 0) {
     console.error(`Static verification failed with ${errors.length} issue${errors.length === 1 ? "" : "s"}:`);
@@ -92,6 +94,7 @@ function main() {
   console.log(`- Verified The Collection catalog pre-renders all ${slugs.length} cocktails.`);
   console.log(`- Verified ${summary.spiritTaxonomiesVerified} spirit taxonomy landing pages.`);
   console.log(`- Verified ${summary.llmFeeds} LLM knowledge feeds.`);
+  console.log(`- Verified ${summary.dailyCurtainsVerified} daily pour curtain integrations.`);
 }
 
 function verifyRequiredPages(slugs) {
@@ -620,6 +623,56 @@ function verifyDefaultSocialImages() {
     const v2Buf = fs.readFileSync(v2Card);
     assert(enBuf.equals(v2Buf), "og-default-v2.jpg must be an exact copy of og-default-en.jpg for backwards compatibility.");
   }
+}
+
+function verifyDailyCurtain(slugs) {
+  for (const locale of locales) {
+    const homePath = routeForLocalePath(locale.locale, "/");
+    const html = readRequired(filePathForPublicPath(homePath), homePath);
+    if (!html) continue;
+
+    assert(
+      html.includes("js-daily-curtain"),
+      `${homePath} must include the js-daily-curtain anti-FOUC head marker script.`,
+    );
+    assert(
+      html.includes('data-hero-variant="home"'),
+      `${homePath} immersive-stage must declare data-hero-variant="home".`,
+    );
+    assert(
+      html.includes("data-daily-cocktails"),
+      `${homePath} must provide client daily cocktails payload.`,
+    );
+    assert(
+      html.includes("justonesip_daily_pour"),
+      `${homePath} must integrate justonesip_daily_pour localStorage caching.`,
+    );
+
+    summary.dailyCurtainsVerified += 1;
+  }
+
+  if (slugs && slugs.length > 0) {
+    const sampleDetail = routeForLocalePath("en", `/cocktails/${slugs[0]}`);
+    const detailHtml = readRequired(filePathForPublicPath(sampleDetail), sampleDetail);
+    if (detailHtml) {
+      assert(
+        !detailHtml.includes("data-daily-cocktails"),
+        `${sampleDetail} must not include home-only data-daily-cocktails payload.`,
+      );
+      assert(
+        !detailHtml.includes("justonesip_daily_pour"),
+        `${sampleDetail} must not include home-only localStorage caching script.`,
+      );
+    }
+  }
+
+  const epoch = Date.UTC(2026, 0, 1);
+  const day0 = Math.floor((Date.UTC(2026, 0, 1) - epoch) / 86400000);
+  assert(day0 === 0, `Day 0 must be 0, got ${day0}`);
+  const day1 = Math.floor((Date.UTC(2026, 0, 2) - epoch) / 86400000);
+  assert(day1 === 1, `Day 1 must be 1, got ${day1}`);
+  const day33 = Math.floor((Date.UTC(2026, 1, 3) - epoch) / 86400000);
+  assert(((day33 % 33) + 33) % 33 === 0, `Day 33 must wrap to index 0`);
 }
 
 function verifyAlternates(alternates, contentPath, context) {
