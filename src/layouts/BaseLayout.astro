@@ -56,6 +56,11 @@ const structuredDataItems = structuredData ? (Array.isArray(structuredData) ? st
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="canonical" href={canonical} />
     {alternates.map((item) => <link rel="alternate" hreflang={item.locale} href={item.href} />)}
+    {immersive && path === "/" && (
+      <script is:inline>
+        document.documentElement.classList.add("js-daily-curtain");
+      </script>
+    )}
     {immersive && (
       <style is:inline>
         .immersive-stage {

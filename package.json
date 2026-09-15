@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
+    "test": "node --experimental-strip-types --test tests/dailyCurtain.test.mjs",
     "preview": "astro preview",
     "verify": "node scripts/verify-static-output.mjs"
   },

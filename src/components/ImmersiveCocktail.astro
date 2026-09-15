@@ -64,68 +64,132 @@ const dailyCocktailPrepaintScript = `
   const metadataLabel = ${JSON.stringify(t(locale, "dailyPour"))};
   const monthLabels = ${JSON.stringify(monthLabels)};
   const sequence = ${JSON.stringify(DAILY_POUR_SEQUENCE)};
+  const stage = document.querySelector('.immersive-stage[data-hero-variant="home"]');
   const dailyCocktailsNode = document.querySelector("[data-daily-cocktails]");
-  if (!dailyCocktailsNode) return;
+  if (!stage || !dailyCocktailsNode) return;
+
+  function liftCurtain() {
+    stage.classList.remove("is-pending-daily");
+  }
 
   let cocktails = [];
   try {
     cocktails = JSON.parse(dailyCocktailsNode.textContent || "[]");
   } catch {
+    liftCurtain();
     return;
   }
 
+  if (!cocktails.length) {
+    liftCurtain();
+    return;
+  }
+
+  const STORAGE_KEY = "justonesip_daily_pour";
   const today = getLocalDateKey(new Date());
-  const dayNumber = getDayNumber(today);
-  const n = sequence.length;
-  const index = ((dayNumber % n) + n) % n;
-  const targetId = sequence[index];
+  let targetId = null;
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const cached = JSON.parse(raw);
+      if (cached && cached.date === today && typeof cached.cocktailId === "string") {
+        targetId = cached.cocktailId;
+      }
+    }
+  } catch {}
+
+  if (!targetId || !cocktails.some((item) => item.id === targetId)) {
+    const dayNumber = getDayNumber(today);
+    const n = sequence.length;
+    const index = ((dayNumber % n) + n) % n;
+    targetId = sequence[index];
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          date: today,
+          cocktailId: targetId,
+          timestamp: Date.now(),
+        }),
+      );
+    } catch {}
+  }
+
   const cocktail = cocktails.find((item) => item.id === targetId) || cocktails[0];
+  if (!cocktail) {
+    liftCurtain();
+    return;
+  }
 
-  if (!cocktail) return;
+  const isMobile = window.matchMedia("(max-width: 720px)").matches;
+  const targetImageUrl = isMobile ? cocktail.heroImageMobile : cocktail.heroImageDesktop;
 
-  const stage = document.querySelector(".immersive-stage");
-  if (stage) {
+  let revealed = false;
+  function reveal() {
+    if (revealed) return;
+    revealed = true;
+    clearTimeout(safetyTimer);
+
     stage.setAttribute("data-cocktail-id", cocktail.id);
     stage.setAttribute("data-desktop-download", cocktail.backgroundDownloadDesktop);
     stage.setAttribute("data-mobile-download", cocktail.backgroundDownloadMobile);
-  }
 
-  const source = document.querySelector(".immersive-bg source");
-  const image = document.querySelector(".immersive-bg img");
-  if (source) source.setAttribute("srcset", cocktail.heroImageMobile);
-  if (image) {
-    image.setAttribute("src", cocktail.heroImageDesktop);
-    const altPrefix = image.getAttribute("data-poster-alt-prefix") || "";
-    image.setAttribute("alt", (altPrefix + " " + cocktail.name).trim());
-  }
-
-  setAllText("[data-cocktail-name]", cocktail.name);
-  setText("[data-hero-metadata]", formatHeroMetadata(cocktail.date));
-  setText("[data-cocktail-subtitle]", cocktail.subtitle);
-  setText("[data-hero-ingredients]", cocktail.heroIngredientSummary);
-
-  const sharePayloadNode = document.querySelector("[data-share-payload]");
-  if (sharePayloadNode) {
-    try {
-      const sharePayload = JSON.parse(sharePayloadNode.textContent || "{}");
-      sharePayload.name = cocktail.name;
-      sharePayload.filenameBase = cocktail.slug;
-      sharePayloadNode.textContent = JSON.stringify(sharePayload);
-    } catch {
-      return;
+    const source = document.querySelector(".immersive-bg source");
+    const image = document.querySelector(".immersive-bg img");
+    if (source) source.setAttribute("srcset", cocktail.heroImageMobile);
+    if (image) {
+      image.setAttribute("src", cocktail.heroImageDesktop);
+      const altPrefix = image.getAttribute("data-poster-alt-prefix") || "";
+      image.setAttribute("alt", (altPrefix + " " + cocktail.name).trim());
     }
+
+    setAllText("[data-cocktail-name]", cocktail.name);
+    setText("[data-hero-metadata]", formatHeroMetadata(cocktail.date));
+    setText("[data-cocktail-subtitle]", cocktail.subtitle);
+    setText("[data-hero-ingredients]", cocktail.heroIngredientSummary);
+    setText("[data-recipe-description]", cocktail.description);
+    setText("[data-recipe-flavor]", cocktail.flavor);
+    setText("[data-recipe-glass]", cocktail.glass);
+    setText("[data-recipe-garnish]", cocktail.garnish);
+    setText("[data-recipe-base-spirit]", cocktail.baseSpirit);
+    replaceList("[data-recipe-tags]", cocktail.tags, "span");
+    replaceList("[data-recipe-ingredients]", cocktail.ingredients, "li");
+    replaceList("[data-recipe-steps]", cocktail.steps, "li");
+
+    const sharePayloadNode = document.querySelector("[data-share-payload]");
+    if (sharePayloadNode) {
+      try {
+        const sharePayload = JSON.parse(sharePayloadNode.textContent || "{}");
+        sharePayload.name = cocktail.name;
+        sharePayload.filenameBase = cocktail.slug;
+        sharePayloadNode.textContent = JSON.stringify(sharePayload);
+      } catch {}
+    }
+
+    const downloadLink = document.querySelector("[data-download-background]");
+    const downloadHref = isMobile ? cocktail.backgroundDownloadMobile : cocktail.backgroundDownloadDesktop;
+    if (downloadLink && downloadHref) {
+      downloadLink.setAttribute("href", downloadHref);
+      const dlExt = downloadHref.includes(".") ? downloadHref.substring(downloadHref.lastIndexOf(".")) : ".svg";
+      downloadLink.setAttribute(
+        "download",
+        cocktail.slug + "-" + (isMobile ? "mobile" : "desktop") + "-background" + dlExt,
+      );
+    }
+
+    liftCurtain();
   }
 
-  const downloadLink = document.querySelector("[data-download-background]");
-  const isMobile = window.matchMedia("(max-width: 720px)").matches;
-  const downloadHref = isMobile ? cocktail.backgroundDownloadMobile : cocktail.backgroundDownloadDesktop;
-  if (downloadLink && downloadHref) {
-    downloadLink.setAttribute("href", downloadHref);
-    const dlExt = downloadHref.includes(".") ? downloadHref.substring(downloadHref.lastIndexOf(".")) : ".svg";
-    downloadLink.setAttribute(
-      "download",
-      cocktail.slug + "-" + (isMobile ? "mobile" : "desktop") + "-background" + dlExt,
-    );
+  const safetyTimer = setTimeout(reveal, 600);
+
+  const preloader = new Image();
+  preloader.src = targetImageUrl;
+  if (typeof preloader.decode === "function") {
+    preloader.decode().then(reveal).catch(reveal);
+  } else {
+    preloader.onload = reveal;
+    preloader.onerror = reveal;
   }
 
   function getLocalDateKey(date) {
@@ -160,13 +224,24 @@ const dailyCocktailPrepaintScript = `
       element.textContent = value;
     });
   }
+
+  function replaceList(selector, values, tagName) {
+    const list = document.querySelector(selector);
+    if (!list || !Array.isArray(values)) return;
+    list.textContent = "";
+    values.forEach((value) => {
+      const item = document.createElement(tagName);
+      item.textContent = value;
+      list.appendChild(item);
+    });
+  }
 })();
 `;
 
 ---
 
 <section
-  class="immersive-stage"
+  class:list={["immersive-stage", variant === "home" && "is-pending-daily"]}
   data-cocktail-id={cocktail.id}
   data-hero-variant={variant}
   data-desktop-download={cocktail.backgroundDownloadDesktop}
@@ -503,9 +578,22 @@ const dailyCocktailPrepaintScript = `
   }
 
   if (dailyCocktails.length) {
-    const initialCocktail = pickDailyCocktail(dailyCocktails, new Date());
-    applyDailyCocktail(initialCocktail);
-    preloadedImageUrls.add(getTargetHeroImageUrl(initialCocktail, isMobileMedia.matches));
+    const currentId = stage?.getAttribute("data-cocktail-id");
+    const activeCocktail =
+      dailyCocktails.find((cocktail) => cocktail.id === currentId) ||
+      pickDailyCocktail(dailyCocktails, new Date());
+
+    if (activeCocktail) {
+      activeTargetId = activeCocktail.id;
+      if (currentId !== activeCocktail.id) {
+        applyDailyCocktail(activeCocktail);
+      } else {
+        configureHeroTitle();
+        updateDownloadTarget();
+      }
+      preloadedImageUrls.add(getTargetHeroImageUrl(activeCocktail, isMobileMedia.matches));
+    }
+    stage?.classList.remove("is-pending-daily");
     scheduleIdlePreload();
   }
 
@@ -751,6 +839,18 @@ const dailyCocktailPrepaintScript = `
 
   function pickDailyCocktail(cocktails: DailyCocktailPayload[], date: Date) {
     const today = getLocalDateKey(date);
+    const STORAGE_KEY = "justonesip_daily_pour";
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const cached = JSON.parse(raw);
+        if (cached && cached.date === today && typeof cached.cocktailId === "string") {
+          const found = cocktails.find((cocktail) => cocktail.id === cached.cocktailId);
+          if (found) return found;
+        }
+      }
+    } catch {}
+
     const dayNumber = getDayNumber(today);
     let sequence: string[] = [];
     try {
@@ -761,7 +861,20 @@ const dailyCocktailPrepaintScript = `
     const n = sequence.length || cocktails.length;
     const index = ((dayNumber % n) + n) % n;
     const targetId = sequence[index];
-    return cocktails.find((cocktail) => cocktail.id === targetId) || cocktails[0];
+    const found = cocktails.find((cocktail) => cocktail.id === targetId) || cocktails[0];
+    try {
+      if (found) {
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            date: today,
+            cocktailId: found.id,
+            timestamp: Date.now(),
+          }),
+        );
+      }
+    } catch {}
+    return found;
   }
 
   function getLocalDateKey(date: Date) {

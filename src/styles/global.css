@@ -246,8 +246,10 @@ body.immersive-scroll-page {
 
 @media (prefers-reduced-motion: no-preference) {
   .immersive-bg img,
-  .immersive-copy {
-    transition: opacity 250ms cubic-bezier(0.2, 0, 0, 1);
+  .immersive-copy,
+  .floating-actions,
+  .recipe-handle {
+    transition: opacity 300ms cubic-bezier(0.2, 0, 0, 1);
   }
 
   .immersive-stage.is-shuffling .immersive-bg img,
@@ -262,6 +264,14 @@ body.immersive-scroll-page {
   [data-surprise-me] svg {
     transition: transform 0.35s ease;
   }
+}
+
+html.js-daily-curtain .immersive-stage[data-hero-variant="home"].is-pending-daily .immersive-bg img,
+html.js-daily-curtain .immersive-stage[data-hero-variant="home"].is-pending-daily .immersive-copy,
+html.js-daily-curtain .immersive-stage[data-hero-variant="home"].is-pending-daily .floating-actions,
+html.js-daily-curtain .immersive-stage[data-hero-variant="home"].is-pending-daily .recipe-handle {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .immersive-shade {
