@@ -214,12 +214,13 @@ test("the home stage swaps its pinned poster when art direction changes", () => 
   const at = content.indexOf(marker);
   assert.notEqual(at, -1, "art-direction media must be observed");
 
-  const handler = content.slice(at, at + 280);
+  const handler = content.slice(at, at + 700);
   assert.match(handler, /syncArtDirectedPoster/);
+  assert.match(handler, /setInterval\(/);
 
   const bodyAt = content.indexOf("function syncArtDirectedPoster");
   assert.notEqual(bodyAt, -1, "the home stage must be able to swap the pinned poster");
-  const body = content.slice(bodyAt, bodyAt + 1600);
+  const body = content.slice(bodyAt, bodyAt + 2800);
   assert.match(body, /getTargetHeroImageUrl/);
   assert.match(body, /removeAttribute\("srcset"\)/);
   assert.match(body, /heroImageMobile/);
