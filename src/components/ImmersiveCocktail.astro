@@ -396,16 +396,20 @@ const dailyCocktailPrepaintScript = `
         </button>
       </div>
     </div>
-    <a
-      class="icon-button action-button"
-      href={cocktail.backgroundDownloadDesktop}
-      download={`${cocktail.slug}-background${extname(cocktail.backgroundDownloadDesktop)}`}
-      data-download-background
-      data-tooltip={t(locale, "downloadBackgroundLabel")}
-      aria-label={t(locale, "downloadBackgroundLabel")}
-    >
-      <Download size={20} aria-hidden="true" />
-    </a>
+    {
+      variant !== "home" && (
+        <a
+          class="icon-button action-button"
+          href={cocktail.backgroundDownloadDesktop}
+          download={`${cocktail.slug}-background${extname(cocktail.backgroundDownloadDesktop)}`}
+          data-download-background
+          data-tooltip={t(locale, "downloadBackgroundLabel")}
+          aria-label={t(locale, "downloadBackgroundLabel")}
+        >
+          <Download size={20} aria-hidden="true" />
+        </a>
+      )
+    }
   </div>
   <div
     class="share-toast"
