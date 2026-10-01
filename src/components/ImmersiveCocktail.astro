@@ -9,6 +9,8 @@ import UtilityTopbar from "@/components/UtilityTopbar.astro";
 import { DAILY_POUR_SEQUENCE, type Cocktail } from "@/data/cocktails";
 import { localeToPath, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
+import { DAILY_POUR_STORAGE_KEY, MOBILE_ART_DIRECTION_MAX_WIDTH } from "@/utils/dailyCurtain";
+import dailyCurtainPolicySource from "@/utils/dailyCurtainPolicy.js?raw";
 import { publicHomeUrl, shareUrlForLocalePath } from "@/utils/seo";
 
 type Props = {
@@ -24,6 +26,9 @@ type Props = {
 const { cocktail, dailyCocktails, locale, path, recipeMode = "dialog", recipeTargetId, variant = "detail" } = Astro.props;
 const usesRecipeDialog = recipeMode === "dialog";
 const usesRecipeScroll = recipeMode === "scroll";
+const dailyCurtainPolicyInline = dailyCurtainPolicySource.replace(/^\s*export\s+/gm, "");
+const mobileArtDirectionMedia = `(max-width: ${MOBILE_ART_DIRECTION_MAX_WIDTH}px)`;
+const withholdHomePoster = variant === "home";
 
 const extname = (path: string): string => {
   const i = path.lastIndexOf(".");
@@ -60,15 +65,21 @@ const dailyCocktailPayload = dailyCocktails?.map((item) => ({
 }));
 const dailyCocktailPrepaintScript = `
 (() => {
+  ${dailyCurtainPolicyInline}
   const locale = ${JSON.stringify(locale)};
   const metadataLabel = ${JSON.stringify(t(locale, "dailyPour"))};
   const monthLabels = ${JSON.stringify(monthLabels)};
   const sequence = ${JSON.stringify(DAILY_POUR_SEQUENCE)};
+  const storageKey = ${JSON.stringify(DAILY_POUR_STORAGE_KEY)};
+  const mobileArtMax = ${MOBILE_ART_DIRECTION_MAX_WIDTH};
   const stage = document.querySelector('.immersive-stage[data-hero-variant="home"]');
   const dailyCocktailsNode = document.querySelector("[data-daily-cocktails]");
-  if (!stage || !dailyCocktailsNode) return;
+  if (!stage || !dailyCocktailsNode || !dailyCurtainHidesPoster("home")) return;
 
+  let lifted = false;
   function liftCurtain() {
+    if (lifted) return;
+    lifted = true;
     stage.classList.remove("is-pending-daily");
   }
 
@@ -85,111 +96,121 @@ const dailyCocktailPrepaintScript = `
     return;
   }
 
-  const STORAGE_KEY = "justonesip_daily_pour";
   const today = getLocalDateKey(new Date());
-  let targetId = null;
-
+  let cache = null;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const cached = JSON.parse(raw);
-      if (cached && cached.date === today && typeof cached.cocktailId === "string") {
-        targetId = cached.cocktailId;
-      }
-    }
+    const raw = localStorage.getItem(storageKey);
+    if (raw) cache = JSON.parse(raw);
   } catch {}
 
-  if (!targetId || !cocktails.some((item) => item.id === targetId)) {
-    const dayNumber = getDayNumber(today);
-    const n = sequence.length;
-    const index = ((dayNumber % n) + n) % n;
-    targetId = sequence[index];
+  const viewportWidth = window.matchMedia("(max-width: " + mobileArtMax + "px)").matches
+    ? mobileArtMax
+    : mobileArtMax + 1;
+  const reveal = resolveDailyCurtainReveal({
+    todayKey: today,
+    cache: cache,
+    viewportWidth: viewportWidth,
+    sequence: sequence,
+    cocktails: cocktails,
+  });
+  const cocktail = reveal && (cocktails.find((item) => item.id === reveal.cocktailId) || null);
+  if (!reveal || !cocktail || !reveal.posterUrl) {
+    liftCurtain();
+    return;
+  }
+
+  if (!(cache && cache.date === today && cache.cocktailId === cocktail.id)) {
     try {
       localStorage.setItem(
-        STORAGE_KEY,
+        storageKey,
         JSON.stringify({
           date: today,
-          cocktailId: targetId,
+          cocktailId: cocktail.id,
           timestamp: Date.now(),
         }),
       );
     } catch {}
   }
 
-  const cocktail = cocktails.find((item) => item.id === targetId) || cocktails[0];
-  if (!cocktail) {
-    liftCurtain();
-    return;
+  stage.setAttribute("data-cocktail-id", cocktail.id);
+  stage.setAttribute("data-desktop-download", cocktail.backgroundDownloadDesktop);
+  stage.setAttribute("data-mobile-download", cocktail.backgroundDownloadMobile);
+
+  setAllText("[data-cocktail-name]", cocktail.name);
+  setText("[data-hero-metadata]", formatHeroMetadata(cocktail.date));
+  setText("[data-cocktail-subtitle]", cocktail.subtitle);
+  setText("[data-hero-ingredients]", cocktail.heroIngredientSummary);
+  setText("[data-recipe-description]", cocktail.description);
+  setText("[data-recipe-flavor]", cocktail.flavor);
+  setText("[data-recipe-glass]", cocktail.glass);
+  setText("[data-recipe-garnish]", cocktail.garnish);
+  setText("[data-recipe-base-spirit]", cocktail.baseSpirit);
+  replaceList("[data-recipe-tags]", cocktail.tags, "span");
+  replaceList("[data-recipe-ingredients]", cocktail.ingredients, "li");
+  replaceList("[data-recipe-steps]", cocktail.steps, "li");
+
+  const sharePayloadNode = document.querySelector("[data-share-payload]");
+  if (sharePayloadNode) {
+    try {
+      const sharePayload = JSON.parse(sharePayloadNode.textContent || "{}");
+      sharePayload.name = cocktail.name;
+      sharePayload.filenameBase = cocktail.slug;
+      sharePayloadNode.textContent = JSON.stringify(sharePayload);
+    } catch {}
   }
 
-  const isMobile = window.matchMedia("(max-width: 720px)").matches;
-  const targetImageUrl = isMobile ? cocktail.heroImageMobile : cocktail.heroImageDesktop;
+  const isMobile = viewportWidth <= mobileArtMax;
+  const downloadLink = document.querySelector("[data-download-background]");
+  const downloadHref = isMobile ? cocktail.backgroundDownloadMobile : cocktail.backgroundDownloadDesktop;
+  if (downloadLink && downloadHref) {
+    downloadLink.setAttribute("href", downloadHref);
+    const dlExt = downloadHref.includes(".") ? downloadHref.substring(downloadHref.lastIndexOf(".")) : ".svg";
+    downloadLink.setAttribute(
+      "download",
+      cocktail.slug + "-" + (isMobile ? "mobile" : "desktop") + "-background" + dlExt,
+    );
+  }
 
-  let revealed = false;
-  function reveal() {
-    if (revealed) return;
-    revealed = true;
+  fitSettledTitle();
+
+  const source = document.querySelector(".immersive-bg source");
+  const image = document.querySelector(".immersive-bg img");
+  if (source) source.removeAttribute("srcset");
+  if (image) {
+    const altPrefix = image.getAttribute("data-poster-alt-prefix") || "";
+    image.setAttribute("alt", (altPrefix + " " + cocktail.name).trim());
+  }
+
+  let pictureReady = false;
+  let safetyTimer = 0;
+  function tryLift() {
+    if (!canLiftDailyCurtain({
+      identityApplied: stage.getAttribute("data-cocktail-id") === cocktail.id,
+      titleFitted: true,
+      pictureReady: pictureReady,
+    })) return;
     clearTimeout(safetyTimer);
-
-    stage.setAttribute("data-cocktail-id", cocktail.id);
-    stage.setAttribute("data-desktop-download", cocktail.backgroundDownloadDesktop);
-    stage.setAttribute("data-mobile-download", cocktail.backgroundDownloadMobile);
-
-    const source = document.querySelector(".immersive-bg source");
-    const image = document.querySelector(".immersive-bg img");
-    if (source) source.setAttribute("srcset", cocktail.heroImageMobile);
-    if (image) {
-      image.setAttribute("src", cocktail.heroImageDesktop);
-      const altPrefix = image.getAttribute("data-poster-alt-prefix") || "";
-      image.setAttribute("alt", (altPrefix + " " + cocktail.name).trim());
-    }
-
-    setAllText("[data-cocktail-name]", cocktail.name);
-    setText("[data-hero-metadata]", formatHeroMetadata(cocktail.date));
-    setText("[data-cocktail-subtitle]", cocktail.subtitle);
-    setText("[data-hero-ingredients]", cocktail.heroIngredientSummary);
-    setText("[data-recipe-description]", cocktail.description);
-    setText("[data-recipe-flavor]", cocktail.flavor);
-    setText("[data-recipe-glass]", cocktail.glass);
-    setText("[data-recipe-garnish]", cocktail.garnish);
-    setText("[data-recipe-base-spirit]", cocktail.baseSpirit);
-    replaceList("[data-recipe-tags]", cocktail.tags, "span");
-    replaceList("[data-recipe-ingredients]", cocktail.ingredients, "li");
-    replaceList("[data-recipe-steps]", cocktail.steps, "li");
-
-    const sharePayloadNode = document.querySelector("[data-share-payload]");
-    if (sharePayloadNode) {
-      try {
-        const sharePayload = JSON.parse(sharePayloadNode.textContent || "{}");
-        sharePayload.name = cocktail.name;
-        sharePayload.filenameBase = cocktail.slug;
-        sharePayloadNode.textContent = JSON.stringify(sharePayload);
-      } catch {}
-    }
-
-    const downloadLink = document.querySelector("[data-download-background]");
-    const downloadHref = isMobile ? cocktail.backgroundDownloadMobile : cocktail.backgroundDownloadDesktop;
-    if (downloadLink && downloadHref) {
-      downloadLink.setAttribute("href", downloadHref);
-      const dlExt = downloadHref.includes(".") ? downloadHref.substring(downloadHref.lastIndexOf(".")) : ".svg";
-      downloadLink.setAttribute(
-        "download",
-        cocktail.slug + "-" + (isMobile ? "mobile" : "desktop") + "-background" + dlExt,
-      );
-    }
-
     liftCurtain();
   }
 
-  const safetyTimer = setTimeout(reveal, 600);
+  safetyTimer = setTimeout(() => {
+    pictureReady = true;
+    tryLift();
+  }, 600);
 
-  const preloader = new Image();
-  preloader.src = targetImageUrl;
-  if (typeof preloader.decode === "function") {
-    preloader.decode().then(reveal).catch(reveal);
-  } else {
-    preloader.onload = reveal;
-    preloader.onerror = reveal;
+  if (image && reveal.posterUrl) {
+    const markReady = () => {
+      pictureReady = true;
+      tryLift();
+    };
+    if (typeof image.decode === "function") {
+      image.setAttribute("src", reveal.posterUrl);
+      image.decode().then(markReady).catch(markReady);
+    } else {
+      image.addEventListener("load", markReady, { once: true });
+      image.addEventListener("error", markReady, { once: true });
+      image.setAttribute("src", reveal.posterUrl);
+    }
   }
 
   function getLocalDateKey(date) {
@@ -199,11 +220,51 @@ const dailyCocktailPrepaintScript = `
     return year + "-" + month + "-" + day;
   }
 
-  function getDayNumber(dateKey) {
-    const parts = dateKey.split("-").map(Number);
-    const utc = Date.UTC(parts[0], parts[1] - 1, parts[2]);
-    const epoch = Date.UTC(2026, 0, 1);
-    return Math.floor((utc - epoch) / 86400000);
+  function fitSettledTitle() {
+    const heroTitle = document.querySelector("[data-hero-title]");
+    if (!heroTitle) return;
+    heroTitle.style.removeProperty("--hero-title-size");
+
+    const maxLines = getHeroTitleLineLimit(heroTitle);
+    const minFontSize = getMinimumHeroTitleSize();
+    if (isHeroTitleFit(heroTitle, maxLines)) return;
+
+    const currentSize = Number.parseFloat(getComputedStyle(heroTitle).fontSize);
+    if (!Number.isFinite(currentSize) || currentSize <= minFontSize) return;
+
+    const scrollWidth = heroTitle.scrollWidth;
+    const clientWidth = heroTitle.clientWidth;
+    if (scrollWidth > clientWidth && clientWidth > 0) {
+      const ratio = clientWidth / scrollWidth;
+      const targetSize = Math.max(Math.floor(currentSize * ratio), minFontSize);
+      heroTitle.style.setProperty("--hero-title-size", targetSize + "px");
+    }
+
+    let fontSize = Number.parseFloat(getComputedStyle(heroTitle).fontSize);
+    while (fontSize > minFontSize && !isHeroTitleFit(heroTitle, maxLines)) {
+      fontSize -= 2;
+      heroTitle.style.setProperty("--hero-title-size", Math.max(fontSize, minFontSize) + "px");
+    }
+  }
+
+  function getHeroTitleLineLimit(title) {
+    const rawValue = getComputedStyle(title).getPropertyValue("--hero-title-lines");
+    const lineLimit = Number.parseInt(rawValue, 10);
+    return Number.isFinite(lineLimit) && lineLimit > 0 ? lineLimit : 1;
+  }
+
+  function isHeroTitleFit(title, maxLines) {
+    const styles = getComputedStyle(title);
+    const fontSize = Number.parseFloat(styles.fontSize);
+    const lineHeight = Number.parseFloat(styles.lineHeight) || fontSize;
+    const lineCount = Math.round(title.getBoundingClientRect().height / lineHeight);
+    return title.scrollWidth <= title.clientWidth + 1 && lineCount <= maxLines;
+  }
+
+  function getMinimumHeroTitleSize() {
+    if (window.innerWidth <= 560) return 24;
+    if (window.innerWidth <= 860) return 30;
+    return 42;
   }
 
   function formatHeroMetadata(dateKey) {
@@ -246,14 +307,13 @@ const dailyCocktailPrepaintScript = `
   data-hero-variant={variant}
   data-desktop-download={cocktail.backgroundDownloadDesktop}
   data-mobile-download={cocktail.backgroundDownloadMobile}
-  data-sequence={JSON.stringify(DAILY_POUR_SEQUENCE)}
   data-locale-prefix={`/${localeToPath(locale)}`}
   data-fallback-share-url={publicHomeUrl()}
 >
   <picture class="immersive-bg">
-    <source media="(max-width: 720px)" srcset={cocktail.heroImageMobile} />
+    <source media={mobileArtDirectionMedia} srcset={withholdHomePoster ? undefined : cocktail.heroImageMobile} />
     <img
-      src={cocktail.heroImageDesktop}
+      src={withholdHomePoster ? undefined : cocktail.heroImageDesktop}
       alt={`${t(locale, "visualAlt")} ${cocktail.name}`}
       data-poster-alt-prefix={t(locale, "visualAlt")}
     />
@@ -439,6 +499,7 @@ const dailyCocktailPrepaintScript = `
 </section>
 
 <script>
+  import { MOBILE_ART_DIRECTION_MAX_WIDTH } from "@/utils/dailyCurtain";
   import {
     createShuffleTokenManager,
     getTargetHeroImageUrl,
@@ -491,7 +552,7 @@ const dailyCocktailPrepaintScript = `
   const dailyCocktails = (dailyCocktailsNode
     ? JSON.parse(dailyCocktailsNode.textContent || "[]")
     : []) as DailyCocktailPayload[];
-  const isMobileMedia = window.matchMedia("(max-width: 720px)");
+  const isMobileMedia = window.matchMedia(`(max-width: ${MOBILE_ART_DIRECTION_MAX_WIDTH}px)`);
   let heroTitleFrame = 0;
   let shareToastTimer = 0;
   let activeTargetId: string | null = null;
@@ -577,33 +638,37 @@ const dailyCocktailPrepaintScript = `
     }
   }
 
-  if (dailyCocktails.length) {
-    const currentId = stage?.getAttribute("data-cocktail-id");
-    const activeCocktail =
-      dailyCocktails.find((cocktail) => cocktail.id === currentId) ||
-      pickDailyCocktail(dailyCocktails, new Date());
+  if (dailyCocktails.length && stage) {
+    const homeStage = stage;
+    activeTargetId = homeStage.getAttribute("data-cocktail-id");
+    const image = document.querySelector(".immersive-bg img");
+    const assignedPoster = image?.getAttribute("src");
+    if (assignedPoster) preloadedImageUrls.add(assignedPoster);
 
-    if (activeCocktail) {
-      activeTargetId = activeCocktail.id;
-      if (currentId !== activeCocktail.id) {
-        applyDailyCocktail(activeCocktail);
-      } else {
-        configureHeroTitle();
-        updateDownloadTarget();
-      }
-      preloadedImageUrls.add(getTargetHeroImageUrl(activeCocktail, isMobileMedia.matches));
+    const startIdleBuffer = () => scheduleIdlePreload();
+    if (homeStage.classList.contains("is-pending-daily")) {
+      const observer = new MutationObserver(() => {
+        if (!homeStage.classList.contains("is-pending-daily")) {
+          observer.disconnect();
+          startIdleBuffer();
+        }
+      });
+      observer.observe(homeStage, { attributes: true, attributeFilter: ["class"] });
+    } else {
+      startIdleBuffer();
     }
-    stage?.classList.remove("is-pending-daily");
-    scheduleIdlePreload();
   }
 
   updateDownloadTarget();
   isMobileMedia.addEventListener("change", updateDownloadTarget);
   window.addEventListener("resize", scheduleFitHeroTitle);
-  if (document.fonts) {
-    document.fonts.ready.then(scheduleFitHeroTitle);
-  } else {
-    scheduleFitHeroTitle();
+  const curtainFitsTitleBeforeReveal = stage?.getAttribute("data-hero-variant") === "home";
+  if (!curtainFitsTitleBeforeReveal) {
+    if (document.fonts) {
+      document.fonts.ready.then(scheduleFitHeroTitle);
+    } else {
+      scheduleFitHeroTitle();
+    }
   }
 
   openShare?.addEventListener("click", (event) => {
@@ -829,60 +894,6 @@ const dailyCocktailPrepaintScript = `
       });
     }
   });
-
-  function getDayNumber(dateKey: string): number {
-    const parts = dateKey.split("-").map(Number);
-    const utcDate = Date.UTC(parts[0], parts[1] - 1, parts[2]);
-    const epoch = Date.UTC(2026, 0, 1);
-    return Math.floor((utcDate - epoch) / 86400000);
-  }
-
-  function pickDailyCocktail(cocktails: DailyCocktailPayload[], date: Date) {
-    const today = getLocalDateKey(date);
-    const STORAGE_KEY = "justonesip_daily_pour";
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const cached = JSON.parse(raw);
-        if (cached && cached.date === today && typeof cached.cocktailId === "string") {
-          const found = cocktails.find((cocktail) => cocktail.id === cached.cocktailId);
-          if (found) return found;
-        }
-      }
-    } catch {}
-
-    const dayNumber = getDayNumber(today);
-    let sequence: string[] = [];
-    try {
-      sequence = JSON.parse(stage?.getAttribute("data-sequence") || "[]");
-    } catch {
-      sequence = [];
-    }
-    const n = sequence.length || cocktails.length;
-    const index = ((dayNumber % n) + n) % n;
-    const targetId = sequence[index];
-    const found = cocktails.find((cocktail) => cocktail.id === targetId) || cocktails[0];
-    try {
-      if (found) {
-        localStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({
-            date: today,
-            cocktailId: found.id,
-            timestamp: Date.now(),
-          }),
-        );
-      }
-    } catch {}
-    return found;
-  }
-
-  function getLocalDateKey(date: Date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  }
 
   function applyDailyCocktail(cocktail: DailyCocktailPayload, isShuffle = false) {
     if (!stage) return;

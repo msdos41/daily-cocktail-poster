@@ -1,3 +1,10 @@
+export {
+  MOBILE_ART_DIRECTION_MAX_WIDTH,
+  canLiftDailyCurtain,
+  dailyCurtainHidesPoster,
+  resolveDailyCurtainReveal,
+} from "./dailyCurtainPolicy.js";
+
 export const DAILY_POUR_STORAGE_KEY = "justonesip_daily_pour";
 
 export type CachedDailyPour = {
