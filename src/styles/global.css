@@ -333,7 +333,11 @@ html.js-daily-curtain .immersive-stage[data-hero-variant="home"].is-pending-dail
   align-items: flex-start;
   justify-content: space-between;
   gap: 18px;
-  padding: var(--topbar-inset-y) var(--topbar-inset-x);
+  padding:
+    calc(var(--topbar-inset-y) + env(safe-area-inset-top, 0px))
+    calc(var(--topbar-inset-x) + env(safe-area-inset-right, 0px))
+    var(--topbar-inset-y)
+    calc(var(--topbar-inset-x) + env(safe-area-inset-left, 0px));
   pointer-events: none;
 }
 
@@ -704,7 +708,7 @@ summary.icon-button::-webkit-details-marker {
 .recipe-handle {
   position: absolute;
   left: 50%;
-  bottom: clamp(16px, 3vh, 30px);
+  bottom: calc(clamp(16px, 3vh, 30px) + env(safe-area-inset-bottom, 0px));
   z-index: 4;
   display: inline-flex;
   align-items: center;
@@ -2137,7 +2141,7 @@ h2 {
   }
 
   .recipe-handle {
-    bottom: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     width: 44px;
     height: 44px;
   }
@@ -2175,7 +2179,7 @@ h2 {
 
 /* Keep Astro's development toolbar from covering the bottom sheet handle. */
 body:has(astro-dev-toolbar) .recipe-handle {
-  bottom: 62px;
+  bottom: calc(62px + env(safe-area-inset-bottom, 0px));
 }
 
 body:has(astro-dev-toolbar) .recipe-dialog {
