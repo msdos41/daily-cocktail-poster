@@ -559,6 +559,9 @@ const dailyCocktailPrepaintScript = `
   const isMobileMedia = window.matchMedia(`(max-width: ${MOBILE_ART_DIRECTION_MAX_WIDTH}px)`);
   let heroTitleFrame = 0;
   let shareToastTimer = 0;
+  let artDirectionToken = 0;
+  let artDirectionPendingUrl = "";
+  let fixedPoster: { mobile: string; desktop: string } | null = null;
   let activeTargetId: string | null = null;
   const shuffleTokenManager = createShuffleTokenManager();
   const preloadedImageUrls = new Set<string>();
@@ -664,7 +667,13 @@ const dailyCocktailPrepaintScript = `
   }
 
   updateDownloadTarget();
-  isMobileMedia.addEventListener("change", updateDownloadTarget);
+  isMobileMedia.addEventListener("change", () => {
+    updateDownloadTarget();
+    syncArtDirectedPoster();
+  });
+  // Responsive mode updates matchMedia().matches without firing change or resize.
+  // The home curtain also clears <source srcset>, so the picture cannot follow alone.
+  window.setInterval(syncArtDirectedPoster, 150);
   window.addEventListener("resize", scheduleFitHeroTitle);
   const curtainFitsTitleBeforeReveal = stage?.getAttribute("data-hero-variant") === "home";
   if (!curtainFitsTitleBeforeReveal) {
@@ -868,6 +877,8 @@ const dailyCocktailPrepaintScript = `
   surpriseButton?.addEventListener("focus", primeNextCandidate, { passive: true });
 
   surpriseButton?.addEventListener("click", async () => {
+    artDirectionToken += 1;
+    artDirectionPendingUrl = "";
     if (!dailyCocktails.length || !stage) return;
     const currentId = activeTargetId || stage.getAttribute("data-cocktail-id");
     const nextCocktail = selectShuffleCandidate(dailyCocktails, currentId);
@@ -898,6 +909,79 @@ const dailyCocktailPrepaintScript = `
       });
     }
   });
+
+  function syncArtDirectedPoster() {
+    const image = document.querySelector(".immersive-bg img");
+    if (!(image instanceof HTMLImageElement)) return;
+
+    const wantMobile = isMobileMedia.matches;
+    const target = artDirectionPoster(wantMobile);
+    if (!target) return;
+
+    const displayed = posterPathname(image.currentSrc || image.getAttribute("src") || "");
+    if (displayed === posterPathname(target.url)) {
+      if (artDirectionPendingUrl === target.url) artDirectionPendingUrl = "";
+      return;
+    }
+    if (artDirectionPendingUrl === target.url) return;
+
+    artDirectionPendingUrl = target.url;
+    const token = ++artDirectionToken;
+    void preloadAndDecodeImage(target.url).then(() => {
+      if (token !== artDirectionToken) return;
+      if (isMobileMedia.matches !== wantMobile) return;
+      if (target.cocktailId && stage) {
+        const stillId = activeTargetId || stage.getAttribute("data-cocktail-id");
+        if (stillId !== target.cocktailId) return;
+      }
+
+      const source = document.querySelector(".immersive-bg source");
+      if (wantMobile) {
+        if (source) source.setAttribute("srcset", target.mobileSrc);
+      } else if (source) {
+        source.removeAttribute("srcset");
+      }
+      image.setAttribute("src", target.url);
+      preloadedImageUrls.add(target.url);
+      updateDownloadTarget();
+      if (artDirectionPendingUrl === target.url) artDirectionPendingUrl = "";
+    });
+  }
+
+  function artDirectionPoster(wantMobile: boolean): { url: string; mobileSrc: string; cocktailId: string | null } | null {
+    if (dailyCocktails.length && stage) {
+      const cocktailId = activeTargetId || stage.getAttribute("data-cocktail-id");
+      const cocktail = dailyCocktails.find((item) => item.id === cocktailId);
+      if (!cocktail) return null;
+      return {
+        url: getTargetHeroImageUrl(cocktail, wantMobile),
+        mobileSrc: cocktail.heroImageMobile,
+        cocktailId: cocktail.id,
+      };
+    }
+
+    if (!fixedPoster) {
+      const source = document.querySelector(".immersive-bg source");
+      const image = document.querySelector(".immersive-bg img");
+      const mobile = source?.getAttribute("srcset") || "";
+      const desktop = image?.getAttribute("src") || "";
+      if (mobile && desktop) fixedPoster = { mobile, desktop };
+    }
+    if (!fixedPoster) return null;
+    return {
+      url: wantMobile ? fixedPoster.mobile : fixedPoster.desktop,
+      mobileSrc: fixedPoster.mobile,
+      cocktailId: null,
+    };
+  }
+
+  function posterPathname(value: string) {
+    try {
+      return new URL(value, window.location.href).pathname;
+    } catch {
+      return value;
+    }
+  }
 
   function applyDailyCocktail(cocktail: DailyCocktailPayload, isShuffle = false) {
     if (!stage) return;
