@@ -1,4 +1,4 @@
-Status: ready-for-agent
+Status: closed
 
 # Specification: Settle the Daily Curtain and clear the immersive safe area
 
