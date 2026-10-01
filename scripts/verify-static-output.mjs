@@ -75,6 +75,7 @@ function main() {
   verifyCssTokens();
   verifyDefaultSocialImages();
   verifyDailyCurtain(slugs);
+  verifyImmersiveSafeArea(slugs);
 
   if (errors.length > 0) {
     console.error(`Static verification failed with ${errors.length} issue${errors.length === 1 ? "" : "s"}:`);
@@ -625,6 +626,105 @@ function verifyDefaultSocialImages() {
   }
 }
 
+function immersivePicture(html) {
+  const match = html.match(/<picture class="immersive-bg"[^>]*>[\s\S]*?<\/picture>/);
+  return match ? match[0] : "";
+}
+
+function bundledCss() {
+  const astroDir = path.join(distDir, "_astro");
+  if (!fileExists(astroDir)) return "";
+  return fs
+    .readdirSync(astroDir)
+    .filter((file) => file.endsWith(".css"))
+    .map((file) => fs.readFileSync(path.join(astroDir, file), "utf8"))
+    .join("\n");
+}
+
+function verifyImmersiveSafeArea(slugs) {
+  for (const locale of locales) {
+    const homePath = routeForLocalePath(locale.locale, "/");
+    const homeHtml = readRequired(filePathForPublicPath(homePath), homePath);
+    if (homeHtml) {
+      assert(
+        homeHtml.includes("viewport-fit=cover"),
+        `${homePath} must use the cover viewport so immersive insets exist.`,
+      );
+    }
+
+    for (const contentPath of ["/cocktails", "/about", "/privacy"]) {
+      const publicPath = routeForLocalePath(locale.locale, contentPath);
+      const html = readRequired(filePathForPublicPath(publicPath), publicPath);
+      if (!html) continue;
+      assert(
+        !html.includes("viewport-fit=cover"),
+        `${publicPath} must keep the current viewport.`,
+      );
+    }
+
+    if (slugs && slugs.length > 0) {
+      const detailPath = routeForLocalePath(locale.locale, `/cocktails/${slugs[0]}`);
+      const detailHtml = readRequired(filePathForPublicPath(detailPath), detailPath);
+      if (detailHtml) {
+        assert(
+          detailHtml.includes("viewport-fit=cover"),
+          `${detailPath} must use the cover viewport.`,
+        );
+      }
+
+      const spiritPath = routeForLocalePath(locale.locale, "/cocktails/spirit/gin");
+      const spiritHtml = readRequired(filePathForPublicPath(spiritPath), spiritPath);
+      if (spiritHtml) {
+        assert(
+          !spiritHtml.includes("viewport-fit=cover"),
+          `${spiritPath} must keep the current viewport.`,
+        );
+      }
+    }
+  }
+
+  const rootHtml = readRequired(filePathForPublicPath("/"), "/");
+  if (rootHtml) {
+    assert(!rootHtml.includes("viewport-fit=cover"), "/ must keep the current viewport.");
+  }
+
+  const missingHtml = readRequired(filePathForPublicPath("/404.html"), "/404.html");
+  if (missingHtml) {
+    assert(!missingHtml.includes("viewport-fit=cover"), "/404.html must keep the current viewport.");
+  }
+
+  const css = bundledCss();
+  assert(css, "Bundled CSS must exist for the immersive safe-area check.");
+  assert(
+    /\.immersive-topbar\s*\{[^}]*safe-area-inset-top/.test(css),
+    "The immersive top bar must add the top safe-area inset.",
+  );
+  assert(
+    /\.immersive-topbar\s*\{[^}]*safe-area-inset-left/.test(css),
+    "The immersive top bar must add the left safe-area inset.",
+  );
+  assert(
+    /\.immersive-topbar\s*\{[^}]*safe-area-inset-right/.test(css),
+    "The immersive top bar must add the right safe-area inset.",
+  );
+  assert(
+    /\.recipe-handle\s*\{[^}]*safe-area-inset-bottom/.test(css),
+    "The recipe handle must add the bottom safe-area inset.",
+  );
+  assert(
+    !/\.site-header\s*\{[^}]*safe-area/.test(css),
+    "The standard page header must not gain safe-area padding.",
+  );
+  assert(
+    !/\.immersive-copy\s*\{[^}]*safe-area/.test(css),
+    "Copy anchors must not gain a safe-area inset.",
+  );
+  assert(
+    !/\.floating-actions\s*\{[^}]*safe-area/.test(css),
+    "Floating actions must keep their current offsets.",
+  );
+}
+
 function verifyDailyCurtain(slugs) {
   for (const locale of locales) {
     const homePath = routeForLocalePath(locale.locale, "/");
@@ -648,13 +748,38 @@ function verifyDailyCurtain(slugs) {
       `${homePath} must integrate justonesip_daily_pour localStorage caching.`,
     );
 
+    const picture = immersivePicture(html);
+    assert(picture, `${homePath} must include the immersive picture.`);
+    assert(
+      !/\s(?:src|srcset)=/.test(picture),
+      `${homePath} must not put a fetchable poster address on the initial picture.`,
+    );
+    assert(
+      !picture.includes('src=""') && !picture.includes("src=''"),
+      `${homePath} must not use an empty poster address.`,
+    );
+    assert(
+      /data-cocktail-name[^>]*>[^<]+</.test(html),
+      `${homePath} must still include the build-time cocktail name.`,
+    );
+    assert(
+      /data-cocktail-subtitle[^>]*>[^<]+</.test(html),
+      `${homePath} must still include the build-time cocktail subtitle.`,
+    );
+    assert(
+      /data-hero-ingredients[^>]*>[^<]+</.test(html),
+      `${homePath} must still include the build-time cocktail ingredients.`,
+    );
+
     summary.dailyCurtainsVerified += 1;
   }
 
   if (slugs && slugs.length > 0) {
-    const sampleDetail = routeForLocalePath("en", `/cocktails/${slugs[0]}`);
-    const detailHtml = readRequired(filePathForPublicPath(sampleDetail), sampleDetail);
-    if (detailHtml) {
+    for (const locale of locales) {
+      const sampleDetail = routeForLocalePath(locale.locale, `/cocktails/${slugs[0]}`);
+      const detailHtml = readRequired(filePathForPublicPath(sampleDetail), sampleDetail);
+      if (!detailHtml) continue;
+
       assert(
         !detailHtml.includes("data-daily-cocktails"),
         `${sampleDetail} must not include home-only data-daily-cocktails payload.`,
@@ -662,6 +787,20 @@ function verifyDailyCurtain(slugs) {
       assert(
         !detailHtml.includes("justonesip_daily_pour"),
         `${sampleDetail} must not include home-only localStorage caching script.`,
+      );
+      assert(
+        !detailHtml.includes("js-daily-curtain"),
+        `${sampleDetail} must not include the home daily curtain.`,
+      );
+      const picture = immersivePicture(detailHtml);
+      assert(picture, `${sampleDetail} must include its own poster picture.`);
+      assert(
+        /\ssrc="\/images\//.test(picture),
+        `${sampleDetail} must keep that cocktail's poster address.`,
+      );
+      assert(
+        /\ssrcset="\/images\//.test(picture),
+        `${sampleDetail} must keep that cocktail's art-directed poster.`,
       );
     }
   }
