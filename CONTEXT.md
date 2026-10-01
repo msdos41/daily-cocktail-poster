@@ -10,6 +10,10 @@ A bilingual, poster-first static web experience delivering one cocktail recommen
 The featured cocktail designated for a given calendar day.
 _Avoid_: Daily pick, scheduled cocktail, today's cocktail
 
+**Daily Curtain**:
+The home-only hold that keeps the Daily Pour poster unseen until the local-day cocktail and its copy position are ready.
+_Avoid_: Splash screen, loader, intro animation
+
 **Surprise Me**:
 The interactive on-demand shuffle action that switches the current view to an alternate random cocktail.
 _Avoid_: Reroll, randomizer, lucky pick
@@ -25,6 +29,10 @@ _Avoid_: Spirit category, spirit page, tag page
 **Midnight Pour**:
 The brand personality evoking an intimate night bar under low, atmospheric bar light.
 _Avoid_: Dark mode, night theme, speakeasy theme
+
+**Locale**:
+A published language edition of the whole site, carrying the same routes and the same cocktail library. English and Simplified Chinese are the published locales.
+_Avoid_: Country, region, market
 
 ### Cocktail Structure
 
