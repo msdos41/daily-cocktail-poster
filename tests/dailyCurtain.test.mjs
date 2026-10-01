@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import {
   DAILY_POUR_SEQUENCE,
   getAllCocktails,
@@ -205,4 +206,21 @@ test("the veil lifts only after identity is applied, the title is fitted, and th
 test("detail pages never ask the daily curtain to hide their poster", () => {
   assert.equal(dailyCurtainHidesPoster("detail"), false);
   assert.equal(dailyCurtainHidesPoster("home"), true);
+});
+
+test("the home stage swaps its pinned poster when art direction changes", () => {
+  const content = fs.readFileSync(new URL("../src/components/ImmersiveCocktail.astro", import.meta.url), "utf8");
+  const marker = 'isMobileMedia.addEventListener("change"';
+  const at = content.indexOf(marker);
+  assert.notEqual(at, -1, "art-direction media must be observed");
+
+  const handler = content.slice(at, at + 280);
+  assert.match(handler, /syncArtDirectedPoster/);
+
+  const bodyAt = content.indexOf("function syncArtDirectedPoster");
+  assert.notEqual(bodyAt, -1, "the home stage must be able to swap the pinned poster");
+  const body = content.slice(bodyAt, bodyAt + 1600);
+  assert.match(body, /getTargetHeroImageUrl/);
+  assert.match(body, /removeAttribute\("srcset"\)/);
+  assert.match(body, /heroImageMobile/);
 });
