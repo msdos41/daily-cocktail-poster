@@ -20,6 +20,8 @@ export function GET() {
     lines.push(`- **Base Spirit**: ${cocktail.baseSpirit}`);
     lines.push(`- **Glassware**: ${cocktail.glass}`);
     lines.push(`- **Estimated Calories**: ${cocktail.estimatedCalories} kcal`);
+    lines.push(`- **Estimated ABV**: ~${cocktail.estimatedAbv}% ABV`);
+    lines.push(`- **Prep Time**: ${cocktail.prepMinutes} min`);
     lines.push(`- **Cuisine / Heritage**: ${cocktail.recipeCuisine || "International"}`);
     if (cocktail.suitableForDiet) {
       lines.push(`- **Dietary Suitability**: ${cocktail.suitableForDiet}`);

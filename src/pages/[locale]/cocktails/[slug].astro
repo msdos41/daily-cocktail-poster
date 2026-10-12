@@ -113,6 +113,10 @@ const relatedCocktails = (cocktail.relatedSlugs || [])
               <dt>{t(locale, "calories")}</dt>
               <dd data-recipe-calories>~{cocktail.estimatedCalories} {t(locale, "kcalUnit")}</dd>
             </div>
+            <div>
+              <dt>{t(locale, "abv")}</dt>
+              <dd data-recipe-abv>~{cocktail.estimatedAbv}{t(locale, "abvUnit")}</dd>
+            </div>
             {cocktail.ibaCategory && (
               <div>
                 <dt>{t(locale, "ibaCategoryLabel")}</dt>

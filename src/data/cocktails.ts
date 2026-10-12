@@ -57,6 +57,8 @@ type StableCocktail = {
   glass: string;
   baseSpirit: string;
   estimatedCalories: number;
+  estimatedAbv: number;
+  prepMinutes: number;
   wikidataId?: string;
   ibaCategory?: string;
 };
@@ -79,7 +81,7 @@ export type Cocktail = StableCocktail & LocalizedCocktail & CocktailEditorialDat
 
 type SceneOnlyCocktailConfig = Pick<
   StableCocktail,
-  "id" | "date" | "glass" | "baseSpirit" | "estimatedCalories"
+  "id" | "date" | "glass" | "baseSpirit" | "estimatedCalories" | "estimatedAbv" | "prepMinutes"
 > & {
   wikidataId?: string;
   ibaCategory?: string;
@@ -91,6 +93,8 @@ function createSceneOnlyCocktail({
   glass,
   baseSpirit,
   estimatedCalories,
+  estimatedAbv,
+  prepMinutes,
   wikidataId,
   ibaCategory,
 }: SceneOnlyCocktailConfig): StableCocktail {
@@ -112,6 +116,8 @@ function createSceneOnlyCocktail({
     glass,
     baseSpirit,
     estimatedCalories,
+    estimatedAbv,
+    prepMinutes,
     wikidataId,
     ibaCategory,
   };
@@ -132,6 +138,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "highball",
     baseSpirit: "white rum",
     estimatedCalories: 190,
+    estimatedAbv: 13,
+    prepMinutes: 4,
     wikidataId: "Q487338",
     ibaCategory: "Contemporary Classics",
   },
@@ -149,6 +157,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "rye whiskey",
     estimatedCalories: 190,
+    estimatedAbv: 28,
+    prepMinutes: 3,
     wikidataId: "Q1414032",
     ibaCategory: "The Unforgettables",
   },
@@ -166,6 +176,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "rye whiskey",
     estimatedCalories: 170,
+    estimatedAbv: 33,
+    prepMinutes: 4,
     wikidataId: "Q921623",
     ibaCategory: "The Unforgettables",
   },
@@ -183,6 +195,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "highball",
     baseSpirit: "tequila",
     estimatedCalories: 190,
+    estimatedAbv: 12,
+    prepMinutes: 2,
     wikidataId: "Q7128571",
     ibaCategory: "Contemporary Classics",
   },
@@ -200,6 +214,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "martini",
     baseSpirit: "vodka",
     estimatedCalories: 200,
+    estimatedAbv: 18,
+    prepMinutes: 4,
     wikidataId: "Q19904106",
     ibaCategory: "New Era Drinks",
   },
@@ -217,6 +233,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 210,
+    estimatedAbv: 23,
+    prepMinutes: 3,
     wikidataId: "Q1806730",
     ibaCategory: "The Unforgettables",
   },
@@ -234,6 +252,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "rum",
     estimatedCalories: 260,
+    estimatedAbv: 21,
+    prepMinutes: 4,
     wikidataId: "Q280531",
     ibaCategory: "Contemporary Classics",
   },
@@ -251,6 +271,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "bourbon",
     estimatedCalories: 160,
+    estimatedAbv: 32,
+    prepMinutes: 2,
     wikidataId: "Q497448",
     ibaCategory: "The Unforgettables",
   },
@@ -268,6 +290,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 200,
+    estimatedAbv: 20,
+    prepMinutes: 3,
     wikidataId: "Q7716256",
     ibaCategory: "New Era Drinks",
   },
@@ -285,6 +309,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "cachaca",
     estimatedCalories: 170,
+    estimatedAbv: 22,
+    prepMinutes: 3,
     wikidataId: "Q625152",
     ibaCategory: "Contemporary Classics",
   },
@@ -302,6 +328,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "bourbon",
     estimatedCalories: 220,
+    estimatedAbv: 26,
+    prepMinutes: 3,
     wikidataId: "Q13516767",
     ibaCategory: "The Unforgettables",
   },
@@ -319,6 +347,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "highball",
     baseSpirit: "gin",
     estimatedCalories: 230,
+    estimatedAbv: 14,
+    prepMinutes: 4,
     wikidataId: "Q703910",
     ibaCategory: "Contemporary Classics",
   },
@@ -336,6 +366,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "cognac",
     estimatedCalories: 210,
+    estimatedAbv: 22,
+    prepMinutes: 3,
     wikidataId: "Q1134797",
     ibaCategory: "The Unforgettables",
   },
@@ -353,6 +385,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "mezcal",
     estimatedCalories: 200,
+    estimatedAbv: 21,
+    prepMinutes: 3,
     wikidataId: "Q96394781",
     ibaCategory: "New Era Drinks",
   },
@@ -370,6 +404,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "flute",
     baseSpirit: "gin",
     estimatedCalories: 180,
+    estimatedAbv: 16,
+    prepMinutes: 3,
     wikidataId: "Q3753012",
     ibaCategory: "Contemporary Classics",
   },
@@ -387,6 +423,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "hurricane",
     baseSpirit: "rum",
     estimatedCalories: 370,
+    estimatedAbv: 13,
+    prepMinutes: 4,
     wikidataId: "Q745886",
     ibaCategory: "Contemporary Classics",
   },
@@ -404,6 +442,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "tequila",
     estimatedCalories: 210,
+    estimatedAbv: 20,
+    prepMinutes: 3,
     wikidataId: "Q657621",
     ibaCategory: "Contemporary Classics",
   },
@@ -421,6 +461,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "scotch",
     estimatedCalories: 180,
+    estimatedAbv: 30,
+    prepMinutes: 3,
     wikidataId: "Q1754978",
     ibaCategory: "The Unforgettables",
   },
@@ -438,6 +480,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 190,
+    estimatedAbv: 20,
+    prepMinutes: 3,
     wikidataId: "Q5172602",
     ibaCategory: "The Unforgettables",
   },
@@ -455,6 +499,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "tiki mug",
     baseSpirit: "dark rum",
     estimatedCalories: 430,
+    estimatedAbv: 14,
+    prepMinutes: 4,
     wikidataId: "Q3889022",
   },
   {
@@ -471,6 +517,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "bourbon",
     estimatedCalories: 170,
+    estimatedAbv: 20,
+    prepMinutes: 3,
     wikidataId: "Q96398368",
     ibaCategory: "New Era Drinks",
   },
@@ -488,6 +536,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 190,
+    estimatedAbv: 20,
+    prepMinutes: 3,
     wikidataId: "Q1524752",
     ibaCategory: "Contemporary Classics",
   },
@@ -505,6 +555,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "scotch",
     estimatedCalories: 210,
+    estimatedAbv: 20,
+    prepMinutes: 4,
     wikidataId: "Q96398751",
     ibaCategory: "New Era Drinks",
   },
@@ -522,6 +574,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 200,
+    estimatedAbv: 22,
+    prepMinutes: 3,
     wikidataId: "Q790813",
     ibaCategory: "The Unforgettables",
   },
@@ -539,6 +593,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "white rum",
     estimatedCalories: 170,
+    estimatedAbv: 20,
+    prepMinutes: 3,
     wikidataId: "Q917361",
     ibaCategory: "The Unforgettables",
   },
@@ -556,6 +612,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "gin",
     estimatedCalories: 190,
+    estimatedAbv: 24,
+    prepMinutes: 3,
     wikidataId: "Q1401202",
     ibaCategory: "The Unforgettables",
   },
@@ -573,6 +631,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "highball",
     baseSpirit: "dark rum",
     estimatedCalories: 210,
+    estimatedAbv: 12,
+    prepMinutes: 2,
     wikidataId: "Q5223103",
     ibaCategory: "New Era Drinks",
   },
@@ -590,6 +650,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "coupe",
     baseSpirit: "pisco",
     estimatedCalories: 200,
+    estimatedAbv: 18,
+    prepMinutes: 4,
     wikidataId: "Q673012",
     ibaCategory: "Contemporary Classics",
   },
@@ -607,6 +669,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "martini",
     baseSpirit: "gin",
     estimatedCalories: 190,
+    estimatedAbv: 29,
+    prepMinutes: 3,
     wikidataId: "Q273027",
     ibaCategory: "The Unforgettables",
   },
@@ -624,6 +688,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "wine",
     baseSpirit: "aperol",
     estimatedCalories: 180,
+    estimatedAbv: 11,
+    prepMinutes: 2,
     wikidataId: "Q668635",
     ibaCategory: "Contemporary Classics",
   },
@@ -641,6 +707,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "bourbon",
     estimatedCalories: 210,
+    estimatedAbv: 18,
+    prepMinutes: 4,
     wikidataId: "Q2279429",
     ibaCategory: "The Unforgettables",
   },
@@ -658,6 +726,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "dark rum",
     estimatedCalories: 250,
+    estimatedAbv: 17,
+    prepMinutes: 4,
     wikidataId: "Q131985862",
     ibaCategory: "New Era Drinks",
   },
@@ -675,6 +745,8 @@ const stableCocktails: StableCocktail[] = [
     glass: "rocks",
     baseSpirit: "rye whiskey",
     estimatedCalories: 180,
+    estimatedAbv: 28,
+    prepMinutes: 3,
     wikidataId: "Q33076576",
     ibaCategory: "The Unforgettables",
   },
@@ -688,7 +760,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A compact Italian classic where gin, Campari, and sweet vermouth meet in equal measure. It is direct, aromatic, and built for a quiet golden-hour pour.",
       heroIngredients: ["Gin", "Campari", "Sweet Vermouth"],
-      ingredients: ["1 oz gin", "1 oz Campari", "1 oz sweet vermouth", "Orange peel"],
+      ingredients: ["1 oz (30 ml) gin", "1 oz (30 ml) Campari", "1 oz (30 ml) sweet vermouth", "Orange peel"],
       steps: [
         "Add gin, Campari, and sweet vermouth to a mixing glass with ice.",
         "Stir until well chilled.",
@@ -707,7 +779,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A sharp, sunlit sour that balances tequila, orange liqueur, and fresh lime. The salt rim keeps each sip vivid and crisp.",
       heroIngredients: ["Tequila", "Lime", "Orange Liqueur"],
-      ingredients: ["2 oz blanco tequila", "1 oz lime juice", "3/4 oz orange liqueur", "Salt rim"],
+      ingredients: ["2 oz (60 ml) blanco tequila", "1 oz (30 ml) lime juice", "3/4 oz (22.5 ml) orange liqueur", "Salt rim"],
       steps: [
         "Salt half the rim of a chilled coupe or rocks glass.",
         "Shake tequila, lime juice, and orange liqueur with ice.",
@@ -726,7 +798,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A restrained whiskey classic with just enough sweetness and bitters to frame the spirit. It is simple on paper and exacting in the glass.",
       heroIngredients: ["Whiskey", "Sugar", "Bitters"],
-      ingredients: ["2 oz bourbon or rye", "1 tsp rich simple syrup", "2 dashes Angostura bitters", "Orange peel"],
+      ingredients: ["2 oz (60 ml) bourbon or rye", "1 tsp rich simple syrup", "2 dashes Angostura bitters", "Orange peel"],
       steps: [
         "Add syrup and bitters to a rocks glass.",
         "Add whiskey and a large cube.",
@@ -745,7 +817,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A clean rum sour that proves three ingredients can carry a complete drink. Fresh lime and measured sugar keep it elegant instead of flashy.",
       heroIngredients: ["White Rum", "Lime", "Sugar"],
-      ingredients: ["2 oz white rum", "1 oz lime juice", "3/4 oz simple syrup"],
+      ingredients: ["2 oz (60 ml) white rum", "1 oz (30 ml) lime juice", "3/4 oz (22.5 ml) simple syrup"],
       steps: [
         "Add rum, lime juice, and syrup to a shaker with ice.",
         "Shake hard until cold.",
@@ -764,7 +836,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A modern classic with vodka, coffee liqueur, and fresh espresso. It is dark, glossy, and built around a silky foam cap.",
       heroIngredients: ["Vodka", "Espresso", "Coffee Liqueur"],
-      ingredients: ["1 1/2 oz vodka", "1 oz fresh espresso", "3/4 oz coffee liqueur", "1/4 oz simple syrup"],
+      ingredients: ["1 1/2 oz (45 ml) vodka", "1 oz (30 ml) fresh espresso", "3/4 oz (22.5 ml) coffee liqueur", "1/4 oz (7.5 ml) simple syrup"],
       steps: [
         "Add all ingredients to a shaker with plenty of ice.",
         "Shake very hard to build foam.",
@@ -783,7 +855,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A low-effort Italian aperitif that layers Aperol, prosecco, and soda into a bright orange glass made for long afternoons.",
       heroIngredients: ["Prosecco", "Aperol", "Soda"],
-      ingredients: ["3 oz prosecco", "2 oz Aperol", "1 oz soda water", "Orange slice"],
+      ingredients: ["3 oz (90 ml) prosecco", "2 oz (60 ml) Aperol", "1 oz (30 ml) soda water", "Orange slice"],
       steps: [
         "Fill a wine glass with ice.",
         "Add prosecco, then Aperol.",
@@ -802,7 +874,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A Cuban highball where mint and lime lift white rum into something tall, cold, and easy to revisit.",
       heroIngredients: ["White Rum", "Mint", "Lime"],
-      ingredients: ["2 oz white rum", "1 oz lime juice", "3/4 oz simple syrup", "8–10 fresh mint leaves", "2 oz soda water"],
+      ingredients: ["2 oz (60 ml) white rum", "1 oz (30 ml) lime juice", "3/4 oz (22.5 ml) simple syrup", "8–10 fresh mint leaves", "2 oz (60 ml) soda water"],
       steps: [
         "Gently press mint with syrup and lime juice in a highball glass.",
         "Add rum and crushed ice.",
@@ -821,7 +893,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A stirred whiskey classic where rye, sweet vermouth, and bitters meet in a clean, aromatic pour. It is compact, elegant, and endlessly worth revisiting.",
       heroIngredients: ["Rye Whiskey", "Sweet Vermouth", "Bitters"],
-      ingredients: ["2 oz rye whiskey", "1 oz sweet vermouth", "2 dashes Angostura bitters", "Brandied cherry"],
+      ingredients: ["2 oz (60 ml) rye whiskey", "1 oz (30 ml) sweet vermouth", "2 dashes Angostura bitters", "Brandied cherry"],
       steps: [
         "Add whiskey, vermouth, and bitters to a mixing glass with ice.",
         "Stir until very cold and lightly diluted.",
@@ -840,7 +912,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A New Orleans icon with rye whiskey, Peychaud's bitters, sugar, and a whisper of absinthe. It is potent, aromatic, and built for slow attention.",
       heroIngredients: ["Rye Whiskey", "Peychaud's", "Absinthe"],
-      ingredients: ["2 oz rye whiskey", "1/4 oz simple syrup", "3 dashes Peychaud's bitters", "Absinthe rinse", "Lemon peel"],
+      ingredients: ["2 oz (60 ml) rye whiskey", "1/4 oz (7.5 ml) simple syrup", "3 dashes Peychaud's bitters", "Absinthe rinse", "Lemon peel"],
       steps: [
         "Rinse a chilled rocks glass with absinthe and discard the excess.",
         "Stir rye, syrup, and bitters with ice.",
@@ -859,7 +931,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A tall tequila drink with lime, salt, and grapefruit soda. It is bright, bitter-edged, and one of the easiest ways to make citrus feel relaxed.",
       heroIngredients: ["Tequila", "Grapefruit", "Lime"],
-      ingredients: ["2 oz blanco tequila", "1/2 oz lime juice", "Pinch of salt", "4 oz grapefruit soda", "Grapefruit wedge"],
+      ingredients: ["2 oz (60 ml) blanco tequila", "1/2 oz (15 ml) lime juice", "Pinch of salt", "4 oz (120 ml) grapefruit soda", "Grapefruit wedge"],
       steps: [
         "Add tequila, lime juice, and salt to a highball glass.",
         "Fill with ice and top with grapefruit soda.",
@@ -878,7 +950,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A modern equal-parts cocktail where bourbon, Aperol, amaro, and lemon lock into a clean bittersweet sour. It feels effortless because the balance is doing the work.",
       heroIngredients: ["Bourbon", "Aperol", "Lemon"],
-      ingredients: ["3/4 oz bourbon", "3/4 oz Aperol", "3/4 oz Amaro Nonino", "3/4 oz lemon juice"],
+      ingredients: ["3/4 oz (22.5 ml) bourbon", "3/4 oz (22.5 ml) Aperol", "3/4 oz (22.5 ml) Amaro Nonino", "3/4 oz (22.5 ml) lemon juice"],
       steps: [
         "Add all ingredients to a shaker with ice.",
         "Shake until cold.",
@@ -897,7 +969,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A whiskey variation on the Negroni template, trading gin's snap for bourbon warmth. Campari keeps the finish bitter, clean, and memorable.",
       heroIngredients: ["Bourbon", "Campari", "Sweet Vermouth"],
-      ingredients: ["1 1/2 oz bourbon", "1 oz Campari", "1 oz sweet vermouth", "Orange peel"],
+      ingredients: ["1 1/2 oz (45 ml) bourbon", "1 oz (30 ml) Campari", "1 oz (30 ml) sweet vermouth", "Orange peel"],
       steps: [
         "Add bourbon, Campari, and vermouth to a mixing glass with ice.",
         "Stir until well chilled.",
@@ -916,7 +988,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A tiki classic that lets good rum carry almond, citrus, and orange notes. It is tropical without being lazy, layered without becoming heavy.",
       heroIngredients: ["Rum", "Lime", "Orgeat"],
-      ingredients: ["2 oz aged rum", "3/4 oz lime juice", "1/2 oz orange curacao", "1/2 oz orgeat", "Mint sprig"],
+      ingredients: ["2 oz (60 ml) aged rum", "3/4 oz (22.5 ml) lime juice", "1/2 oz (15 ml) orange curacao", "1/2 oz (15 ml) orgeat", "Mint sprig"],
       steps: [
         "Add rum, lime, curacao, and orgeat to a shaker with crushed ice.",
         "Shake briefly until chilled.",
@@ -935,7 +1007,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A precise equal-parts classic where gin, green Chartreuse, maraschino, and lime create a vivid herbal sour with a long finish.",
       heroIngredients: ["Gin", "Chartreuse", "Lime"],
-      ingredients: ["3/4 oz gin", "3/4 oz green Chartreuse", "3/4 oz maraschino liqueur", "3/4 oz lime juice"],
+      ingredients: ["3/4 oz (22.5 ml) gin", "3/4 oz (22.5 ml) green Chartreuse", "3/4 oz (22.5 ml) maraschino liqueur", "3/4 oz (22.5 ml) lime juice"],
       steps: [
         "Add all ingredients to a shaker with ice.",
         "Shake hard until cold.",
@@ -954,7 +1026,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A floral gin classic with lemon, maraschino, and a measured touch of creme de violette. It is delicate, tart, and visually unmistakable.",
       heroIngredients: ["Gin", "Lemon", "Violette"],
-      ingredients: ["2 oz gin", "3/4 oz lemon juice", "1/2 oz maraschino liqueur", "1/4 oz creme de violette"],
+      ingredients: ["2 oz (60 ml) gin", "3/4 oz (22.5 ml) lemon juice", "1/2 oz (15 ml) maraschino liqueur", "1/4 oz (7.5 ml) creme de violette"],
       steps: [
         "Add all ingredients to a shaker with ice.",
         "Shake until very cold.",
@@ -973,7 +1045,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A sparkling classic that turns a gin sour into something crisp and celebratory. Lemon keeps it sharp, while bubbles make it feel light.",
       heroIngredients: ["Gin", "Lemon", "Champagne"],
-      ingredients: ["1 oz gin", "1/2 oz lemon juice", "1/2 oz simple syrup", "3 oz chilled Champagne", "Lemon twist"],
+      ingredients: ["1 oz (30 ml) gin", "1/2 oz (15 ml) lemon juice", "1/2 oz (15 ml) simple syrup", "3 oz (90 ml) chilled Champagne", "Lemon twist"],
       steps: [
         "Shake gin, lemon juice, and syrup with ice.",
         "Strain into a flute.",
@@ -992,7 +1064,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A minimalist stirred cocktail where temperature, dilution, and proportion matter. Dry vermouth frames the gin without hiding it.",
       heroIngredients: ["Gin", "Dry Vermouth", "Lemon"],
-      ingredients: ["2 1/2 oz gin", "1/2 oz dry vermouth", "1 dash orange bitters", "Lemon twist or olive"],
+      ingredients: ["2 1/2 oz (75 ml) gin", "1/2 oz (15 ml) dry vermouth", "1 dash orange bitters", "Lemon twist or olive"],
       steps: [
         "Add gin, vermouth, and bitters to a mixing glass with ice.",
         "Stir until icy cold.",
@@ -1011,7 +1083,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A pre-Prohibition revival drink with gin, orange liqueur, aromatized wine, lemon, and a light absinthe rinse. It is sharp, bright, and neatly bitter.",
       heroIngredients: ["Gin", "Lemon", "Absinthe"],
-      ingredients: ["3/4 oz gin", "3/4 oz Cointreau", "3/4 oz Cocchi Americano", "3/4 oz lemon juice", "Absinthe rinse"],
+      ingredients: ["3/4 oz (22.5 ml) gin", "3/4 oz (22.5 ml) Cointreau", "3/4 oz (22.5 ml) Cocchi Americano", "3/4 oz (22.5 ml) lemon juice", "Absinthe rinse"],
       steps: [
         "Rinse a chilled coupe with absinthe and discard the excess.",
         "Shake gin, Cointreau, Cocchi Americano, and lemon with ice.",
@@ -1030,7 +1102,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A tropical drink with enough bitterness to stay focused. Dark rum and pineapple bring depth, while Campari keeps the finish vivid.",
       heroIngredients: ["Dark Rum", "Pineapple", "Campari"],
-      ingredients: ["1 1/2 oz dark rum", "1 1/2 oz pineapple juice", "3/4 oz Campari", "1/2 oz lime juice", "1/2 oz simple syrup"],
+      ingredients: ["1 1/2 oz (45 ml) dark rum", "1 1/2 oz (45 ml) pineapple juice", "3/4 oz (22.5 ml) Campari", "1/2 oz (15 ml) lime juice", "1/2 oz (15 ml) simple syrup"],
       steps: [
         "Add all ingredients to a shaker with ice.",
         "Shake until cold and lightly frothy.",
@@ -1049,7 +1121,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A modern equal-parts cocktail that combines mezcal smoke with Aperol, yellow Chartreuse, and lime. It is compact, vivid, and highly aromatic.",
       heroIngredients: ["Mezcal", "Aperol", "Lime"],
-      ingredients: ["3/4 oz mezcal", "3/4 oz Aperol", "3/4 oz yellow Chartreuse", "3/4 oz lime juice"],
+      ingredients: ["3/4 oz (22.5 ml) mezcal", "3/4 oz (22.5 ml) Aperol", "3/4 oz (22.5 ml) yellow Chartreuse", "3/4 oz (22.5 ml) lime juice"],
       steps: [
         "Add all ingredients to a shaker with ice.",
         "Shake until well chilled.",
@@ -1068,7 +1140,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A bright cognac sour with orange liqueur and lemon. The drink is simple, polished, and sharper than its sugared rim suggests.",
       heroIngredients: ["Cognac", "Lemon", "Orange Liqueur"],
-      ingredients: ["2 oz cognac", "3/4 oz Cointreau", "3/4 oz lemon juice", "Optional sugar rim"],
+      ingredients: ["2 oz (60 ml) cognac", "3/4 oz (22.5 ml) Cointreau", "3/4 oz (22.5 ml) lemon juice", "Optional sugar rim"],
       steps: [
         "Prepare a chilled coupe with a partial sugar rim if desired.",
         "Shake cognac, Cointreau, and lemon juice with ice.",
@@ -1087,7 +1159,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "An old-school gin sour that keeps the focus on lime and botanicals. It is cold, compact, and satisfying without extra decoration.",
       heroIngredients: ["Gin", "Lime", "Sugar"],
-      ingredients: ["2 oz gin", "3/4 oz lime juice", "3/4 oz simple syrup"],
+      ingredients: ["2 oz (60 ml) gin", "3/4 oz (22.5 ml) lime juice", "3/4 oz (22.5 ml) simple syrup"],
       steps: [
         "Add gin, lime juice, and syrup to a shaker with ice.",
         "Shake until very cold.",
@@ -1106,7 +1178,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A foundational sour that balances whiskey warmth with lemon and sugar. Egg white is optional, but it gives the drink its classic silky top.",
       heroIngredients: ["Bourbon", "Lemon", "Sugar"],
-      ingredients: ["2 oz bourbon", "3/4 oz lemon juice", "3/4 oz simple syrup", "1 egg white", "Angostura bitters"],
+      ingredients: ["2 oz (60 ml) bourbon", "3/4 oz (22.5 ml) lemon juice", "3/4 oz (22.5 ml) simple syrup", "1 egg white", "Angostura bitters"],
       steps: [
         "Dry shake bourbon, lemon, syrup, and egg white without ice.",
         "Add ice and shake again until cold.",
@@ -1125,7 +1197,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "Brazil's direct, bright cocktail built from cachaca, lime, and sugar. It is rustic, grassy, and best when the lime oils stay alive.",
       heroIngredients: ["Cachaca", "Lime", "Sugar"],
-      ingredients: ["2 oz cachaca", "1 lime, cut into wedges", "2 tsp sugar"],
+      ingredients: ["2 oz (60 ml) cachaca", "1 lime, cut into wedges", "2 tsp sugar"],
       steps: [
         "Muddle lime wedges and sugar in a rocks glass.",
         "Add cachaca and crushed ice.",
@@ -1144,7 +1216,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A creamy tropical classic that works best when pineapple stays bright and the coconut is rich but controlled.",
       heroIngredients: ["Rum", "Pineapple", "Coconut"],
-      ingredients: ["2 oz rum", "1 1/2 oz pineapple juice", "1 oz cream of coconut", "1/2 oz lime juice", "Pineapple wedge"],
+      ingredients: ["2 oz (60 ml) rum", "1 1/2 oz (45 ml) pineapple juice", "1 oz (30 ml) cream of coconut", "1/2 oz (15 ml) lime juice", "Pineapple wedge"],
       steps: [
         "Add rum, pineapple, coconut, lime, and crushed ice to a blender.",
         "Blend until smooth and cold.",
@@ -1163,7 +1235,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A Prohibition-era gin sour softened by honey syrup. It is simple, fragrant, and brighter than its small ingredient list suggests.",
       heroIngredients: ["Gin", "Lemon", "Honey"],
-      ingredients: ["2 oz gin", "3/4 oz lemon juice", "3/4 oz honey syrup"],
+      ingredients: ["2 oz (60 ml) gin", "3/4 oz (22.5 ml) lemon juice", "3/4 oz (22.5 ml) honey syrup"],
       steps: [
         "Add gin, lemon juice, and honey syrup to a shaker with ice.",
         "Shake until cold.",
@@ -1182,7 +1254,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A modern whiskey sour with blended Scotch, lemon, honey-ginger syrup, and an Islay float. It is warming, spicy, and smoky at the edge.",
       heroIngredients: ["Scotch", "Ginger", "Honey"],
-      ingredients: ["2 oz blended Scotch", "3/4 oz lemon juice", "3/4 oz honey-ginger syrup", "1/4 oz Islay Scotch float", "Candied ginger"],
+      ingredients: ["2 oz (60 ml) blended Scotch", "3/4 oz (22.5 ml) lemon juice", "3/4 oz (22.5 ml) honey-ginger syrup", "1/4 oz (7.5 ml) Islay Scotch float", "Candied ginger"],
       steps: [
         "Shake blended Scotch, lemon, and honey-ginger syrup with ice.",
         "Strain into a rocks glass over fresh ice.",
@@ -1201,7 +1273,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A South American sour where pisco's grape character meets lime, sugar, and a silky egg-white cap finished with bitters.",
       heroIngredients: ["Pisco", "Lime", "Bitters"],
-      ingredients: ["2 oz pisco", "3/4 oz lime juice", "3/4 oz simple syrup", "1 egg white", "Angostura bitters"],
+      ingredients: ["2 oz (60 ml) pisco", "3/4 oz (22.5 ml) lime juice", "3/4 oz (22.5 ml) simple syrup", "1 egg white", "Angostura bitters"],
       steps: [
         "Dry shake pisco, lime, syrup, and egg white without ice.",
         "Add ice and shake again until cold.",
@@ -1220,7 +1292,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A rich tropical long drink with dark rum, pineapple, orange, coconut, and nutmeg. It is plush, sunny, and generous.",
       heroIngredients: ["Dark Rum", "Pineapple", "Coconut"],
-      ingredients: ["2 oz dark rum", "4 oz pineapple juice", "1 oz orange juice", "1 oz cream of coconut", "Nutmeg"],
+      ingredients: ["2 oz (60 ml) dark rum", "4 oz (120 ml) pineapple juice", "1 oz (30 ml) orange juice", "1 oz (30 ml) cream of coconut", "Nutmeg"],
       steps: [
         "Shake rum, pineapple, orange, and coconut with ice.",
         "Pour into a tiki mug or tall glass over crushed ice.",
@@ -1239,7 +1311,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A rich stirred classic with rye, cognac, sweet vermouth, Benedictine, and bitters. It is layered, aromatic, and quietly luxurious.",
       heroIngredients: ["Rye", "Cognac", "Vermouth"],
-      ingredients: ["3/4 oz rye whiskey", "3/4 oz cognac", "3/4 oz sweet vermouth", "1/4 oz Benedictine", "2 dashes each Peychaud's and Angostura bitters"],
+      ingredients: ["3/4 oz (22.5 ml) rye whiskey", "3/4 oz (22.5 ml) cognac", "3/4 oz (22.5 ml) sweet vermouth", "1/4 oz (7.5 ml) Benedictine", "2 dashes each Peychaud's and Angostura bitters"],
       steps: [
         "Add all ingredients to a mixing glass with ice.",
         "Stir until well chilled.",
@@ -1258,7 +1330,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A tropical gin long drink with cherry, citrus, pineapple, and spice. It is colorful, structured, and more layered than it first appears.",
       heroIngredients: ["Gin", "Cherry", "Pineapple"],
-      ingredients: ["1 1/2 oz gin", "1/2 oz cherry liqueur", "1/4 oz Cointreau", "1/4 oz Benedictine", "2 oz pineapple juice", "1/2 oz lime juice", "1/3 oz grenadine", "1 dash Angostura bitters"],
+      ingredients: ["1 1/2 oz (45 ml) gin", "1/2 oz (15 ml) cherry liqueur", "1/4 oz (7.5 ml) Cointreau", "1/4 oz (7.5 ml) Benedictine", "2 oz (60 ml) pineapple juice", "1/2 oz (15 ml) lime juice", "1/3 oz (10 ml) grenadine", "1 dash Angostura bitters"],
       steps: [
         "Shake all ingredients with ice.",
         "Strain into a highball glass over fresh ice.",
@@ -1277,7 +1349,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A tall, spicy highball of dark rum, ginger beer, and lime. It is direct, refreshing, and built around the bite of ginger.",
       heroIngredients: ["Dark Rum", "Ginger Beer", "Lime"],
-      ingredients: ["2 oz dark rum", "1/2 oz lime juice", "4 oz ginger beer", "Lime wedge"],
+      ingredients: ["2 oz (60 ml) dark rum", "1/2 oz (15 ml) lime juice", "4 oz (120 ml) ginger beer", "Lime wedge"],
       steps: [
         "Fill a highball glass with ice.",
         "Add lime juice and ginger beer.",
@@ -1296,7 +1368,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A two-ingredient classic pairing Scotch with Drambuie. It is simple, strong, and more complex than its build suggests.",
       heroIngredients: ["Scotch", "Drambuie", "Lemon"],
-      ingredients: ["2 oz Scotch", "1/2 oz Drambuie", "Lemon peel"],
+      ingredients: ["2 oz (60 ml) Scotch", "1/2 oz (15 ml) Drambuie", "Lemon peel"],
       steps: [
         "Add Scotch and Drambuie to a mixing glass with ice.",
         "Stir until cold.",

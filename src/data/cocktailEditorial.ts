@@ -349,7 +349,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
         "Created in the early 1900s by Hugo Ensslin, head bartender at the Hotel Wallick in New York City, and published in his 1916 'Recipes for Mixed Drinks'. Designed to evoke the dawn of modern aviation, with Crème de Violette imparting a sky-blue hue.",
       flavorNotes: "Floral violet, stone fruit almond, tart lemon, dry botanical juniper",
       barTips: [
-        "Crème de Violette can easily overwhelm the drink; measure no more than a bar spoon (5ml) to maintain a soft sky-blue tint rather than soapy purple.",
+        "Our spec uses 1/4 oz (7.5 ml) Crème de Violette for a pale lavender hue; if using a highly concentrated bottling, dial it back to a bar spoon (5 ml) so the floral notes never turn soapy.",
         "Use a classic London Dry Gin with pronounced juniper to stand tall against the floral liqueur.",
       ],
       faqs: [
@@ -401,7 +401,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
       faqs: [
         {
           question: "What is the classic Dry Martini ratio?",
-          answer: "The classic 5:1 ratio uses 60ml (2 oz) London Dry Gin and 10ml to 15ml Dry Vermouth, stirred with 1 dash orange bitters.",
+          answer: "Our house spec uses a classic 5:1 ratio: 2 1/2 oz (75 ml) London Dry Gin to 1/2 oz (15 ml) Dry Vermouth (or 60 ml to 12 ml for a smaller pour), stirred with 1 dash orange bitters.",
         },
         {
           question: "Why does James Bond ask for it shaken, not stirred?",
@@ -459,7 +459,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "naked-and-famous": {
       recipeCuisine: "American",
       tools: ["Cocktail shaker", "Jigger", "Hawthorne strainer", "Fine mesh strainer"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "Invented in 2011 by Joaquín Simó at New York City's renowned cocktail den Death & Co. Created as a mezcal-based descendant of the Last Word and Paper Plane, Simó dubbed it 'the bastard love child of a classic Last Word and a Paper Plane'.",
       flavorNotes: "Earthy woodsmoke, bitter gentian, alpine herbs, bright tart lime",
@@ -493,7 +493,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
       faqs: [
         {
           question: "What is the standard Sidecar ratio?",
-          answer: "The classic French school uses 50ml (1.75 oz) Cognac, 20ml Cointreau, and 20ml fresh lemon juice.",
+          answer: "Our contemporary craft spec uses an 8:3:3 ratio — 2 oz (60 ml) Cognac, 3/4 oz (22.5 ml) Cointreau, and 3/4 oz (22.5 ml) fresh lemon juice — closely mirroring the classic French 5:2:2 school (50 ml : 20 ml : 20 ml).",
         },
         {
           question: "Is the sugared rim mandatory?",
@@ -508,15 +508,15 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
       suitableForDiet: "https://schema.org/VeganDiet",
       originLore:
         "Developed in the late 19th century by the British Royal Navy to combat scurvy among sailors. Credited to Surgeon Rear-Admiral Sir Thomas Gimlette, who prescribed mixing daily gin rations with Rose's lime cordial to ensure compliance.",
-      flavorNotes: "Sharp lime cordial, piney juniper, crisp, sweet-tart balance",
+      flavorNotes: "Bright fresh lime, piney juniper, crisp, sweet-tart balance",
       barTips: [
-        "Crafting homemade lime cordial (using lime juice, zest, sugar, and a pinch of citric acid) elevates the drink far above artificial commercial cordials.",
+        "Our recipe pairs fresh lime juice and simple syrup for a bright, immediate snap; for deeper lime-peel oil complexity, substitute both with 1 oz (30 ml) homemade lime cordial.",
         "Shake vigorously with dense ice and double-strain into a frozen coupe glass for a crystal-clear presentation.",
       ],
       faqs: [
         {
-          question: "What is the difference between lime juice and lime cordial?",
-          answer: "Lime cordial is sweetened and infused with aromatic lime peel oils and acids, providing deeper citrus complexity than plain lime juice.",
+          question: "What is the difference between a fresh-lime Gimlet and a cordial Gimlet?",
+          answer: "A fresh-lime Gimlet (gin, fresh lime juice, and simple syrup) drinks like a crisp Gin Sour, whereas traditional lime cordial infuses lime zest oils and citric acid for a rounder, candied citrus finish.",
         },
         {
           question: "Should a Gimlet be made with gin or vodka?",
@@ -533,8 +533,8 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
         "First recorded in print by Jerry Thomas in the 1862 'Bartender's Guide', though consumed by American sailors and frontiersmen decades prior. The addition of egg white (sometimes called a Boston Sour) became popular in the early 20th century to create a silky, frothy head.",
       flavorNotes: "Vanilla oak, bright lemon, creamy mouthfeel, aromatic spice",
       barTips: [
-        "Perform a 'reverse dry shake' (shake with ice first to chill, strain out ice, then shake dry without ice) for the densest, silkiest egg white meringue.",
-        "Drop 3 dashes of Angostura bitters directly onto the foam head to mask raw egg aromatics with warm baking spice.",
+        "Dry shake all ingredients without ice first to emulsify the egg white proteins, then add hard ice and shake again to chill (or use a reverse dry shake if you prefer an even denser meringue).",
+        "Drop 3 dashes of Angostura bitters directly onto the foam head to mask raw egg aromatics with warm baking spice; for food safety, use pasteurized egg whites or 1/2 oz (15 ml) aquafaba.",
       ],
       faqs: [
         {
@@ -542,8 +542,8 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
           answer: "Egg white does not alter the flavor, but adds luxurious silky texture and creates a velvety white foam head on the cocktail.",
         },
         {
-          question: "Can I make a vegan Whiskey Sour?",
-          answer: "Yes, substitute egg white with 15ml (0.5 oz) of aquafaba (chickpea water), which whips into an identical velvety foam.",
+          question: "Is raw egg white safe, and can I make a vegan Whiskey Sour?",
+          answer: "If you prefer to avoid raw shell eggs or want a 100% plant-based drink, use carton-pasteurized egg white or substitute 1/2 oz (15 ml) of aquafaba (chickpea water), which whips into an identical velvety foam.",
         },
       ],
       relatedSlugs: ["penicillin", "old-fashioned"],
@@ -580,7 +580,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
       flavorNotes: "Rich coconut cream, tropical pineapple, golden rum warmth, creamy decadence",
       barTips: [
         "Use genuine Coco López cream of coconut, not coconut milk or water, to get the authentic velvety sweetness.",
-        "Shaking hard with crushed ice creates a lighter, silkier cocktail than heavy machine blending.",
+        "When blending with crushed ice, pulse briefly until just smooth so the drink stays cold and plush; if you don't have a blender, shaking hard with crushed ice yields a lighter, silky texture.",
       ],
       faqs: [
         {
@@ -648,8 +648,8 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
         "Created in Lima, Peru, in the early 1920s by American expat Victor Vaughen Morris at Morris' Bar. Further refined by Peruvian bartender Mario Bruiget at the Gran Hotel Bolívar, who added egg white and aromatic Angostura bitters.",
       flavorNotes: "Bright grape floral, tart Key lime, silky foam, warm aromatic bitters",
       barTips: [
-        "The traditional Peruvian ratio is 3:1:1 (3 parts Pisco, 1 part lime juice, 1 part simple syrup).",
-        "Place 3 tiny drops of Angostura bitters on the foam crown; they provide a visual accent and neutralize the raw aroma of the egg white.",
+        "Our bar spec uses a balanced 8:3:3 ratio — 2 oz (60 ml) Pisco, 3/4 oz (22.5 ml) lime juice, and 3/4 oz (22.5 ml) simple syrup — slightly brighter than the classic 3:1:1 Peruvian tavern pour.",
+        "Dot 3 drops of Angostura bitters onto the foam crown to neutralize raw egg aromatics; for food safety or plant-based guests, use pasteurized egg whites or 1/2 oz (15 ml) aquafaba.",
       ],
       faqs: [
         {
@@ -712,7 +712,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "singapore-sling": {
       recipeCuisine: "Singaporean",
       tools: ["Cocktail shaker", "Jigger", "Highball glass"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "Created around 1915 by Hainanese bartender Ngiam Tong Boon at the Long Bar in Raffles Hotel, Singapore. Designed so that colonial ladies, who were socially forbidden from drinking public alcohol, could sip gin disguised as punch.",
       flavorNotes: "Cherry fruit, herbal complexity, effervescent pineapple, botanical gin",
@@ -773,7 +773,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
         },
         {
           question: "What is the classic Rusty Nail ratio?",
-          answer: "The classic ratio is 2:1 (45ml Blended Scotch to 25ml Drambuie), though modern palates often prefer 3:1 for a drier finish.",
+          answer: "Our house recipe uses a dry 4:1 ratio — 2 oz (60 ml) Scotch to 1/2 oz (15 ml) Drambuie — to keep the malt crisp and restrained, whereas older 1960s pours often used a sweeter 2:1 or 3:1 ratio.",
         },
       ],
       relatedSlugs: ["penicillin", "old-fashioned"],
@@ -1110,7 +1110,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
         "20世纪初由纽约瓦里克酒店（Hotel Wallick）首席调酒师雨果·恩斯林创作，载于1916年出版的鸡尾酒谱。旨在致敬人类翱翔蓝天的飞行时代拂晓，紫罗兰利口酒为整杯酒带来如初晴天际般的淡蓝微紫色泽。",
       flavorNotes: "紫罗兰花香、樱桃果仁、清新柠檬、杜松子干香",
       barTips: [
-        "紫罗兰利口酒极易压过其他风味，建议精准控制在一吧勺（约5毫升），呈现通透晴空浅蓝色，过多会呈现肥皂水质感。",
+        "本配方采用 7.5 毫升（1/4 盎司）紫罗兰利口酒呈现微紫晴空色泽；若所用品牌花香浓度极高，可减至一吧勺（约 5 毫升），避免出现肥皂水质感。",
         "选用杜松子风味挺拔的伦敦干金酒，能与花果香气形成稳固对峙与支撑。",
       ],
       faqs: [
@@ -1162,7 +1162,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
       faqs: [
         {
           question: "经典干马天尼的标准比例是多少？",
-          answer: "经典干马天尼（Dry Martini）普遍采用5:1配比：60毫升干金酒对12毫升干苦艾酒，配一滴橙味苦精。",
+          answer: "本配方采用经典 5:1 黄金配比：75 毫升（2 1/2 盎司）伦敦干金酒配 15 毫升（1/2 盎司）干味美思（小杯量可按 60 毫升配 12 毫升等比缩放），加一滴橙味苦精搅拌。",
         },
         {
           question: "为什么詹姆斯·邦德要'摇匀而不是搅拌'？",
@@ -1220,7 +1220,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "naked-and-famous": {
       recipeCuisine: "美式",
       tools: ["摇酒壶", "量酒器", "霍桑滤网", "双重滤网"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "2011年由纽约著名酒吧Death & Co明星调酒师华金·西莫（Joaquín Simó）创作。他将其幽默地称为'经典临别一语和纸飞机生下的私生子'，是当代以龙舌兰植物烈酒为核心的新经典代表。",
       flavorNotes: "矿物泥土烟熏、草本微苦、龙胆甜润、酸爽青柠",
@@ -1254,7 +1254,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
       faqs: [
         {
           question: "边车鸡尾酒的经典配方比例是什么？",
-          answer: "正统法国配方一般为5:2:2：50毫升干邑白兰地、20毫升君度橙酒、20毫升新鲜柠檬汁。",
+          answer: "本配方采用现代精酿吧台常用的 8:3:3 比例（60 毫升干邑白兰地、22.5 毫升君度橙酒、22.5 毫升鲜柠檬汁），与传统法式学派的 5:2:2 比例（50 毫升 : 20 毫升 : 20 毫升）一脉相承。",
         },
         {
           question: "糖边是必须制作的吗？",
@@ -1269,15 +1269,15 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
       suitableForDiet: "https://schema.org/VeganDiet",
       originLore:
         "19世纪晚期诞生于英国皇家海军舰队，旨在预防船员远洋坏血病。相传由海军军医总监托马斯·吉姆莱特爵士（Sir Thomas Gimlette）倡导将每日配给的金酒与玫瑰牌青柠浓缩汁混合饮用。",
-      flavorNotes: "锐利柑橘、杜松子松针、酸甜利落、冰透澄澈",
+      flavorNotes: "鲜榨青柠、杜松子松针、酸甜利落、冰透澄澈",
       barTips: [
-        "自制青柠浓浆（鲜青柠汁浸泡青柠果皮精油与蔗糖慢熬）相比市售工业果露能够带来惊人的鲜活果皮精油芬芳。",
+        "本配方采用鲜榨青柠汁与简单糖浆等量搭配，呈现直接清脆的柑橘酸香；若追求复古果皮油润感，可用 30 毫升自制青柠浓浆（Lime Cordial）替代青柠汁与糖浆。",
         "加入大块硬冰全力快速摇匀，双重滤网滤入冰镇浅碟香槟杯，酒体澄澈无任何冰渣。",
       ],
       faqs: [
         {
-          question: "青柠汁和青柠浓浆（Lime Cordial）有什么区别？",
-          answer: "青柠浓浆富含果皮精油和浓缩糖酸，比单调的新鲜青柠汁风味更丰富深沉，带有一抹糖渍果皮香。",
+          question: "鲜青柠吉姆莱特与传统青柠浓浆（Lime Cordial）做法有何区别？",
+          answer: "鲜榨青柠汁配简单糖浆的做法更接近清爽利落的金酒酸酒（Gin Sour）；而传统青柠浓浆浸泡了果皮精油与柠檬酸，带有更圆润的糖渍柑橘尾韵。",
         },
         {
           question: "吉姆莱特用金酒还是伏特加？",
@@ -1294,8 +1294,8 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
         "1862年杰里·托马斯在第一部《调酒师指南》中首次正式记载，但其实早在19世纪初就已是美国水手和拓荒者的日常饮品。20世纪初引入蛋白作为乳化剂（又称波士顿酸酒），成就了如今广受追捧的绵密奶盖质感。",
       flavorNotes: "香草橡木、柠檬酸爽、如丝绵密乳化、烘焙香料余韵",
       barTips: [
-        "采用'反向干摇法'（先加冰摇冷摇透，滤除冰块后再无冰空摇10秒），可产生最绵密致密的蛋白雪顶奶沫。",
-        "在洁白泡沫顶端滴入三滴安格仕苦精并用竹签拉花，能彻底掩盖生蛋腥味并提供美妙香料前调。",
+        "先将所有原料不加冰干摇（Dry Shake）使蛋白充分打发乳化，再加入大块硬冰二次摇冷（亦可采用先冰摇后干摇的反向干摇法以追求更紧实的泡沫）。",
+        "在泡沫表面滴入安格仕苦精掩盖生蛋气息；出于食品安全考虑，建议使用巴氏杀菌盒装蛋白液或以 15 毫升鹰嘴豆水（Aquafaba）替代。",
       ],
       faqs: [
         {
@@ -1303,8 +1303,8 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
           answer: "蛋白本身没有味道，但在剧烈摇和后会产生丝绒般润滑的质感，并在顶部形成一层厚厚的细腻泡沫。",
         },
         {
-          question: "如果素食或不吃生鸡蛋怎么办？",
-          answer: "可用15毫升鹰嘴豆水（Aquafaba）替代蛋白，摇出的泡沫质感与生蛋白几乎完全一致且无任何异味。",
+          question: "生蛋白是否有食品安全顾虑？可以做纯素版本吗？",
+          answer: "若介意生食鲜鸡蛋或遵循纯素饮食，推荐使用巴氏杀菌蛋白液，或以 15 毫升鹰嘴豆水（Aquafaba）等量替代，打发出的绵密泡沫几乎毫无二致。",
         },
       ],
       relatedSlugs: ["penicillin", "old-fashioned"],
@@ -1341,7 +1341,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
       flavorNotes: "浓郁椰子乳脂、热带熟甜菠萝、金朗姆香草焦糖、柔滑冰爽",
       barTips: [
         "务必选用调酒专用的椰子甜奶油（如Coco López Cream of Coconut），切忌使用普通稀薄无糖椰汁或椰浆烹饪乳。",
-        "加碎冰用摇酒壶剧烈爆摇相比搅拌机打冰沙口感更细腻轻盈，不会因过度稀释变得水感扁平。",
+        "使用搅拌机配合碎冰搅打时，点动高速搅打至顺滑即可，切勿过度搅打导致化水；若无搅拌机，直接加碎冰用摇酒壶剧烈爆摇也能获得轻盈丝滑的质地。",
       ],
       faqs: [
         {
@@ -1409,8 +1409,8 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
         "20世纪20年代初诞生于秘鲁利马，由莫里斯酒吧美籍老板维克多·莫里斯所创。后由玻利瓦尔大酒店调酒大师马里奥·布鲁伊盖特完善加入蛋白与安格仕苦精，被奉为秘鲁无可争议的国饮文化遗产。",
       flavorNotes: "天然葡萄果香、秘鲁青柠清酸、蛋白雪顶丝滑、香料点缀",
       barTips: [
-        "秘鲁经典黄金比例为3:1:1（3份皮斯科、1份酸橙汁、1份糖浆）。",
-        "在洁白泡沫顶端精准滴上3滴安格仕苦精，既是美学点睛之笔，又能中和生蛋白气味。",
+        "本配方采用酸甜均衡的 8:3:3 现代吧台比例（60 毫升皮斯科、22.5 毫升青柠汁、22.5 毫升简单糖浆），比秘鲁传统小酒馆的 3:1:1 比例更突显柑橘鲜爽。",
+        "在洁白泡沫顶端滴上安格仕苦精以中和蛋白气息；出于食品安全或纯素需求，建议使用巴氏杀菌蛋白液或 15 毫升鹰嘴豆水（Aquafaba）。",
       ],
       faqs: [
         {
@@ -1473,7 +1473,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "singapore-sling": {
       recipeCuisine: "新加坡",
       tools: ["摇酒壶", "量酒器", "高球杯"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "约于1915年由海南籍华人调酒师严崇文（Ngiam Tong Boon）在新加坡莱佛士酒店长酒吧（Long Bar）创作。当时殖民地社交礼仪禁止女性在公共场合饮酒，严崇文便用果汁与樱桃白兰地将金酒伪装成看似无害的粉红潘趣酒。",
       flavorNotes: "樱桃甜润、多重复合草本、菠萝绵密气泡、金酒暗藏",
@@ -1534,7 +1534,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
         },
         {
           question: "生锈钉的经典比例是多少？",
-          answer: "传统经典比例为2:1（45毫升苏格兰威士忌配25毫升杜林标）；现代许多酒吧偏爱3:1的干爽利落收口。",
+          answer: "本配方采用更为干爽克制的 4:1 比例（60 毫升苏格兰威士忌配 15 毫升杜林标），凸显麦芽骨架；而20世纪60年代传统做法常采用偏甜的 2:1 或 3:1 比例。",
         },
       ],
       relatedSlugs: ["penicillin", "old-fashioned"],

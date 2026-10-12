@@ -70,6 +70,8 @@ export const ui = {
     tools: "Tools",
     calories: "Est. Calories",
     kcalUnit: "kcal",
+    abv: "Est. ABV",
+    abvUnit: "% ABV",
     ibaCategoryLabel: "IBA Classification",
   },
   "zh-CN": {
@@ -140,6 +142,8 @@ export const ui = {
     tools: "调酒器具",
     calories: "估算热量",
     kcalUnit: "千卡",
+    abv: "估算酒精度",
+    abvUnit: "% vol",
     ibaCategoryLabel: "IBA 官方分类",
   },
 } as const satisfies Record<Locale, Record<string, string>>;

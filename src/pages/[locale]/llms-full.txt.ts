@@ -47,6 +47,8 @@ export function GET({ props }: { props: Props }) {
     lines.push(`- **Base Spirit**: ${cocktail.baseSpirit}`);
     lines.push(`- **Glassware**: ${cocktail.glass}`);
     lines.push(`- **Estimated Calories**: ${cocktail.estimatedCalories} kcal`);
+    lines.push(`- **Estimated ABV**: ~${cocktail.estimatedAbv}%`);
+    lines.push(`- **Prep Time**: ${cocktail.prepMinutes} min`);
     lines.push(
       `- **Cuisine / Heritage**: ${cocktail.recipeCuisine || (isZh ? "国际经典" : "International")}`,
     );
