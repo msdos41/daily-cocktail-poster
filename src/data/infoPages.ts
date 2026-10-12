@@ -34,6 +34,10 @@ export const infoPageContent: Record<Locale, Record<InfoPageId, InfoPageContent>
           body: "Each day's pick follows your local date. Past pours live in the archive whenever you want another look.",
         },
         {
+          heading: "Editorial & Recipe Standard",
+          body: "Every recipe is cross-referenced against International Bartenders Association (IBA) benchmarks and classic bar manuals (including Jerry Thomas, Harry Craddock's The Savoy Cocktail Book, and modern craft standards), with verified measurements, tools, dilution notes, and historical provenance in both English and Simplified Chinese.",
+        },
+        {
           heading: "Contact",
           kind: "contact",
           body: "Questions or suggestions? Reach out:",
@@ -81,6 +85,10 @@ export const infoPageContent: Record<Locale, Record<InfoPageId, InfoPageContent>
         {
           heading: "理念",
           body: "每日推荐由你的本地日期决定。往期作品可在归档中随时回顾。",
+        },
+        {
+          heading: "配方标准与文献考据",
+          body: "站内每一份配方均对照国际调酒师协会（IBA）官方标准及经典调酒典籍（涵盖《萨伏伊鸡尾酒手册》与现代精酿吧台规范）进行交叉核验，提供精确的盎司/毫升双语配比、调酒器具、化水控制技巧与历史渊源考据。",
         },
         {
           heading: "联系方式",

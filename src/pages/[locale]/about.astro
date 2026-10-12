@@ -26,10 +26,9 @@ const structuredData = infoPageStructuredData({ locale, url: pageUrl, title, des
 <BaseLayout locale={locale} title={title} description={content.description} path={path} structuredData={structuredData}>
   <div class="info-page">
     <header class="info-hero">
-      <!-- <span class="info-eyebrow">{content.eyebrow}</span> -->
-      <h2>{content.heading}</h2>
-      <!-- <p class="info-lede">{content.lede}</p>
-      <span class="info-brand">Just One Sip / justonesip.today</span> -->
+      <span class="info-eyebrow">{content.eyebrow}</span>
+      <h1>{content.heading}</h1>
+      <p class="info-lede">{content.lede}</p>
     </header>
     <div class="info-sections">
       {

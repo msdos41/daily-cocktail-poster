@@ -1733,7 +1733,9 @@ h2 {
   padding: 13px 16px 17px;
 }
 
-.archive-card time {
+.archive-card time,
+.archive-card-spirit {
+  display: block;
   color: rgba(199, 168, 106, 0.82);
   font-size: 0.72rem;
   letter-spacing: 0.02em;

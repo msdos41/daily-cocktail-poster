@@ -802,7 +802,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A Cuban highball where mint and lime lift white rum into something tall, cold, and easy to revisit.",
       heroIngredients: ["White Rum", "Mint", "Lime"],
-      ingredients: ["2 oz white rum", "1 oz lime juice", "3/4 oz simple syrup", "Mint leaves", "Soda water"],
+      ingredients: ["2 oz white rum", "1 oz lime juice", "3/4 oz simple syrup", "8–10 fresh mint leaves", "2 oz soda water"],
       steps: [
         "Gently press mint with syrup and lime juice in a highball glass.",
         "Add rum and crushed ice.",
@@ -859,7 +859,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A tall tequila drink with lime, salt, and grapefruit soda. It is bright, bitter-edged, and one of the easiest ways to make citrus feel relaxed.",
       heroIngredients: ["Tequila", "Grapefruit", "Lime"],
-      ingredients: ["2 oz blanco tequila", "1/2 oz lime juice", "Pinch of salt", "Grapefruit soda", "Grapefruit wedge"],
+      ingredients: ["2 oz blanco tequila", "1/2 oz lime juice", "Pinch of salt", "4 oz grapefruit soda", "Grapefruit wedge"],
       steps: [
         "Add tequila, lime juice, and salt to a highball glass.",
         "Fill with ice and top with grapefruit soda.",
@@ -973,7 +973,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A sparkling classic that turns a gin sour into something crisp and celebratory. Lemon keeps it sharp, while bubbles make it feel light.",
       heroIngredients: ["Gin", "Lemon", "Champagne"],
-      ingredients: ["1 oz gin", "1/2 oz lemon juice", "1/2 oz simple syrup", "Champagne", "Lemon twist"],
+      ingredients: ["1 oz gin", "1/2 oz lemon juice", "1/2 oz simple syrup", "3 oz chilled Champagne", "Lemon twist"],
       steps: [
         "Shake gin, lemon juice, and syrup with ice.",
         "Strain into a flute.",
@@ -1239,7 +1239,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A rich stirred classic with rye, cognac, sweet vermouth, Benedictine, and bitters. It is layered, aromatic, and quietly luxurious.",
       heroIngredients: ["Rye", "Cognac", "Vermouth"],
-      ingredients: ["3/4 oz rye whiskey", "3/4 oz cognac", "3/4 oz sweet vermouth", "1/4 oz Benedictine", "Peychaud's and Angostura bitters"],
+      ingredients: ["3/4 oz rye whiskey", "3/4 oz cognac", "3/4 oz sweet vermouth", "1/4 oz Benedictine", "2 dashes each Peychaud's and Angostura bitters"],
       steps: [
         "Add all ingredients to a mixing glass with ice.",
         "Stir until well chilled.",
@@ -1258,7 +1258,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A tropical gin long drink with cherry, citrus, pineapple, and spice. It is colorful, structured, and more layered than it first appears.",
       heroIngredients: ["Gin", "Cherry", "Pineapple"],
-      ingredients: ["1 1/2 oz gin", "1/2 oz cherry liqueur", "1/4 oz Cointreau", "1/4 oz Benedictine", "2 oz pineapple juice", "1/2 oz lime juice", "Grenadine and bitters"],
+      ingredients: ["1 1/2 oz gin", "1/2 oz cherry liqueur", "1/4 oz Cointreau", "1/4 oz Benedictine", "2 oz pineapple juice", "1/2 oz lime juice", "1/3 oz grenadine", "1 dash Angostura bitters"],
       steps: [
         "Shake all ingredients with ice.",
         "Strain into a highball glass over fresh ice.",
@@ -1277,7 +1277,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "A tall, spicy highball of dark rum, ginger beer, and lime. It is direct, refreshing, and built around the bite of ginger.",
       heroIngredients: ["Dark Rum", "Ginger Beer", "Lime"],
-      ingredients: ["2 oz dark rum", "1/2 oz lime juice", "Ginger beer", "Lime wedge"],
+      ingredients: ["2 oz dark rum", "1/2 oz lime juice", "4 oz ginger beer", "Lime wedge"],
       steps: [
         "Fill a highball glass with ice.",
         "Add lime juice and ginger beer.",
@@ -1431,7 +1431,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "一杯古巴高球，薄荷和青柠把白朗姆托起，清凉、修长，也很容易让人再来一杯。",
       heroIngredients: ["白朗姆", "薄荷", "青柠"],
-      ingredients: ["60 ml 白朗姆", "30 ml 青柠汁", "22.5 ml 单糖浆", "薄荷叶", "苏打水"],
+      ingredients: ["60 ml 白朗姆", "30 ml 青柠汁", "22.5 ml 单糖浆", "8–10 片新鲜薄荷叶", "60 ml 苏打水"],
       steps: [
         "在高球杯中轻压薄荷、糖浆和青柠汁。",
         "加入朗姆和碎冰。",
@@ -1488,7 +1488,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "一杯高球型龙舌兰饮品，青柠、盐和葡萄柚汽水让酒体明亮、清爽，并带一点轻微苦味。",
       heroIngredients: ["龙舌兰", "葡萄柚", "青柠"],
-      ingredients: ["60 ml 白龙舌兰", "15 ml 青柠汁", "一小撮盐", "葡萄柚汽水", "葡萄柚角"],
+      ingredients: ["60 ml 白龙舌兰", "15 ml 青柠汁", "一小撮盐", "120 ml 葡萄柚汽水", "葡萄柚角"],
       steps: [
         "在高球杯中加入龙舌兰、青柠汁和盐。",
         "加冰后以葡萄柚汽水补满。",
@@ -1602,7 +1602,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "一杯气泡经典，把金酒酸变得清爽而有庆祝感。柠檬保持利落，气泡让酒体更轻盈。",
       heroIngredients: ["金酒", "柠檬", "香槟"],
-      ingredients: ["30 ml 金酒", "15 ml 柠檬汁", "15 ml 单糖浆", "香槟", "柠檬皮"],
+      ingredients: ["30 ml 金酒", "15 ml 柠檬汁", "15 ml 单糖浆", "90 ml 冰镇香槟", "柠檬皮"],
       steps: [
         "将金酒、柠檬汁和糖浆加冰摇和。",
         "滤入笛形杯。",
@@ -1868,7 +1868,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "一杯层次丰厚的搅拌经典，黑麦威士忌、干邑、甜味美思、Benedictine 和苦精带来复杂而奢华的香气。",
       heroIngredients: ["黑麦", "干邑", "美思"],
-      ingredients: ["22.5 ml 黑麦威士忌", "22.5 ml 干邑", "22.5 ml 甜味美思", "7.5 ml Benedictine", "Peychaud's 与安格斯图拉苦精"],
+      ingredients: ["22.5 ml 黑麦威士忌", "22.5 ml 干邑", "22.5 ml 甜味美思", "7.5 ml Benedictine", "Peychaud's 与安格斯图拉苦精各 2 滴"],
       steps: [
         "将所有材料加入加冰的调酒杯。",
         "搅拌至充分冰镇。",
@@ -1887,7 +1887,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "一杯热带金酒长饮，樱桃、柑橘、菠萝和香料让它色彩鲜明，也比第一眼看上去更有结构。",
       heroIngredients: ["金酒", "樱桃", "菠萝"],
-      ingredients: ["45 ml 金酒", "15 ml 樱桃利口酒", "7.5 ml Cointreau", "7.5 ml Benedictine", "60 ml 菠萝汁", "15 ml 青柠汁", "红石榴糖浆和苦精"],
+      ingredients: ["45 ml 金酒", "15 ml 樱桃利口酒", "7.5 ml Cointreau", "7.5 ml Benedictine", "60 ml 菠萝汁", "15 ml 青柠汁", "10 ml 红石榴糖浆", "1 滴安格斯图拉苦精"],
       steps: [
         "将所有材料加冰摇和。",
         "滤入装有新冰的高球杯。",
@@ -1906,7 +1906,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       description:
         "一杯辛香高球，深色朗姆、姜汁汽水和青柠直接组合，清爽重点来自姜的刺激感。",
       heroIngredients: ["深色朗姆", "姜汁汽水", "青柠"],
-      ingredients: ["60 ml 深色朗姆", "15 ml 青柠汁", "姜汁汽水", "青柠角"],
+      ingredients: ["60 ml 深色朗姆", "15 ml 青柠汁", "120 ml 姜汁汽水", "青柠角"],
       steps: [
         "在高球杯中加满冰。",
         "加入青柠汁和姜汁汽水。",

@@ -125,7 +125,7 @@ gtag("config", "${googleAnalyticsId}");`}
       <slot />
     </main>
     {
-      !immersive && (
+      (!immersive || immersiveScrollable) && (
         <footer class="site-footer">
           <div>
             <span>{t(locale, "siteName")}</span>

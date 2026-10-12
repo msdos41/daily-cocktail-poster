@@ -22,7 +22,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     negroni: {
       recipeCuisine: "Italian",
       tools: ["Mixing glass", "Bar spoon", "Jigger", "Julep strainer"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "Born in Florence in 1919 at Caffè Casoni when Count Camillo Negroni requested his Americano cocktail strengthened with gin instead of soda water. Bartender Fosco Scarselli honored the order, adding an orange slice to distinguish it from the lemon garnish of the Americano.",
       flavorNotes: "Bittersweet, botanical, orange-led, herbal",
@@ -60,21 +60,21 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
         },
         {
           question: "What is the classic Margarita ratio?",
-          answer: "The classic IBA recipe uses a 7:4:3 ratio: 50ml Tequila Blanco, 30ml Triple Sec or Cointreau, and 20ml fresh lime juice.",
+          answer: "While the IBA recipe uses a 7:4:3 ratio, our contemporary bar spec uses a 2:1:3/4 ratio (60ml Tequila Blanco, 30ml fresh lime juice, and 22.5ml orange liqueur) for a brighter citrus snap.",
         },
       ],
       relatedSlugs: ["paloma", "daiquiri"],
     },
     "old-fashioned": {
       recipeCuisine: "American",
-      tools: ["Mixing glass", "Bar spoon", "Muddler", "Jigger"],
+      tools: ["Rocks glass", "Bar spoon", "Jigger"],
       suitableForDiet: "https://schema.org/VeganDiet",
       originLore:
         "The primordial cocktail template, dating back to 1806 when a cocktail was defined simply as spirits, sugar, water, and bitters. Formalized in the 1880s at the Pendennis Club in Louisville, Kentucky, before being introduced to New York's Waldorf-Astoria bar.",
       flavorNotes: "Spirit-forward, rich oak, gentle caramel, warm spices",
       barTips: [
         "Use a single large, clear ice sphere or block to ensure slow, steady dilution that keeps the whiskey cold without becoming watery.",
-        "Gently muddle the sugar cube with bitters and a dash of water until dissolved before adding whiskey and ice.",
+        "Use 2:1 rich simple syrup rather than a raw sugar cube so sweetness integrates immediately in a cold rocks glass without gritty residue.",
       ],
       faqs: [
         {
@@ -137,7 +137,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "aperol-spritz": {
       recipeCuisine: "Italian",
       tools: ["Wine glass", "Bar spoon", "Jigger"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "Originated in the Veneto region of Italy in the early 20th century, evolving from 19th-century Austro-Hungarian soldiers diluting Italian wine with a splash ('spritz') of sparkling water. Aperol was introduced in Padua in 1919 and became the definitive bitter partner.",
       flavorNotes: "Bright citrus, effervescent, bittersweet orange, rhubarb",
@@ -183,7 +183,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     manhattan: {
       recipeCuisine: "American",
       tools: ["Mixing glass", "Bar spoon", "Jigger", "Julep strainer"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "Invented in the early 1870s at New York City's Manhattan Club. Popular legend credits a banquet hosted by Lady Randolph Churchill (Winston Churchill's mother), though documented bar history reveals it was invented by a bartender named Black at the club on Broadway.",
       flavorNotes: "Spirit-forward, baking spices, dark stone fruit, herbal vermouth",
@@ -275,7 +275,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     boulevardier: {
       recipeCuisine: "French",
       tools: ["Mixing glass", "Bar spoon", "Jigger", "Strainer"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "Created in Paris during Prohibition by Erskine Gwynne, an American writer and publisher who founded 'The Boulevardier' magazine. Recorded in 1927 by Harry McElhone at Harry's New York Bar in Paris in 'Barflies and Cocktails'.",
       flavorNotes: "Rich bourbon vanilla, bittersweet gentian, warm herbal spice",
@@ -367,7 +367,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "french-75": {
       recipeCuisine: "French",
       tools: ["Cocktail shaker", "Jigger", "Champagne flute"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "Created around 1915 at the New York Bar in Paris by Harry McElhone. Named after the French 75mm M1897 field gun renowned for rapid-fire accuracy, with drinkers joking the cocktail hit with the same concussive kick.",
       flavorNotes: "Crisp brioche bubbles, tart lemon, herbal gin, celebratory lift",
@@ -390,7 +390,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "gin-martini": {
       recipeCuisine: "American",
       tools: ["Mixing glass", "Bar spoon", "Jigger", "Julep strainer"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "Evolved in the late 19th century from the sweeter Martinez cocktail. By the 1920s and 1930s, London Dry Gin and dry French vermouth took center stage, becoming the international symbol of cosmopolitan sophistication and mid-century elegance.",
       flavorNotes: "Pure juniper, crisp botanical, dry white wine, subtle salinity",
@@ -413,7 +413,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "corpse-reviver-2": {
       recipeCuisine: "British",
       tools: ["Cocktail shaker", "Jigger", "Hawthorne strainer", "Fine mesh strainer"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "Published in 1930 by Harry Craddock in 'The Savoy Cocktail Book'. Part of the historical 'corpse reviver' family of morning-after restorative drinks, Craddock famously warned: 'Four of these taken in swift succession will unrevive the corpse again.'",
       flavorNotes: "Aromatic anise, bright citrus, floral Cocchi Americano / Lillet, crisp gin",
@@ -689,7 +689,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "vieux-carre": {
       recipeCuisine: "American",
       tools: ["Mixing glass", "Bar spoon", "Jigger", "Julep strainer"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "Invented in 1938 by Walter Bergeron, head bartender at the iconic Carousel Bar inside the Hotel Monteleone in New Orleans. Named in honor of the city's historic French Quarter ('Vieux Carré' or 'Old Square').",
       flavorNotes: "Complex herbal herbal liqueur, spicy rye, velvety Cognac, deep botanical bitters",
@@ -783,7 +783,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     negroni: {
       recipeCuisine: "意式",
       tools: ["调酒杯", "吧勺", "量酒器", "茱莉普滤网"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "1919年诞生于意大利佛罗伦萨的卡索尼咖啡馆（Caffè Casoni）。卡米洛·内格罗尼伯爵（Count Camillo Negroni）要求调酒师福斯科·斯卡塞利将美式咖啡鸡尾酒（Americano）中的苏打水替换为金酒以增加烈度。调酒师用橙片代替了原有的柠檬皮，标志着经典内格罗尼的诞生。",
       flavorNotes: "苦甜平衡、草本芬芳、橙皮清香、浓郁直接",
@@ -821,21 +821,21 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
         },
         {
           question: "玛格丽特的经典配方比例是什么？",
-          answer: "IBA经典比例通常为7:4:3，即50毫升龙舌兰、30毫升君度橙酒（Cointreau）和20毫升新鲜青柠汁。",
+          answer: "IBA官方比例为7:4:3，而现代精酿吧台常采用更清爽的2:1:3/4比例（60毫升银龙舌兰、30毫升鲜青柠汁、22.5毫升橙味利口酒），突出鲜明柑橘酸度。",
         },
       ],
       relatedSlugs: ["paloma", "daiquiri"],
     },
     "old-fashioned": {
       recipeCuisine: "美式",
-      tools: ["调酒杯", "吧勺", "压汁棒", "量酒器"],
+      tools: ["古典杯", "吧勺", "量酒器"],
       suitableForDiet: "https://schema.org/VeganDiet",
       originLore:
         "最原始的鸡尾酒原型，可追溯至1806年鸡尾酒最早的文字定义：烈酒、糖、水与苦精。19世纪80年代由肯塔基州路易斯维尔的彭德尼斯俱乐部（Pendennis Club）定型，并经由纽约华尔道夫酒店名扬世界。",
       flavorNotes: "酒感沉稳、橡木烘烤、焦糖温润、香料余韵",
       barTips: [
         "选用单一整颗高纯度老冰块（透明大方冰或老冰球），降低化水速度，保持低温而不稀释威士忌的麦香与酒体。",
-        "将方糖置于杯中，滴入苦精与极少温水，用压棒彻底捣化融合后再加入威士忌与冰块慢搅。",
+        "采用2:1浓糖浆替代传统方糖，可在冰冷的古典杯中与苦精、威士忌瞬间均匀融合，避免杯底残留未化糖粒。",
       ],
       faqs: [
         {
@@ -898,7 +898,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "aperol-spritz": {
       recipeCuisine: "意式",
       tools: ["大葡萄酒杯", "吧勺", "量酒器"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "起源于意大利威尼托大区，演变自19世纪奥匈帝国士兵向浓郁意大利葡萄酒中喷入（Spritz）苏打水降度的习俗。1919年阿佩罗开胃酒在帕多瓦诞生后，与普罗塞克起泡酒结合成了享誉全球的金色日落特调。",
       flavorNotes: "柑橘清香、气泡跳跃、草本苦甜、阳光明朗",
@@ -944,7 +944,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     manhattan: {
       recipeCuisine: "美式",
       tools: ["调酒杯", "吧勺", "量酒器", "茱莉普滤网"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "19世纪70年代初诞生于纽约曼哈顿俱乐部。民间常传闻由丘吉尔之母伦道夫·丘吉尔夫人举办宴会时发明，但历史记载实为该俱乐部一位名为布莱克的传奇调酒师所创，被称为鸡尾酒皇后。",
       flavorNotes: "酒体醇厚、胡椒辛香、暗红果味、苦艾草本",
@@ -1036,7 +1036,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     boulevardier: {
       recipeCuisine: "法式",
       tools: ["调酒杯", "吧勺", "量酒器", "滤网"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "20世纪20年代禁酒令时期诞生于巴黎，由移居法国的美国作家、《花花公子》（The Boulevardier）月刊创始人厄斯金·格温所创。1927年被哈利·麦克尔霍恩收录于著名的《Barflies and Cocktails》一书中。",
       flavorNotes: "浓郁焦糖香草、龙胆草苦香、红果微甘、坚实温暖",
@@ -1128,7 +1128,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "french-75": {
       recipeCuisine: "法式",
       tools: ["摇酒壶", "量酒器", "香槟笛形杯"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "一战期间（约1915年）由哈利·麦克尔霍恩在巴黎纽约酒吧研发。以法国当时著名的75毫米野战轻型加农炮命名，据说品尝时气泡与烈酒的冲击感就像挨了一记精准的75毫米炮弹后劲。",
       flavorNotes: "清爽起泡、烘烤酵母、柠檬酸香、草本金酒、轻盈欢欣",
@@ -1151,7 +1151,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "gin-martini": {
       recipeCuisine: "美式",
       tools: ["调酒杯", "吧勺", "量酒器", "茱莉普滤网"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "19世纪晚期由马丁内斯（Martinez）鸡尾酒演化而来。到了20世纪二三十年代，伦敦干金酒与法国干苦艾酒确立了现代马天尼的严谨身姿，成为西方流行文化中无可替代的'鸡尾酒之王'与绅士优雅标志。",
       flavorNotes: "纯粹杜松子、凛冽草本、干白葡萄酒芬芳、优雅微咸",
@@ -1174,7 +1174,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "corpse-reviver-2": {
       recipeCuisine: "英式",
       tools: ["摇酒壶", "量酒器", "霍桑滤网", "双重滤网"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "1930年收录于哈里·克拉多克的《萨伏伊鸡尾酒手册》。属于历史上著名的'还魂酒'家族，专供宿醉晨起醒神，克拉多克曾调侃：'连喝四杯这酒，原本复活的尸体只怕又要归西了。'",
       flavorNotes: "八角茴香微苦、明亮柑橘、白利口酒花香、金酒挺拔",
@@ -1450,7 +1450,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
     "vieux-carre": {
       recipeCuisine: "美式",
       tools: ["调酒杯", "吧勺", "量酒器", "茱莉普滤网"],
-      suitableForDiet: "https://schema.org/VeganDiet",
+      suitableForDiet: undefined,
       originLore:
         "1938年由新奥尔良蒙特莱昂酒店（Hotel Monteleone）旋转木马酒吧首席调酒师沃尔特·伯杰龙创作。致敬该市著名的历史文化街区法国区（法语原名'Vieux Carré'，意为老广场）。",
       flavorNotes: "法式本笃草本芬芳、辛烈黑麦威士忌、干邑天鹅绒质感、深邃苦精",

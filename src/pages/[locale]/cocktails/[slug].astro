@@ -103,6 +103,26 @@ const relatedCocktails = (cocktail.relatedSlugs || [])
               <dt>{t(locale, "flavor")}</dt>
               <dd>{cocktail.flavor}</dd>
             </div>
+            {cocktail.tools && cocktail.tools.length > 0 && (
+              <div>
+                <dt>{t(locale, "tools")}</dt>
+                <dd data-recipe-tools>{cocktail.tools.join(" · ")}</dd>
+              </div>
+            )}
+            <div>
+              <dt>{t(locale, "calories")}</dt>
+              <dd data-recipe-calories>~{cocktail.estimatedCalories} {t(locale, "kcalUnit")}</dd>
+            </div>
+            {cocktail.ibaCategory && (
+              <div>
+                <dt>{t(locale, "ibaCategoryLabel")}</dt>
+                <dd>
+                  <a href="https://iba-world.com/iba-official-cocktails/" target="_blank" rel="noopener noreferrer">
+                    {cocktail.ibaCategory}
+                  </a>
+                </dd>
+              </div>
+            )}
           </dl>
           <div class="detail-recipe-tags" aria-label="Tags">
             {cocktail.tags.map((tag) => <span>{tag}</span>)}

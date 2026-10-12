@@ -67,6 +67,10 @@ export const ui = {
     sisterPoursSubtitle: "Sister Pours",
     sisterPoursTitle: "If You Enjoy This",
     loreAndFaqAria: "Cocktail Lore & FAQ",
+    tools: "Tools",
+    calories: "Est. Calories",
+    kcalUnit: "kcal",
+    ibaCategoryLabel: "IBA Classification",
   },
   "zh-CN": {
     siteName: "Just One Sip",
@@ -133,6 +137,10 @@ export const ui = {
     sisterPoursSubtitle: "灵感延伸",
     sisterPoursTitle: "同调之选",
     loreAndFaqAria: "鸡尾酒志与问答",
+    tools: "调酒器具",
+    calories: "估算热量",
+    kcalUnit: "千卡",
+    ibaCategoryLabel: "IBA 官方分类",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 
