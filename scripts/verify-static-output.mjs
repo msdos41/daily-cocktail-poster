@@ -261,6 +261,14 @@ function verifyContentPages(slugs) {
       assert(html.includes('editorial-tips-list'), `${pageId} must include editorial-tips-list.`);
       assert(html.includes('class="detail-breadcrumbs"'), `${pageId} must include detail-breadcrumbs.`);
       assert(html.includes('/cocktails/spirit/'), `${pageId} detail-breadcrumbs must link to base spirit hub.`);
+      assert(html.includes('data-recipe-tools'), `${pageId} must visibly render recipe tools to match JSON-LD.`);
+      assert(html.includes('data-recipe-calories'), `${pageId} must visibly render estimated calories to match JSON-LD.`);
+      assert(html.includes('class="site-footer"'), `${pageId} must include site-footer with responsible drinking notice.`);
+    }
+
+    if (page.kind === "about" || page.kind === "privacy") {
+      assert(/<h1\b[^>]*>[\s\S]*?<\/h1>/.test(html), `${pageId} must include a semantic <h1> heading.`);
+      assert(html.includes('class="info-lede"'), `${pageId} must include the info-lede introduction.`);
     }
 
     if (page.kind === "home" || page.kind === "cocktails" || page.kind === "about" || page.kind === "privacy") {
@@ -556,6 +564,17 @@ function verifyCollectionPages(slugs) {
     assert(html.includes('archive-card-standard-visual'), `${publicPath} must include standard visual.`);
     assert(html.includes('data-archive-featured="true"'), `${publicPath} must include featured card presentation.`);
     assert(html.includes('data-spirit-filter="all"'), `${publicPath} must include spirit filter chips.`);
+    assert(html.includes('class="archive-card-spirit"'), `${publicPath} cards must use semantic archive-card-spirit span.`);
+    assert(!/<time\b[^>]*>/.test(html), `${publicPath} cards must not wrap spirit names in <time> tags.`);
+
+    const filterKeys = [...html.matchAll(/data-spirit-filter="([^"]+)"/g)].map((m) => m[1]);
+    for (const key of filterKeys) {
+      if (key === "all") continue;
+      assert(
+        html.includes(`data-spirit="${key}"`),
+        `${publicPath} filter chip "${key}" must match at least one rendered card with data-spirit="${key}".`,
+      );
+    }
 
     summary.collectionsVerified += 1;
   }
@@ -570,6 +589,8 @@ function verifySpiritTaxonomyPages(slugs) {
 
       assert(html.includes('class="archive-grid"'), `${publicPath} must include archive-grid.`);
       assert(html.includes('class="filter-chips"'), `${publicPath} must include filter chips.`);
+      assert(html.includes('class="archive-card-spirit"'), `${publicPath} cards must use semantic archive-card-spirit span.`);
+      assert(!/<time\b[^>]*>/.test(html), `${publicPath} cards must not wrap spirit names in <time> tags.`);
       summary.spiritTaxonomiesVerified += 1;
     }
   }
