@@ -465,7 +465,8 @@ function verifyJsonLd(html, page, canonical, slugs) {
     recipe.publisher &&
       recipe.publisher["@type"] === "Organization" &&
       Array.isArray(recipe.publisher.sameAs) &&
-      recipe.publisher.sameAs.includes("https://x.com/justonesip_app"),
+      recipe.publisher.sameAs.length === 1 &&
+      recipe.publisher.sameAs[0] === "https://x.com/msdos41_",
     `${page.publicPath} Recipe publisher must be an Organization with verified sameAs.`,
   );
   if (recipe.sameAs !== undefined) {

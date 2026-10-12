@@ -41,10 +41,10 @@ test("Organization structured data includes official social profile sameAs", () 
   assert.ok(website, "WebSite schema missing");
   const publisher = website.publisher;
   assert.ok(publisher, "Publisher missing in WebSite schema");
-  assert.ok(Array.isArray(publisher.sameAs), "Publisher sameAs must be an array");
-  assert.ok(
-    publisher.sameAs.includes("https://x.com/justonesip_app"),
-    "Publisher sameAs must include https://x.com/justonesip_app",
+  assert.deepEqual(
+    publisher.sameAs,
+    ["https://x.com/msdos41_"],
+    "Publisher sameAs must only include https://x.com/msdos41_",
   );
 });
 
