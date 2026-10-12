@@ -169,6 +169,8 @@ function verifyLLMs(slugs) {
     for (const slug of slugs) {
       assert(llmsFullTxt.includes(slug), `llms-full.txt must mention cocktail slug ${slug}.`);
     }
+    assert(llmsFullTxt.includes("Estimated ABV"), "llms-full.txt must include Estimated ABV.");
+    assert(llmsFullTxt.includes("Prep Time"), "llms-full.txt must include Prep Time.");
     summary.llmFeeds += 1;
   }
 
@@ -263,6 +265,7 @@ function verifyContentPages(slugs) {
       assert(html.includes('/cocktails/spirit/'), `${pageId} detail-breadcrumbs must link to base spirit hub.`);
       assert(html.includes('data-recipe-tools'), `${pageId} must visibly render recipe tools to match JSON-LD.`);
       assert(html.includes('data-recipe-calories'), `${pageId} must visibly render estimated calories to match JSON-LD.`);
+      assert(html.includes('data-recipe-abv'), `${pageId} must visibly render estimated ABV.`);
       assert(html.includes('class="site-footer"'), `${pageId} must include site-footer with responsible drinking notice.`);
     }
 
@@ -452,14 +455,37 @@ function verifyJsonLd(html, page, canonical, slugs) {
   assert(recipe.publisher && recipe.publisher["@type"] === "Organization", `${page.publicPath} Recipe publisher must be an Organization.`);
 
   assert(recipe.cookTime === undefined, `${page.publicPath} Recipe cookTime must be omitted, got ${recipe.cookTime}.`);
-  assert(typeof recipe.prepTime === "string" && recipe.prepTime.length > 0, `${page.publicPath} Recipe prepTime is required.`);
+  assert(
+    typeof recipe.prepTime === "string" && /^PT[2-5]M$/.test(recipe.prepTime),
+    `${page.publicPath} Recipe prepTime must match PT2M-PT5M, got ${recipe.prepTime}.`,
+  );
+  assert(
+    recipe.totalTime === recipe.prepTime,
+    `${page.publicPath} Recipe totalTime must match prepTime (${recipe.prepTime}), got ${recipe.totalTime}.`,
+  );
   assert(typeof recipe.recipeCuisine === "string" && recipe.recipeCuisine.length > 0, `${page.publicPath} Recipe recipeCuisine is required.`);
   assert(Array.isArray(recipe.tool) && recipe.tool.length > 0, `${page.publicPath} Recipe tool must be a non-empty array.`);
+  if (page.slug === "naked-and-famous" || page.slug === "singapore-sling") {
+    assert(
+      recipe.suitableForDiet === undefined,
+      `${page.publicPath} contains honey-sweetened liqueur and must not claim VeganDiet.`,
+    );
+  }
   if (recipe.suitableForDiet !== undefined) {
     assert(
       recipe.suitableForDiet === "https://schema.org/VeganDiet",
       `${page.publicPath} Recipe suitableForDiet must be VeganDiet, got ${recipe.suitableForDiet}.`,
     );
+  }
+  if (page.locale === "en" && Array.isArray(recipe.recipeIngredient)) {
+    for (const ing of recipe.recipeIngredient) {
+      if (/\boz\b/.test(ing)) {
+        assert(
+          /\(\d+(?:\.\d+)?\s*ml\)/.test(ing),
+          `${page.publicPath} English ounce ingredient "${ing}" must include metric (ml) equivalent.`,
+        );
+      }
+    }
   }
   assert(
     recipe.publisher &&
