@@ -31,7 +31,7 @@ const organization = {
   "@id": `${site}/#organization`,
   name: "Just One Sip",
   url: publicHomeUrl(),
-  sameAs: ["https://x.com/justonesip_app", "https://x.com/msdos41_"],
+  sameAs: ["https://x.com/msdos41_"],
 };
 
 const websiteReference = {

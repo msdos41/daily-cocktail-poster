@@ -49,7 +49,7 @@ As Just One Sip has grown to 33 classic cocktails and 11 Base Spirit Hubs, two c
 
 ### 3. Entity Resolution & Schema.org Cleanup
 - **Recipe Schema Hygiene**: Remove the `cookTime` property completely from the cocktail `Recipe` JSON-LD generator. Retain `prepTime: "PT3M"` and `totalTime: "PT3M"`.
-- **Publisher Entity Enhancement**: Add `sameAs: ["https://x.com/justonesip_app"]` to the `Organization` structured data object.
+- **Publisher Entity Enhancement**: Add `sameAs: ["https://x.com/msdos41_"]` to the `Organization` structured data object.
 - **Cocktail Facts Model Expansion**: Extend the core stable cocktail model with optional entity properties:
   - `wikidataId?: string` (e.g. `"Q1342603"` for Negroni)
   - `ibaCategory?: string` (e.g. `"The Unforgettables"`, `"Contemporary Classics"`, or `"New Era Drinks"`)
