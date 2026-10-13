@@ -17,7 +17,7 @@ export type InfoPageContent = {
   sections: InfoPageSection[];
 };
 
-export const contactEmail = "tjm.mosquito@gmail.com";
+export const contactEmail = "hello@justonesip.today";
 export const xHandle = "msdos41_";
 
 export const infoPageContent: Record<Locale, Record<InfoPageId, InfoPageContent>> = {
