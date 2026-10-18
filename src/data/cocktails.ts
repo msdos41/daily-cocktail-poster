@@ -4,6 +4,7 @@ import {
   type CocktailEditorialData,
   type CocktailFAQ,
 } from "./cocktailEditorial.ts";
+import type { IbaCategory } from "./iba.ts";
 
 export type { CocktailFAQ, CocktailEditorialData };
 
@@ -59,7 +60,7 @@ type StableCocktail = {
   estimatedAbv: number;
   prepMinutes: number;
   wikidataId?: string;
-  ibaCategory?: string;
+  ibaCategory?: IbaCategory;
 };
 
 type LocalizedCocktail = {
@@ -83,7 +84,7 @@ type SceneOnlyCocktailConfig = Pick<
   "id" | "glass" | "baseSpirit" | "estimatedCalories" | "estimatedAbv" | "prepMinutes"
 > & {
   wikidataId?: string;
-  ibaCategory?: string;
+  ibaCategory?: IbaCategory;
 };
 
 function createSceneOnlyCocktail({
@@ -191,7 +192,7 @@ const stableCocktails: StableCocktail[] = [
     estimatedAbv: 12,
     prepMinutes: 2,
     wikidataId: "Q7128571",
-    ibaCategory: "Contemporary Classics",
+    ibaCategory: "New Era Drinks",
   },
   {
     id: "espresso-martini",
@@ -461,7 +462,7 @@ const stableCocktails: StableCocktail[] = [
     estimatedAbv: 20,
     prepMinutes: 3,
     wikidataId: "Q5172602",
-    ibaCategory: "The Unforgettables",
+    ibaCategory: "Contemporary Classics",
   },
   {
     id: "painkiller",
@@ -514,7 +515,6 @@ const stableCocktails: StableCocktail[] = [
     estimatedAbv: 20,
     prepMinutes: 3,
     wikidataId: "Q1524752",
-    ibaCategory: "Contemporary Classics",
   },
   {
     id: "penicillin",
@@ -658,7 +658,7 @@ const stableCocktails: StableCocktail[] = [
     estimatedAbv: 11,
     prepMinutes: 2,
     wikidataId: "Q668635",
-    ibaCategory: "Contemporary Classics",
+    ibaCategory: "New Era Drinks",
   },
   {
     id: "whiskey-sour",

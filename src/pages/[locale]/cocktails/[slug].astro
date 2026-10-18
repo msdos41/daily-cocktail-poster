@@ -10,6 +10,7 @@ import {
 import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { ibaCategoryUrl } from "@/data/iba";
 import { recipeMetaDescription } from "@/utils/recipeSnippet";
 import { pageUrlForLocalePath } from "@/utils/seo";
 import { cocktailStructuredData } from "@/utils/structuredData";
@@ -116,7 +117,7 @@ const relatedCocktails = (cocktail.relatedSlugs || [])
               <div>
                 <dt>{t(locale, "ibaCategoryLabel")}</dt>
                 <dd>
-                  <a href="https://iba-world.com/iba-official-cocktails/" target="_blank" rel="noopener noreferrer">
+                  <a href={ibaCategoryUrl(cocktail.ibaCategory)} target="_blank" rel="noopener noreferrer">
                     {cocktail.ibaCategory}
                   </a>
                 </dd>

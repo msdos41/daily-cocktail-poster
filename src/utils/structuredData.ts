@@ -5,6 +5,7 @@ import {
 } from "../data/cocktails.ts";
 import type { Locale } from "../i18n/config.ts";
 import { t } from "../i18n/ui.ts";
+import { ibaCategoryUrl } from "../data/iba.ts";
 import { pageUrlForLocalePath, publicHomeUrl, site, socialImageMetadata } from "./seo.ts";
 
 export type JsonLd = {
@@ -146,7 +147,7 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
         sameAs: `https://www.wikidata.org/wiki/${cocktail.wikidataId}`,
       }),
       ...(cocktail.ibaCategory && {
-        isBasedOn: "https://iba-world.com/iba-official-cocktails/",
+        isBasedOn: ibaCategoryUrl(cocktail.ibaCategory),
       }),
       ...(cocktail.suitableForDiet && { suitableForDiet: cocktail.suitableForDiet }),
       recipeInstructions: cocktail.steps.map((step, index) => ({
