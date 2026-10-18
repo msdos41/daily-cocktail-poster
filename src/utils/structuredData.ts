@@ -135,7 +135,6 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
       image: [image],
       url,
       inLanguage: locale,
-      datePublished: cocktail.date,
       recipeCategory: "Cocktail",
       recipeCuisine: cocktail.recipeCuisine,
       prepTime: `PT${cocktail.prepMinutes}M`,

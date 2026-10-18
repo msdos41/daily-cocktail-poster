@@ -41,6 +41,10 @@ const spiritSlugs = [
   "cachaca",
   "aperol",
 ];
+const pourLabels = {
+  en: { home: "Daily pour", detail: "Pour notes" },
+  "zh-CN": { home: "今日一杯", detail: "风味札记" },
+};
 const errors = [];
 const summary = {
   pages: 0,
@@ -571,11 +575,6 @@ function verifyJsonLd(html, page, canonical, slugs) {
 
   summary.recipes += 1;
 }
-
-const pourLabels = {
-  en: { home: "Daily pour", detail: "Pour notes" },
-  "zh-CN": { home: "今日一杯", detail: "风味札记" },
-};
 
 function verifyPourLabel(html, page) {
   const expected = pourLabels[page.locale]?.[page.kind];

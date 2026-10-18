@@ -45,7 +45,6 @@ export type CocktailId =
 type StableCocktail = {
   id: CocktailId;
   slug: string;
-  date: string;
   image: string;
   heroImageDesktop: string;
   heroImageMobile: string;
@@ -81,7 +80,7 @@ export type Cocktail = StableCocktail & LocalizedCocktail & CocktailEditorialDat
 
 type SceneOnlyCocktailConfig = Pick<
   StableCocktail,
-  "id" | "date" | "glass" | "baseSpirit" | "estimatedCalories" | "estimatedAbv" | "prepMinutes"
+  "id" | "glass" | "baseSpirit" | "estimatedCalories" | "estimatedAbv" | "prepMinutes"
 > & {
   wikidataId?: string;
   ibaCategory?: string;
@@ -89,7 +88,6 @@ type SceneOnlyCocktailConfig = Pick<
 
 function createSceneOnlyCocktail({
   id,
-  date,
   glass,
   baseSpirit,
   estimatedCalories,
@@ -104,7 +102,6 @@ function createSceneOnlyCocktail({
   return {
     id,
     slug: id,
-    date,
     image: sceneMobile,
     heroImageDesktop: sceneDesktop,
     heroImageMobile: sceneMobile,
@@ -127,7 +124,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "mojito",
     slug: "mojito",
-    date: "2026-08-28",
     image: "/images/cocktails/mojito-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/mojito-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/mojito-scene-mobile.webp",
@@ -146,7 +142,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "manhattan",
     slug: "manhattan",
-    date: "2026-08-29",
     image: "/images/cocktails/manhattan-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/manhattan-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/manhattan-scene-mobile.webp",
@@ -165,7 +160,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "sazerac",
     slug: "sazerac",
-    date: "2026-08-30",
     image: "/images/cocktails/sazerac-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/sazerac-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/sazerac-scene-mobile.webp",
@@ -184,7 +178,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "paloma",
     slug: "paloma",
-    date: "2026-08-31",
     image: "/images/cocktails/paloma-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/paloma-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/paloma-scene-mobile.webp",
@@ -203,7 +196,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "espresso-martini",
     slug: "espresso-martini",
-    date: "2026-09-01",
     image: "/images/cocktails/espresso-martini-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/espresso-martini-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/espresso-martini-scene-mobile.webp",
@@ -222,7 +214,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "last-word",
     slug: "last-word",
-    date: "2026-09-02",
     image: "/images/cocktails/last-word-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/last-word-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/last-word-scene-mobile.webp",
@@ -241,7 +232,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "mai-tai",
     slug: "mai-tai",
-    date: "2026-09-03",
     image: "/images/cocktails/mai-tai-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/mai-tai-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/mai-tai-scene-mobile.webp",
@@ -260,7 +250,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "old-fashioned",
     slug: "old-fashioned",
-    date: "2026-09-04",
     image: "/images/cocktails/old-fashioned-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/old-fashioned-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/old-fashioned-scene-mobile.webp",
@@ -279,7 +268,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "bees-knees",
     slug: "bees-knees",
-    date: "2026-09-05",
     image: "/images/cocktails/bees-knees-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/bees-knees-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/bees-knees-scene-mobile.webp",
@@ -298,7 +286,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "caipirinha",
     slug: "caipirinha",
-    date: "2026-09-06",
     image: "/images/cocktails/caipirinha-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/caipirinha-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/caipirinha-scene-mobile.webp",
@@ -317,7 +304,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "boulevardier",
     slug: "boulevardier",
-    date: "2026-09-07",
     image: "/images/cocktails/boulevardier-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/boulevardier-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/boulevardier-scene-mobile.webp",
@@ -336,7 +322,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "singapore-sling",
     slug: "singapore-sling",
-    date: "2026-09-08",
     image: "/images/cocktails/singapore-sling-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/singapore-sling-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/singapore-sling-scene-mobile.webp",
@@ -355,7 +340,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "sidecar",
     slug: "sidecar",
-    date: "2026-09-09",
     image: "/images/cocktails/sidecar-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/sidecar-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/sidecar-scene-mobile.webp",
@@ -374,7 +358,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "naked-and-famous",
     slug: "naked-and-famous",
-    date: "2026-09-10",
     image: "/images/cocktails/naked-and-famous-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/naked-and-famous-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/naked-and-famous-scene-mobile.webp",
@@ -393,7 +376,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "french-75",
     slug: "french-75",
-    date: "2026-09-11",
     image: "/images/cocktails/french-75-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/french-75-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/french-75-scene-mobile.webp",
@@ -412,7 +394,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "pina-colada",
     slug: "pina-colada",
-    date: "2026-09-12",
     image: "/images/cocktails/pina-colada-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/pina-colada-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/pina-colada-scene-mobile.webp",
@@ -431,7 +412,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "margarita",
     slug: "margarita",
-    date: "2026-09-13",
     image: "/images/cocktails/margarita-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/margarita-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/margarita-scene-mobile.webp",
@@ -450,7 +430,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "rusty-nail",
     slug: "rusty-nail",
-    date: "2026-09-14",
     image: "/images/cocktails/rusty-nail-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/rusty-nail-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/rusty-nail-scene-mobile.webp",
@@ -469,7 +448,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "corpse-reviver-2",
     slug: "corpse-reviver-2",
-    date: "2026-09-15",
     image: "/images/cocktails/corpse-reviver-2-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/corpse-reviver-2-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/corpse-reviver-2-scene-mobile.webp",
@@ -488,7 +466,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "painkiller",
     slug: "painkiller",
-    date: "2026-09-16",
     image: "/images/cocktails/painkiller-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/painkiller-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/painkiller-scene-mobile.webp",
@@ -506,7 +483,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "paper-plane",
     slug: "paper-plane",
-    date: "2026-09-17",
     image: "/images/cocktails/paper-plane-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/paper-plane-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/paper-plane-scene-mobile.webp",
@@ -525,7 +501,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "gimlet",
     slug: "gimlet",
-    date: "2026-09-18",
     image: "/images/cocktails/gimlet-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/gimlet-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/gimlet-scene-mobile.webp",
@@ -544,7 +519,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "penicillin",
     slug: "penicillin",
-    date: "2026-09-19",
     image: "/images/cocktails/penicillin-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/penicillin-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/penicillin-scene-mobile.webp",
@@ -563,7 +537,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "aviation",
     slug: "aviation",
-    date: "2026-09-20",
     image: "/images/cocktails/aviation-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/aviation-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/aviation-scene-mobile.webp",
@@ -582,7 +555,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "daiquiri",
     slug: "daiquiri",
-    date: "2026-09-21",
     image: "/images/cocktails/daiquiri-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/daiquiri-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/daiquiri-scene-mobile.webp",
@@ -601,7 +573,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "negroni",
     slug: "negroni",
-    date: "2026-09-22",
     image: "/images/cocktails/negroni-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/negroni-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/negroni-scene-mobile.webp",
@@ -620,7 +591,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "dark-n-stormy",
     slug: "dark-n-stormy",
-    date: "2026-09-23",
     image: "/images/cocktails/dark-n-stormy-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/dark-n-stormy-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/dark-n-stormy-scene-mobile.webp",
@@ -639,7 +609,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "pisco-sour",
     slug: "pisco-sour",
-    date: "2026-09-24",
     image: "/images/cocktails/pisco-sour-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/pisco-sour-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/pisco-sour-scene-mobile.webp",
@@ -658,7 +627,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "gin-martini",
     slug: "gin-martini",
-    date: "2026-09-25",
     image: "/images/cocktails/gin-martini-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/gin-martini-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/gin-martini-scene-mobile.webp",
@@ -677,7 +645,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "aperol-spritz",
     slug: "aperol-spritz",
-    date: "2026-09-26",
     image: "/images/cocktails/aperol-spritz-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/aperol-spritz-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/aperol-spritz-scene-mobile.webp",
@@ -696,7 +663,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "whiskey-sour",
     slug: "whiskey-sour",
-    date: "2026-09-27",
     image: "/images/cocktails/whiskey-sour-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/whiskey-sour-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/whiskey-sour-scene-mobile.webp",
@@ -715,7 +681,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "jungle-bird",
     slug: "jungle-bird",
-    date: "2026-09-28",
     image: "/images/cocktails/jungle-bird-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/jungle-bird-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/jungle-bird-scene-mobile.webp",
@@ -734,7 +699,6 @@ const stableCocktails: StableCocktail[] = [
   {
     id: "vieux-carre",
     slug: "vieux-carre",
-    date: "2026-09-29",
     image: "/images/cocktails/vieux-carre-scene-mobile.webp",
     heroImageDesktop: "/images/cocktails/vieux-carre-scene-desktop.webp",
     heroImageMobile: "/images/cocktails/vieux-carre-scene-mobile.webp",

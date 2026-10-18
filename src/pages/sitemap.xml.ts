@@ -1,4 +1,4 @@
-import { getAllCocktails, getCocktailSlugs, SUPPORTED_SPIRITS } from "@/data/cocktails";
+import { getCocktailSlugs, SUPPORTED_SPIRITS } from "@/data/cocktails";
 import { supportedLocales, type Locale } from "@/i18n/config";
 import { alternateLinks, pageUrlForLocalePath } from "@/utils/seo";
 
@@ -12,8 +12,6 @@ type SitemapEntry = {
 
 export function GET() {
   const defaultDate = new Date().toISOString().slice(0, 10);
-  const cocktails = getAllCocktails("en");
-  const cocktailDateMap = new Map(cocktails.map((c) => [c.slug, c.date || defaultDate]));
 
   const entries: SitemapEntry[] = [
     ...supportedLocales.flatMap((locale) =>
@@ -25,9 +23,7 @@ export function GET() {
       ),
     ),
     ...supportedLocales.flatMap((locale) =>
-      getCocktailSlugs().map((slug) =>
-        sitemapEntry(locale, `/cocktails/${slug}`, cocktailDateMap.get(slug) || defaultDate),
-      ),
+      getCocktailSlugs().map((slug) => sitemapEntry(locale, `/cocktails/${slug}`, defaultDate)),
     ),
   ];
 
