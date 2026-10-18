@@ -11,6 +11,7 @@ import { localeToPath, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import { DAILY_POUR_STORAGE_KEY, MOBILE_ART_DIRECTION_MAX_WIDTH } from "@/utils/dailyCurtain";
 import dailyCurtainPolicySource from "@/utils/dailyCurtainPolicy.js?raw";
+import heroTitleInkSource from "@/utils/heroTitleInk.js?raw";
 import { publicHomeUrl, shareUrlForLocalePath } from "@/utils/seo";
 
 type Props = {
@@ -27,6 +28,11 @@ const { cocktail, dailyCocktails, locale, path, recipeMode = "dialog", recipeTar
 const usesRecipeDialog = recipeMode === "dialog";
 const usesRecipeScroll = recipeMode === "scroll";
 const dailyCurtainPolicyInline = dailyCurtainPolicySource.replace(/^\s*export\s+/gm, "");
+const heroTitleInkBoot = `(() => {
+${heroTitleInkSource.replace(/^export /gm, "")}
+window.alignHeroTitleInk = alignHeroTitleInk;
+alignHeroTitleInk();
+})();`;
 const mobileArtDirectionMedia = `(max-width: ${MOBILE_ART_DIRECTION_MAX_WIDTH}px)`;
 const withholdHomePoster = variant === "home";
 
@@ -164,6 +170,7 @@ const dailyCocktailPrepaintScript = `
   }
 
   fitSettledTitle();
+  alignHeroTitleInk();
 
   const source = document.querySelector(".immersive-bg source");
   const image = document.querySelector(".immersive-bg img");
@@ -482,11 +489,13 @@ const dailyCocktailPrepaintScript = `
       <script is:inline type="application/json" data-daily-cocktails set:html={JSON.stringify(dailyCocktailPayload)} />
     )
   }
+  <script is:inline set:html={heroTitleInkBoot} />
   {dailyCocktailPayload && <script is:inline set:html={dailyCocktailPrepaintScript} />}
 </section>
 
 <script>
   import { MOBILE_ART_DIRECTION_MAX_WIDTH, shouldShowDailyPourKicker } from "@/utils/dailyCurtain";
+  import { alignHeroTitleInk } from "@/utils/heroTitleInk.js";
   import {
     createShuffleTokenManager,
     getTargetHeroImageUrl,
@@ -1053,7 +1062,10 @@ const dailyCocktailPrepaintScript = `
 
   function scheduleFitHeroTitle() {
     window.cancelAnimationFrame(heroTitleFrame);
-    heroTitleFrame = window.requestAnimationFrame(fitHeroTitle);
+    heroTitleFrame = window.requestAnimationFrame(() => {
+      fitHeroTitle();
+      alignHeroTitleInk();
+    });
   }
 
   function fitHeroTitle() {
