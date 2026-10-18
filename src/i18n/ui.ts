@@ -15,7 +15,6 @@ export const ui = {
 
     todaysCocktail: "Today's Cocktail",
     dailyPour: "Daily pour",
-    pourNotes: "Pour notes",
     surpriseMe: "Surprise Me",
     theCollection: "Cocktails",
     all: "All",
@@ -87,7 +86,6 @@ export const ui = {
 
     todaysCocktail: "今日鸡尾酒",
     dailyPour: "今日一杯",
-    pourNotes: "风味札记",
     surpriseMe: "来一杯惊喜",
     theCollection: "酒单",
     all: "全部",

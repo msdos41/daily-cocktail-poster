@@ -34,7 +34,6 @@ const extname = (path: string): string => {
   const i = path.lastIndexOf(".");
   return i >= 0 ? path.substring(i) : "";
 };
-const heroMetadataLabel = t(locale, variant === "home" ? "dailyPour" : "pourNotes");
 const heroIngredientSummary = cocktail.heroIngredients.join(" · ");
 const shareUrl = shareUrlForLocalePath(locale, path);
 const sharePayload = {
@@ -105,9 +104,13 @@ const dailyCocktailPrepaintScript = `
   });
   const cocktail = reveal && (cocktails.find((item) => item.id === reveal.cocktailId) || null);
   if (!reveal || !cocktail || !reveal.posterUrl) {
+    const kicker = document.querySelector("[data-hero-metadata]");
+    if (kicker) kicker.hidden = true;
     liftCurtain();
     return;
   }
+
+  stage.setAttribute("data-daily-pour-id", cocktail.id);
 
   if (!(cache && cache.date === today && cache.cocktailId === cocktail.id)) {
     try {
@@ -304,9 +307,13 @@ const dailyCocktailPrepaintScript = `
   <UtilityTopbar locale={locale} path={path} overlay />
 
   <div class="immersive-copy">
-    <p class="hero-kicker" data-hero-metadata>
-      {heroMetadataLabel}
-    </p>
+    {
+      variant === "home" && (
+        <p class="hero-kicker" data-hero-metadata>
+          {t(locale, "dailyPour")}
+        </p>
+      )
+    }
     <h1 data-cocktail-name data-hero-title>{cocktail.name}</h1>
     <p class="immersive-subtitle" data-cocktail-subtitle>{cocktail.subtitle}</p>
     <p class="hero-ingredients" aria-label={t(locale, "keyIngredients")}>
@@ -479,7 +486,7 @@ const dailyCocktailPrepaintScript = `
 </section>
 
 <script>
-  import { MOBILE_ART_DIRECTION_MAX_WIDTH } from "@/utils/dailyCurtain";
+  import { MOBILE_ART_DIRECTION_MAX_WIDTH, shouldShowDailyPourKicker } from "@/utils/dailyCurtain";
   import {
     createShuffleTokenManager,
     getTargetHeroImageUrl,
@@ -977,6 +984,7 @@ const dailyCocktailPrepaintScript = `
     setAllText("[data-cocktail-name]", cocktail.name);
     setText("[data-cocktail-subtitle]", cocktail.subtitle);
     setText("[data-hero-ingredients]", cocktail.heroIngredientSummary);
+    syncDailyPourKicker(cocktail.id);
     setText("[data-recipe-description]", cocktail.description);
     setText("[data-recipe-flavor]", cocktail.flavor);
     setText("[data-recipe-glass]", cocktail.glass);
@@ -1003,6 +1011,13 @@ const dailyCocktailPrepaintScript = `
 
     configureHeroTitle();
     updateDownloadTarget();
+  }
+
+  function syncDailyPourKicker(displayedId: string) {
+    const kicker = document.querySelector("[data-hero-metadata]");
+    if (!(kicker instanceof HTMLElement)) return;
+    const dailyPourId = stage instanceof HTMLElement ? stage.getAttribute("data-daily-pour-id") : null;
+    kicker.hidden = !shouldShowDailyPourKicker(displayedId, dailyPourId);
   }
 
   function setText(selector: string, value: string) {

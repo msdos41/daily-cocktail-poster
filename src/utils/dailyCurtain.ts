@@ -3,6 +3,7 @@ export {
   canLiftDailyCurtain,
   dailyCurtainHidesPoster,
   resolveDailyCurtainReveal,
+  shouldShowDailyPourKicker,
 } from "./dailyCurtainPolicy.js";
 
 export const DAILY_POUR_STORAGE_KEY = "justonesip_daily_pour";

@@ -67,3 +67,13 @@ export function canLiftDailyCurtain(state) {
 export function dailyCurtainHidesPoster(variant) {
   return variant === "home";
 }
+
+/**
+ * The home kicker names today's pour. It stays only while that pour is on screen.
+ * @param {string | null | undefined} displayedId
+ * @param {string | null | undefined} dailyPourId
+ * @returns {boolean}
+ */
+export function shouldShowDailyPourKicker(displayedId, dailyPourId) {
+  return typeof displayedId === "string" && displayedId.length > 0 && displayedId === dailyPourId;
+}
