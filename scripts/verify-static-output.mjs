@@ -45,6 +45,12 @@ const pourLabels = {
   en: "Daily pour",
   "zh-CN": "今日一杯",
 };
+const retiredIbaCocktailsUrl = "https://iba-world.com/iba-official-cocktails/";
+const ibaClassificationUrls = {
+  "The Unforgettables": "https://iba-world.com/cocktails/the-unforgettables/",
+  "Contemporary Classics": "https://iba-world.com/cocktails/the-contemporary/",
+  "New Era Drinks": "https://iba-world.com/cocktails/the-new-era/",
+};
 const errors = [];
 const summary = {
   pages: 0,
@@ -272,6 +278,7 @@ function verifyContentPages(slugs) {
       assert(html.includes('data-recipe-calories'), `${pageId} must visibly render estimated calories to match JSON-LD.`);
       assert(html.includes('data-recipe-abv'), `${pageId} must visibly render estimated ABV.`);
       assert(html.includes('class="site-footer"'), `${pageId} must include site-footer with responsible drinking notice.`);
+      verifyIbaClassificationLink(html, page);
     }
 
     if (page.kind === "about" || page.kind === "privacy") {
@@ -343,6 +350,32 @@ function verifySitemap(sitemapXml, slugs) {
   }
 
   return entries;
+}
+
+function ibaClassificationHref(html) {
+  const match = html.match(
+    /<dt>\s*(?:IBA Classification|IBA 官方分类)\s*<\/dt>\s*<dd>\s*<a\s+href="([^"]+)"[^>]*>\s*([^<]+?)\s*<\/a>/,
+  );
+  if (!match) return undefined;
+  return { href: match[1], label: match[2].trim() };
+}
+
+function verifyIbaClassificationLink(html, page) {
+  const pageId = page.publicPath;
+  assert(
+    !html.includes(retiredIbaCocktailsUrl),
+    `${pageId} must not link to the retired IBA cocktails URL.`,
+  );
+
+  const classification = ibaClassificationHref(html);
+  if (!classification) return;
+
+  const expected = ibaClassificationUrls[classification.label];
+  assert(Boolean(expected), `${pageId} has an unknown IBA classification label: ${classification.label}.`);
+  assert(
+    classification.href === expected,
+    `${pageId} IBA classification link for ${classification.label} must be ${expected}, got ${classification.href}.`,
+  );
 }
 
 function verifyCanonicalAndHreflang(html, page, canonical) {
@@ -519,9 +552,23 @@ function verifyJsonLd(html, page, canonical, slugs) {
   }
   if (recipe.isBasedOn !== undefined) {
     assert(
-      recipe.isBasedOn === "https://iba-world.com/iba-official-cocktails/",
-      `${page.publicPath} Recipe isBasedOn must link to IBA cocktails, got ${recipe.isBasedOn}.`,
+      Object.values(ibaClassificationUrls).includes(recipe.isBasedOn),
+      `${page.publicPath} Recipe isBasedOn must link to a live IBA classification, got ${recipe.isBasedOn}.`,
     );
+  }
+  if (page.kind === "detail") {
+    const classification = ibaClassificationHref(html);
+    if (classification) {
+      assert(
+        recipe.isBasedOn === classification.href,
+        `${page.publicPath} Recipe isBasedOn must match the IBA Classification link, got ${recipe.isBasedOn}.`,
+      );
+    } else {
+      assert(
+        recipe.isBasedOn === undefined,
+        `${page.publicPath} Recipe isBasedOn must be omitted when there is no IBA classification.`,
+      );
+    }
   }
 
   const steps = recipe.recipeInstructions;

@@ -110,9 +110,34 @@ test("Recipe schema links to Wikidata via sameAs and IBA via isBasedOn", () => {
     if (cocktail.ibaCategory) {
       assert.equal(
         recipe.isBasedOn,
-        "https://iba-world.com/iba-official-cocktails/",
+        ibaClassificationUrls[cocktail.ibaCategory],
         `Recipe isBasedOn mismatch for ${cocktail.slug}`,
+      );
+    } else {
+      assert.equal(
+        recipe.isBasedOn,
+        undefined,
+        `Recipe for ${cocktail.slug} must not cite an IBA source`,
       );
     }
   }
+});
+
+const ibaClassificationUrls = {
+  "The Unforgettables": "https://iba-world.com/cocktails/the-unforgettables/",
+  "Contemporary Classics": "https://iba-world.com/cocktails/the-contemporary/",
+  "New Era Drinks": "https://iba-world.com/cocktails/the-new-era/",
+};
+
+test("IBA categories match the live IBA taxonomy", () => {
+  const bySlug = Object.fromEntries(getAllCocktails("en").map((cocktail) => [cocktail.slug, cocktail.ibaCategory]));
+
+  assert.equal(bySlug.paloma, "New Era Drinks");
+  assert.equal(bySlug["corpse-reviver-2"], "Contemporary Classics");
+  assert.equal(bySlug["aperol-spritz"], "New Era Drinks");
+  assert.equal(bySlug.gimlet, undefined);
+  assert.equal(bySlug.painkiller, undefined);
+  assert.equal(bySlug.negroni, "The Unforgettables");
+  assert.equal(bySlug.mojito, "Contemporary Classics");
+  assert.equal(bySlug["espresso-martini"], "New Era Drinks");
 });
