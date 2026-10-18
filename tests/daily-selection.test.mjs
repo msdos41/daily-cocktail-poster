@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { cocktailCandidates } from "../src/data/cocktailCandidates.ts";
 import {
   getAllCocktails,
   getCocktailSlugs,
@@ -55,6 +56,24 @@ test("full 33-day cycle traverses every cocktail in the catalog without omission
   assert.equal(seenSlugs.size, 33, "A 33-day cycle must yield 33 unique cocktails");
   for (const slug of allSlugs) {
     assert.ok(seenSlugs.has(slug), `Catalog slug ${slug} was missing from the 33-day cycle`);
+  }
+});
+
+test("library records do not carry an assigned pour date", () => {
+  for (const cocktail of getAllCocktails("en")) {
+    assert.equal(
+      Object.hasOwn(cocktail, "date"),
+      false,
+      `${cocktail.id} must not carry an assigned pour date`,
+    );
+  }
+
+  for (const candidate of cocktailCandidates) {
+    assert.equal(
+      Object.hasOwn(candidate, "scheduledDate"),
+      false,
+      `${candidate.slug} must not carry a scheduledDate`,
+    );
   }
 });
 

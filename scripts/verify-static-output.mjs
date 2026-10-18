@@ -287,6 +287,7 @@ function verifyContentPages(slugs) {
 
     if (page.kind === "home" || page.kind === "detail") {
       verifySharePayload(html, page, canonical);
+      verifyPourLabel(html, page);
     }
 
     summary.pages += 1;
@@ -463,6 +464,10 @@ function verifyJsonLd(html, page, canonical, slugs) {
 
   assert(recipe.cookTime === undefined, `${page.publicPath} Recipe cookTime must be omitted, got ${recipe.cookTime}.`);
   assert(
+    recipe.datePublished === undefined,
+    `${page.publicPath} Recipe must not publish an assigned pour date, got ${recipe.datePublished}.`,
+  );
+  assert(
     typeof recipe.prepTime === "string" && /^PT[2-5]M$/.test(recipe.prepTime),
     `${page.publicPath} Recipe prepTime must match PT2M-PT5M, got ${recipe.prepTime}.`,
   );
@@ -565,6 +570,25 @@ function verifyJsonLd(html, page, canonical, slugs) {
   }
 
   summary.recipes += 1;
+}
+
+const pourLabels = {
+  en: { home: "Daily pour", detail: "Pour notes" },
+  "zh-CN": { home: "今日一杯", detail: "风味札记" },
+};
+
+function verifyPourLabel(html, page) {
+  const expected = pourLabels[page.locale]?.[page.kind];
+  const match = html.match(/<p\b[^>]*\bclass="hero-kicker"[^>]*>([\s\S]*?)<\/p>/);
+  const text = match ? match[1].replace(/\s+/g, " ").trim() : "";
+  assert(
+    text === expected,
+    `${page.publicPath} hero kicker must be "${expected}" with no pour date, got "${text}".`,
+  );
+  assert(
+    !html.includes("formatHeroMetadata"),
+    `${page.publicPath} must not format a pour date into the hero label.`,
+  );
 }
 
 function verifySharePayload(html, page, canonical) {
@@ -825,6 +849,16 @@ function verifyDailyCurtain(slugs) {
       /data-hero-ingredients[^>]*>[^<]+</.test(html),
       `${homePath} must still include the build-time cocktail ingredients.`,
     );
+
+    const payloadMatch = html.match(/<script\b[^>]*\bdata-daily-cocktails\b[^>]*>([\s\S]*?)<\/script>/);
+    assert(payloadMatch, `${homePath} daily cocktail payload must be present.`);
+    if (payloadMatch) {
+      const payload = JSON.parse(payloadMatch[1]);
+      assert(Array.isArray(payload), `${homePath} daily cocktail payload must be an array.`);
+      for (const item of payload) {
+        assert(item.date === undefined, `${homePath} daily payload must not assign a date to ${item.id || "a cocktail"}.`);
+      }
+    }
 
     summary.dailyCurtainsVerified += 1;
   }
