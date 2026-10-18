@@ -30,6 +30,10 @@ _Avoid_: Spirit category, spirit page, tag page
 The brand personality evoking an intimate night bar under low, atmospheric bar light.
 _Avoid_: Dark mode, night theme, speakeasy theme
 
+**Pour Copy**:
+The atmospheric sentence written for a cocktail poster. It sets the mood and does not list the full measures.
+_Avoid_: blurb, tagline, deck
+
 **Locale**:
 A published language edition of the whole site, carrying the same routes and the same cocktail library. English and Simplified Chinese are the published locales.
 _Avoid_: Country, region, market
