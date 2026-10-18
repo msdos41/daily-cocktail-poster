@@ -247,6 +247,7 @@ function verifyContentPages(slugs) {
       const ogHeight = getMetaContent(html, "property", "og:image:height", pageId);
       assert(ogWidth === "1200", `${pageId} og:image:width must be 1200, got ${ogWidth}`);
       assert(ogHeight === "630", `${pageId} og:image:height must be 630, got ${ogHeight}`);
+      verifyRecipeSearchSnippet(html, page);
 
       const sisterCardImgs = [...html.matchAll(/<img[^>]+class="sister-card-img"[^>]*>/g)];
       assert(sisterCardImgs.length > 0, `${pageId} must have sister cards.`);
@@ -443,6 +444,12 @@ function verifyJsonLd(html, page, canonical, slugs) {
   assert(recipe.url === canonical, `${page.publicPath} Recipe url must be ${canonical}.`);
   assert(recipe.mainEntityOfPage === canonical, `${page.publicPath} Recipe mainEntityOfPage must be ${canonical}.`);
   assert(recipe.inLanguage === page.locale, `${page.publicPath} Recipe inLanguage must be ${page.locale}.`);
+  if (page.locale === "zh-CN" && page.slug === "aperol-spritz") {
+    assert(
+      typeof recipe.description === "string" && recipe.description.includes("适合漫长午后"),
+      `${page.publicPath} Recipe description must keep the poster sentence.`,
+    );
+  }
   assert(Array.isArray(recipe.image) && recipe.image.length > 0, `${page.publicPath} Recipe image must be a non-empty array.`);
   assert(
     Array.isArray(recipe.recipeIngredient) && recipe.recipeIngredient.length > 0,
@@ -1008,6 +1015,32 @@ function parseAttrs(tag) {
   }
 
   return attrs;
+}
+
+function verifyRecipeSearchSnippet(html, page) {
+  if (page.slug !== "aperol-spritz") return;
+
+  const pageId = page.publicPath;
+  const metaDescription = getMetaContent(html, "name", "description", pageId);
+  const ogDescription = getMetaContent(html, "property", "og:description", pageId);
+  const twitterDescription = getMetaContent(html, "name", "twitter:description", pageId);
+
+  assert(ogDescription === metaDescription, `${pageId} og:description must match the meta description.`);
+  assert(twitterDescription === metaDescription, `${pageId} twitter:description must match the meta description.`);
+
+  if (page.locale === "zh-CN") {
+    assert(
+      metaDescription === "阿佩罗橙光鸡尾酒配方：90 ml 普罗塞克、60 ml 阿佩罗、30 ml 苏打水、橙片。",
+      `${pageId} meta description must list measured ingredients, got ${metaDescription || "none"}.`,
+    );
+    return;
+  }
+
+  assert(
+    metaDescription ===
+      "A low-effort Italian aperitif that layers Aperol, prosecco, and soda into a bright orange glass made for long afternoons. Includes ingredients, glass, garnish, and mixing steps.",
+    `${pageId} meta description must keep the English poster sentence, got ${metaDescription || "none"}.`,
+  );
 }
 
 function getMetaContent(html, attrName, attrValue, pageId) {

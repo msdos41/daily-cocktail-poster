@@ -10,6 +10,7 @@ import {
 import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { recipeMetaDescription } from "@/utils/recipeSnippet";
 import { pageUrlForLocalePath } from "@/utils/seo";
 import { cocktailStructuredData } from "@/utils/structuredData";
 
@@ -35,16 +36,10 @@ function recipeTitle(locale: Locale, cocktail: Cocktail) {
   return locale === "zh-CN" ? `${cocktail.name}${suffix}` : `${cocktail.name} ${suffix}`;
 }
 
-function recipeDescription(locale: Locale, cocktail: Cocktail) {
-  const suffix = t(locale, "cocktailRecipeDescriptionSuffix");
-  return locale === "zh-CN" ? `${cocktail.description}${suffix}` : `${cocktail.description} ${suffix}`;
-}
-
-
 const path = `/cocktails/${cocktail.slug}`;
 const pageRecipeTitle = recipeTitle(locale, cocktail);
 const title = `${pageRecipeTitle} | ${t(locale, "siteName")}`;
-const description = recipeDescription(locale, cocktail);
+const description = recipeMetaDescription(locale, cocktail);
 const pageUrl = pageUrlForLocalePath(locale, path);
 const structuredData = cocktailStructuredData({ locale, cocktail, url: pageUrl });
 
