@@ -53,9 +53,9 @@ test("Chinese search snippets keep a leading run of ingredients inside the lengt
     assert.deepEqual(used, cocktail.ingredients.slice(0, used.length));
 
     if (used.length < cocktail.ingredients.length) {
-      const overflow = chineseRecipeSnippet(cocktail.name, cocktail.ingredients.slice(0, used.length + 1));
+      const candidate = `${prefix}${[...used, cocktail.ingredients[used.length]].join("、")}。`;
       assert.ok(
-        overflow.length > CHINESE_RECIPE_SNIPPET_MAX_LENGTH,
+        candidate.length > CHINESE_RECIPE_SNIPPET_MAX_LENGTH,
         `${cocktail.slug} dropped an ingredient that still fit`,
       );
     }
