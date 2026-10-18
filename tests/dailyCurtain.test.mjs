@@ -208,6 +208,28 @@ test("detail pages never ask the daily curtain to hide their poster", () => {
   assert.equal(dailyCurtainHidesPoster("home"), true);
 });
 
+test("the daily pour kicker is shown only when the poster is today's pour", async () => {
+  const { shouldShowDailyPourKicker } = await import("../src/utils/dailyCurtain.ts");
+  assert.equal(shouldShowDailyPourKicker("negroni", "negroni"), true);
+  assert.equal(shouldShowDailyPourKicker("daiquiri", "negroni"), false);
+  assert.equal(shouldShowDailyPourKicker("negroni", null), false);
+  assert.equal(shouldShowDailyPourKicker("negroni", undefined), false);
+  assert.equal(shouldShowDailyPourKicker("", "negroni"), false);
+  assert.equal(shouldShowDailyPourKicker("negroni", ""), false);
+});
+
+test("the home poster keeps the daily pour kicker and detail posters drop it", () => {
+  const content = fs.readFileSync(new URL("../src/components/ImmersiveCocktail.astro", import.meta.url), "utf8");
+  assert.equal(content.includes("pourNotes"), false);
+  assert.match(content, /variant === "home" && \([\s\S]*class="hero-kicker"/);
+  assert.match(content, /setAttribute\("data-daily-pour-id", cocktail\.id\)/);
+  assert.match(content, /shouldShowDailyPourKicker\(displayedId, dailyPourId\)/);
+  const applyAt = content.indexOf("function applyDailyCocktail");
+  assert.notEqual(applyAt, -1);
+  const applyBody = content.slice(applyAt, applyAt + 1800);
+  assert.match(applyBody, /syncDailyPourKicker\(cocktail\.id\)/);
+});
+
 test("the home stage swaps its pinned poster when art direction changes", () => {
   const content = fs.readFileSync(new URL("../src/components/ImmersiveCocktail.astro", import.meta.url), "utf8");
   const marker = 'isMobileMedia.addEventListener("change"';

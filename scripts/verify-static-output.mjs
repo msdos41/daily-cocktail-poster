@@ -42,8 +42,8 @@ const spiritSlugs = [
   "aperol",
 ];
 const pourLabels = {
-  en: { home: "Daily pour", detail: "Pour notes" },
-  "zh-CN": { home: "今日一杯", detail: "风味札记" },
+  en: "Daily pour",
+  "zh-CN": "今日一杯",
 };
 const errors = [];
 const summary = {
@@ -577,16 +577,26 @@ function verifyJsonLd(html, page, canonical, slugs) {
 }
 
 function verifyPourLabel(html, page) {
-  const expected = pourLabels[page.locale]?.[page.kind];
   const match = html.match(/<p\b[^>]*\bclass="hero-kicker"[^>]*>([\s\S]*?)<\/p>/);
   const text = match ? match[1].replace(/\s+/g, " ").trim() : "";
   assert(
-    text === expected,
-    `${page.publicPath} hero kicker must be "${expected}" with no pour date, got "${text}".`,
-  );
-  assert(
     !html.includes("formatHeroMetadata"),
     `${page.publicPath} must not format a pour date into the hero label.`,
+  );
+
+  if (page.kind === "detail") {
+    assert(!match, `${page.publicPath} detail hero must not include a kicker, got "${text}".`);
+    assert(
+      !html.includes("Pour notes") && !html.includes("风味札记"),
+      `${page.publicPath} must not label the poster as pour notes.`,
+    );
+    return;
+  }
+
+  const expected = pourLabels[page.locale];
+  assert(
+    text === expected,
+    `${page.publicPath} hero kicker must be "${expected}" with no pour date, got "${text}".`,
   );
 }
 
