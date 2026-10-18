@@ -1745,7 +1745,7 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       baseSpirit: "深色朗姆",
     },
     "naked-and-famous": {
-      name: "Naked and Famous",
+      name: "一脱成名",
       subtitle: "烟熏、草本、苦甜，谁也不让谁",
       description:
         "一杯现代等量配方鸡尾酒，把梅斯卡尔烟熏、Aperol、黄 Chartreuse 和青柠组合得紧凑而鲜明。",

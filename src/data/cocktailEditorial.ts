@@ -1230,7 +1230,7 @@ export const cocktailEditorials: Record<Locale, Record<CocktailId, CocktailEdito
       ],
       faqs: [
         {
-          question: "赤身成名的四种成分是什么？",
+          question: "一脱成名的四种成分是什么？",
           answer: "等比例（各22.5毫升）的梅斯卡尔烟熏龙舌兰、黄荨麻酒、阿佩罗开胃酒和新鲜青柠汁。",
         },
         {
