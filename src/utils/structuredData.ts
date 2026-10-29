@@ -161,6 +161,8 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
         calories: `${cocktail.estimatedCalories} calories`,
       },
       keywords: cocktail.tags.join(", "),
+      datePublished: cocktail.publishedAt,
+      dateModified: cocktail.updatedAt,
       author: organization,
       publisher: organization,
       mainEntityOfPage: url,

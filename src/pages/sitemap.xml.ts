@@ -1,8 +1,16 @@
-import { getCocktailSlugs, SUPPORTED_SPIRITS } from "@/data/cocktails";
+import { getAllCocktails, getCocktailsBySpirit, SUPPORTED_SPIRITS } from "@/data/cocktails";
 import { supportedLocales, type Locale } from "@/i18n/config";
 import { alternateLinks, pageUrlForLocalePath } from "@/utils/seo";
 
-const staticPaths = ["/", "/cocktails", "/about", "/privacy"];
+// Last commit (Asia/Shanghai) touching each page's source in src/pages/[locale]/.
+// Update when the page content changes. Never use build time.
+const STATIC_PAGE_LASTMOD: Record<string, string> = {
+  "/": "2026-06-13",
+  "/about": "2026-10-12",
+  "/privacy": "2026-10-12",
+};
+
+const maxDate = (dates: string[]) => dates.reduce((a, b) => (b > a ? b : a), "");
 
 type SitemapEntry = {
   path: string;
@@ -11,21 +19,21 @@ type SitemapEntry = {
 };
 
 export function GET() {
-  const defaultDate = new Date().toISOString().slice(0, 10);
+  const cocktails = getAllCocktails("en");
+  const collectionLastmod = maxDate(cocktails.map((c) => c.updatedAt));
 
-  const entries: SitemapEntry[] = [
-    ...supportedLocales.flatMap((locale) =>
-      staticPaths.map((path) => sitemapEntry(locale, path, defaultDate)),
-    ),
-    ...supportedLocales.flatMap((locale) =>
-      SUPPORTED_SPIRITS.map((spirit) =>
-        sitemapEntry(locale, `/cocktails/spirit/${spirit}`, defaultDate),
+  const entries: SitemapEntry[] = supportedLocales.flatMap((locale) => [
+    ...Object.entries(STATIC_PAGE_LASTMOD).map(([path, lastmod]) => sitemapEntry(locale, path, lastmod)),
+    sitemapEntry(locale, "/cocktails", collectionLastmod),
+    ...SUPPORTED_SPIRITS.map((spirit) =>
+      sitemapEntry(
+        locale,
+        `/cocktails/spirit/${spirit}`,
+        maxDate(getCocktailsBySpirit(locale, spirit).map((c) => c.updatedAt)) || collectionLastmod,
       ),
     ),
-    ...supportedLocales.flatMap((locale) =>
-      getCocktailSlugs().map((slug) => sitemapEntry(locale, `/cocktails/${slug}`, defaultDate)),
-    ),
-  ];
+    ...cocktails.map((c) => sitemapEntry(locale, `/cocktails/${c.slug}`, c.updatedAt)),
+  ]);
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
