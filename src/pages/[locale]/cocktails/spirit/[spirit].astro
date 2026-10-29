@@ -109,7 +109,7 @@ const structuredData = spiritTaxonomyStructuredData({
       cocktails.map((cocktail, i) => (
         <a
           class="archive-card"
-          href={`/${localeToPath(locale)}/cocktails/${cocktail.slug}`}
+          href={`/${localeToPath(locale)}/cocktails/${cocktail.slug}/`}
           data-cocktail-id={cocktail.id}
           data-archive-featured={i === 0 ? "true" : undefined}
         >
