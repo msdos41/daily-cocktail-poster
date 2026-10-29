@@ -5,6 +5,7 @@ import {
   type CocktailFAQ,
 } from "./cocktailEditorial.ts";
 import type { IbaCategory } from "./iba.ts";
+import { cocktailDates, type CocktailDates } from "./cocktailDates.ts";
 
 export type { CocktailFAQ, CocktailEditorialData };
 
@@ -77,7 +78,7 @@ type LocalizedCocktail = {
   baseSpirit: string;
 };
 
-export type Cocktail = StableCocktail & LocalizedCocktail & CocktailEditorialData;
+export type Cocktail = StableCocktail & LocalizedCocktail & CocktailEditorialData & CocktailDates;
 
 type SceneOnlyCocktailConfig = Pick<
   StableCocktail,
@@ -1983,6 +1984,7 @@ export function getAllCocktails(locale: Locale): Cocktail[] {
     ogImage: stable.ogImage || `/images/cocktails/${stable.id}-og.webp`,
     ...localizedCocktails[locale][stable.id],
     ...cocktailEditorials[locale][stable.id],
+    ...cocktailDates[stable.id],
   }));
 }
 

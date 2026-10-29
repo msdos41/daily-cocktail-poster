@@ -501,8 +501,10 @@ function verifyJsonLd(html, page, canonical, slugs) {
 
   assert(recipe.cookTime === undefined, `${page.publicPath} Recipe cookTime must be omitted, got ${recipe.cookTime}.`);
   assert(
-    recipe.datePublished === undefined,
-    `${page.publicPath} Recipe must not publish an assigned pour date, got ${recipe.datePublished}.`,
+    /^\d{4}-\d{2}-\d{2}$/.test(recipe.datePublished ?? "") &&
+      /^\d{4}-\d{2}-\d{2}$/.test(recipe.dateModified ?? "") &&
+      recipe.datePublished <= recipe.dateModified,
+    `${page.publicPath} Recipe datePublished/dateModified must be static content dates (YYYY-MM-DD, published <= modified), got ${recipe.datePublished}/${recipe.dateModified}.`,
   );
   assert(
     typeof recipe.prepTime === "string" && /^PT[2-5]M$/.test(recipe.prepTime),
