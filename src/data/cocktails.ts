@@ -137,7 +137,7 @@ const stableCocktails: StableCocktail[] = [
     baseSpirit: "white rum",
     estimatedCalories: 190,
     estimatedAbv: 13,
-    prepMinutes: 4,
+    prepMinutes: 5,
     wikidataId: "Q487338",
     ibaCategory: "Contemporary Classics",
   },

@@ -20,14 +20,17 @@ test("Recipe structured data omits cookTime and includes prepTime", () => {
     );
     assert.equal(
       recipe.prepTime,
-      "PT3M",
-      `Recipe for ${cocktail.slug} must define prepTime PT3M`,
+      `PT${cocktail.prepMinutes}M`,
+      `Recipe for ${cocktail.slug} must define prepTime from prepMinutes`,
     );
     assert.equal(
       recipe.totalTime,
-      "PT3M",
-      `Recipe for ${cocktail.slug} must define totalTime PT3M`,
+      `PT${cocktail.prepMinutes}M`,
+      `Recipe for ${cocktail.slug} must define totalTime from prepMinutes`,
     );
+    if (cocktail.slug === "mojito") {
+      assert.equal(recipe.prepTime, "PT5M", "Mojito prepTime must be PT5M");
+    }
   }
 });
 
