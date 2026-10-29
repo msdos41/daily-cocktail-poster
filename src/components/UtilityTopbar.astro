@@ -18,7 +18,7 @@ type Props = {
 const { locale, path, overlay = false } = Astro.props;
 
 function localeHref(item: Locale) {
-  return `/${localeToPath(item)}${path === "/" ? "/" : path}`;
+  return `/${localeToPath(item)}${path.endsWith("/") ? path : `${path}/`}`;
 }
 ---
 
@@ -58,11 +58,11 @@ function localeHref(item: Locale) {
           <span>{t(locale, "theCollection")}</span>
         </a>
         <span class="menu-label">{t(locale, "info")}</span>
-        <a class:list={[path === "/about" && "active"]} href={`/${localeToPath(locale)}/about`}>
+        <a class:list={[path === "/about" && "active"]} href={`/${localeToPath(locale)}/about/`}>
           <Info size={16} aria-hidden="true" />
           <span>{t(locale, "about")}</span>
         </a>
-        <a class:list={[path === "/privacy" && "active"]} href={`/${localeToPath(locale)}/privacy`}>
+        <a class:list={[path === "/privacy" && "active"]} href={`/${localeToPath(locale)}/privacy/`}>
           <ShieldCheck size={16} aria-hidden="true" />
           <span>{t(locale, "privacy")}</span>
         </a>

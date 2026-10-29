@@ -195,7 +195,7 @@ const relatedCocktails = (cocktail.relatedSlugs || [])
           </div>
           <div class="sister-cards">
             {relatedCocktails.map((related) => (
-              <a href={`/${localeToPath(locale)}/cocktails/${related.slug}`} class="sister-card">
+              <a href={`/${localeToPath(locale)}/cocktails/${related.slug}/`} class="sister-card">
                 <img
                   src={related.heroImageDesktop}
                   alt={`${t(locale, "visualAlt")} ${related.name}`}
