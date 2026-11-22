@@ -65,6 +65,86 @@ const summary = {
   dailyCurtainsVerified: 0,
 };
 
+const featuredSearchSnippets = {
+  "whiskey-sour": {
+    en: {
+      title: "Whiskey Sour Recipe: 2 oz Bourbon, Egg White Optional | Just One Sip",
+      description:
+        "A foundational sour with 2 oz bourbon, lemon, and sugar, ready in 4 minutes. Egg white is optional, but it gives the drink its classic silky top.",
+    },
+    "zh-CN": {
+      title: "威士忌酸配方：60 ml 波本，蛋清可选 | Just One Sip",
+      description: "基础酸型做法：60 ml 波本搭配柠檬与糖，4 分钟完成。蛋清可选，但会带来经典的丝滑泡沫。",
+    },
+  },
+  "singapore-sling": {
+    en: {
+      title: "Singapore Sling Recipe: 1 1/2 oz Gin, Cherry and Pineapple | Just One Sip",
+      description:
+        "A tropical gin long drink with 1 1/2 oz gin, cherry, citrus, pineapple, and spice, ready in 4 minutes. It is colorful, structured, and more layered than it first appears.",
+    },
+    "zh-CN": {
+      title: "新加坡司令配方：45 ml 金酒，樱桃与菠萝 | Just One Sip",
+      description: "热带金酒长饮：45 ml 金酒搭配樱桃、柑橘与菠萝，4 分钟完成。色彩鲜明，也比第一眼看上去更有结构。",
+    },
+  },
+  sazerac: {
+    en: {
+      title: "Sazerac Recipe: 2 oz Rye, Absinthe Rinse | Just One Sip",
+      description:
+        "A New Orleans icon with 2 oz rye whiskey, Peychaud's bitters, sugar, and a whisper of absinthe, ready in 4 minutes. It is potent, aromatic, and built for slow attention.",
+    },
+    "zh-CN": {
+      title: "萨泽拉克配方：60 ml 黑麦，苦艾酒润杯 | Just One Sip",
+      description: "新奥尔良经典：60 ml 黑麦威士忌，配 Peychaud's 苦精与苦艾酒润杯，4 分钟完成。浓烈而有辨识度。",
+    },
+  },
+  gimlet: {
+    en: {
+      title: "Gimlet Recipe: 2 oz Gin and Lime | Just One Sip",
+      description:
+        "An old-school gin sour with 2 oz gin, lime, and sugar, ready in 3 minutes. It is cold, compact, and satisfying without extra decoration.",
+    },
+    "zh-CN": {
+      title: "吉姆雷特配方：60 ml 金酒与青柠 | Just One Sip",
+      description: "老派金酒酸：60 ml 金酒搭配青柠与糖，3 分钟完成。冰冷、紧凑，不需要多余装饰。",
+    },
+  },
+  "paper-plane": {
+    en: {
+      title: "Paper Plane Recipe: Equal Parts, 3/4 oz Bourbon | Just One Sip",
+      description:
+        "A modern equal-parts cocktail with 3/4 oz each of bourbon, Aperol, amaro, and lemon, ready in 3 minutes. It feels effortless because the balance is doing the work.",
+    },
+    "zh-CN": {
+      title: "纸飞机配方：等量组合，22.5 ml 波本 | Just One Sip",
+      description: "现代等量经典：波本、Aperol、阿玛罗和柠檬各 22.5 ml，3 分钟完成。干净、苦甜而平衡。",
+    },
+  },
+  "aperol-spritz": {
+    en: {
+      title: "Aperol Spritz Recipe: 3 oz Prosecco, 2 oz Aperol | Just One Sip",
+      description:
+        "A low-effort Italian aperitif that layers 3 oz prosecco, 2 oz Aperol, and soda into a bright orange glass, ready in 2 minutes.",
+    },
+    "zh-CN": {
+      title: "阿佩罗橙光配方：90 ml 普罗塞克，60 ml 阿佩罗 | Just One Sip",
+      description: "轻松意式开胃酒：90 ml 普罗塞克、60 ml 阿佩罗与苏打水，2 分钟完成。明亮橙色，适合漫长午后。",
+    },
+  },
+  "pina-colada": {
+    en: {
+      title: "Pina Colada Recipe: 2 oz Rum, Pineapple and Coconut | Just One Sip",
+      description:
+        "A creamy tropical classic with 2 oz rum, pineapple, and coconut, ready in 4 minutes. It works best when pineapple stays bright and the coconut is rich but controlled.",
+    },
+    "zh-CN": {
+      title: "椰林飘香配方：60 ml 朗姆，菠萝与椰子 | Just One Sip",
+      description: "奶油感热带经典：60 ml 朗姆搭配菠萝与椰子，4 分钟完成。让菠萝保持明亮，椰子浓郁但不过分沉重。",
+    },
+  },
+};
+
 main();
 
 function main() {
@@ -489,6 +569,13 @@ function verifyJsonLd(html, page, canonical, slugs) {
     );
   }
   assert(Array.isArray(recipe.image) && recipe.image.length > 0, `${page.publicPath} Recipe image must be a non-empty array.`);
+  if (featuredSearchSnippets[page.slug]) {
+    assert(
+      recipe.image.length === 1 && recipe.image[0] === `${site}/images/cocktails/${page.slug}-recipe.webp`,
+      `${page.publicPath} Recipe image must be the 1:1 finished-drink photo, got ${JSON.stringify(recipe.image)}.`,
+    );
+    assert(recipe.aggregateRating === undefined, `${page.publicPath} Recipe must not invent aggregateRating.`);
+  }
   assert(
     Array.isArray(recipe.recipeIngredient) && recipe.recipeIngredient.length > 0,
     `${page.publicPath} Recipe recipeIngredient must be a non-empty array.`,
@@ -581,7 +668,9 @@ function verifyJsonLd(html, page, canonical, slugs) {
       const position = index + 1;
       assert(step["@type"] === "HowToStep", `${page.publicPath} Recipe step ${position} must be a HowToStep.`);
       assert(step.position === position, `${page.publicPath} Recipe step ${position} position must be ${position}.`);
+      assert(typeof step.name === "string" && step.name.length > 0, `${page.publicPath} Recipe step ${position} name is required.`);
       assert(typeof step.text === "string" && step.text.length > 0, `${page.publicPath} Recipe step ${position} text is required.`);
+      assert(step.text.startsWith(step.name), `${page.publicPath} Recipe step ${position} name must be derived from the step text.`);
       assert(step.url === `${canonical}#recipe-step-${position}`, `${page.publicPath} Recipe step ${position} URL must point to #recipe-step-${position}.`);
     });
   }
@@ -1109,31 +1198,31 @@ function parseAttrs(tag) {
   return attrs;
 }
 
+
 function verifyRecipeSearchSnippet(html, page) {
-  if (page.slug !== "aperol-spritz") return;
+  const expected = featuredSearchSnippets[page.slug]?.[page.locale];
+  if (!expected) return;
 
   const pageId = page.publicPath;
+  const title = html.match(/<title>([^<]+)<\/title>/)?.[1];
   const metaDescription = getMetaContent(html, "name", "description", pageId);
   const ogDescription = getMetaContent(html, "property", "og:description", pageId);
   const twitterDescription = getMetaContent(html, "name", "twitter:description", pageId);
+  const ogImage = getMetaContent(html, "property", "og:image", pageId);
 
+  assert(title === expected.title, `${pageId} title must be ${expected.title}, got ${title || "none"}.`);
   assert(ogDescription === metaDescription, `${pageId} og:description must match the meta description.`);
   assert(twitterDescription === metaDescription, `${pageId} twitter:description must match the meta description.`);
-
-  if (page.locale === "zh-CN") {
-    assert(
-      metaDescription === "阿佩罗橙光鸡尾酒配方：90 ml 普罗塞克、60 ml 阿佩罗、30 ml 苏打水、橙片。",
-      `${pageId} meta description must list measured ingredients, got ${metaDescription || "none"}.`,
-    );
-    return;
-  }
-
   assert(
-    metaDescription ===
-      "A low-effort Italian aperitif that layers Aperol, prosecco, and soda into a bright orange glass made for long afternoons. Includes ingredients, glass, garnish, and mixing steps.",
-    `${pageId} meta description must keep the English poster sentence, got ${metaDescription || "none"}.`,
+    metaDescription === expected.description,
+    `${pageId} meta description must be the specific search snippet, got ${metaDescription || "none"}.`,
+  );
+  assert(
+    ogImage === `${site}/images/cocktails/${page.slug}-og.webp`,
+    `${pageId} og:image must stay the 1200x630 share image, got ${ogImage || "none"}.`,
   );
 }
+
 
 function getMetaContent(html, attrName, attrValue, pageId) {
   const values = getTags(html, "meta")

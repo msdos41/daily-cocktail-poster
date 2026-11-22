@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getAllCocktails } from "../src/data/cocktails.ts";
-import { cocktailStructuredData, homeStructuredData } from "../src/utils/structuredData.ts";
+import { getAllCocktails, getCocktail } from "../src/data/cocktails.ts";
+import { cocktailStructuredData, homeStructuredData, howToStepName } from "../src/utils/structuredData.ts";
 
 test("Recipe structured data omits cookTime and includes prepTime", () => {
   const cocktails = getAllCocktails("en");
@@ -143,4 +143,59 @@ test("IBA categories match the live IBA taxonomy", () => {
   assert.equal(bySlug.negroni, "The Unforgettables");
   assert.equal(bySlug.mojito, "Contemporary Classics");
   assert.equal(bySlug["espresso-martini"], "New Era Drinks");
+});
+
+test("HowToStep names are derived from existing step text", () => {
+  for (const locale of ["en", "zh-CN"]) {
+    for (const cocktail of getAllCocktails(locale)) {
+      const data = cocktailStructuredData({
+        locale,
+        cocktail,
+        url: `https://justonesip.today/${locale === "zh-CN" ? "zh-cn" : "en"}/cocktails/${cocktail.slug}/`,
+      });
+      const recipe = data.find((item) => item["@type"] === "Recipe");
+      assert.ok(recipe, `${locale} ${cocktail.slug}`);
+      assert.equal(recipe.recipeInstructions.length, cocktail.steps.length, cocktail.slug);
+
+      recipe.recipeInstructions.forEach((step, index) => {
+        const source = cocktail.steps[index];
+        assert.equal(step.name, howToStepName(source), `${locale} ${cocktail.slug} step ${index + 1}`);
+        assert.equal(source.startsWith(step.name), true, `${locale} ${cocktail.slug} step ${index + 1} name must come from the step text`);
+        assert.ok(step.name.length > 0, `${locale} ${cocktail.slug} step ${index + 1}`);
+      });
+    }
+  }
+
+  assert.equal(howToStepName("Dry shake bourbon, lemon, syrup, and egg white without ice."), "Dry shake bourbon, lemon, syrup, and egg white without ice");
+  assert.equal(howToStepName("先将波本、柠檬汁、糖浆和蛋清不加冰干摇。"), "先将波本、柠檬汁、糖浆和蛋清不加冰干摇");
+});
+
+const FEATURED_RECIPE_IMAGE_SLUGS = [
+  "whiskey-sour",
+  "singapore-sling",
+  "sazerac",
+  "gimlet",
+  "paper-plane",
+  "aperol-spritz",
+  "pina-colada",
+];
+
+test("featured Recipe images use the finished-drink photo, not the OG card", () => {
+  for (const slug of FEATURED_RECIPE_IMAGE_SLUGS) {
+    const cocktail = getCocktail("en", slug);
+    assert.ok(cocktail, slug);
+    const data = cocktailStructuredData({
+      locale: "en",
+      cocktail,
+      url: `https://justonesip.today/en/cocktails/${slug}/`,
+    });
+    const recipe = data.find((item) => item["@type"] === "Recipe");
+    assert.deepEqual(
+      recipe.image,
+      [`https://justonesip.today/images/cocktails/${slug}-recipe.webp`],
+      slug,
+    );
+    assert.equal(cocktail.ogImage, `/images/cocktails/${slug}-og.webp`, slug);
+    assert.equal(recipe.aggregateRating, undefined, slug);
+  }
 });

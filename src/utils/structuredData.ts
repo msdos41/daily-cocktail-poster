@@ -118,7 +118,7 @@ export function archiveStructuredData(config: PageStructuredDataConfig): JsonLd[
 }
 
 export function cocktailStructuredData({ locale, cocktail, url }: CocktailStructuredDataConfig): JsonLd[] {
-  const image = socialImageMetadata(cocktail.ogImage || cocktail.posterImage).url;
+  const image = socialImageMetadata(cocktail.recipeImage || cocktail.ogImage || cocktail.posterImage).url;
   const homeUrl = pageUrlForLocalePath(locale, "/");
 
   const spiritCategory = getSpiritCategory(cocktail.baseSpirit);
@@ -153,6 +153,7 @@ export function cocktailStructuredData({ locale, cocktail, url }: CocktailStruct
       recipeInstructions: cocktail.steps.map((step, index) => ({
         "@type": "HowToStep",
         position: index + 1,
+        name: howToStepName(step),
         text: step,
         url: `${url}#recipe-step-${index + 1}`,
       })),
@@ -258,6 +259,10 @@ export function infoPageStructuredData(config: PageStructuredDataConfig): JsonLd
       { name: title, url },
     ]),
   ];
+}
+
+export function howToStepName(step: string): string {
+  return step.trim().replace(/[\s.。．!！?？]+$/u, "");
 }
 
 function breadcrumbStructuredData(items: Array<{ name: string; url: string }>): JsonLd {
