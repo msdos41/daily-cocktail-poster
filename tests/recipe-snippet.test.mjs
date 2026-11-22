@@ -6,6 +6,7 @@ import {
   CHINESE_RECIPE_SNIPPET_MAX_LENGTH,
   chineseRecipeSnippet,
   recipeMetaDescription,
+  recipePageTitle,
 } from "../src/utils/recipeSnippet.ts";
 
 test("Chinese Aperol Spritz search snippet lists measures and omits pour copy", () => {
@@ -26,6 +27,11 @@ test("Chinese search snippets keep a leading run of ingredients inside the lengt
   assert.equal(cocktails.length, 33);
 
   for (const cocktail of cocktails) {
+    if (cocktail.seoDescription) {
+      assert.equal(recipeMetaDescription("zh-CN", cocktail), cocktail.seoDescription, cocktail.slug);
+      continue;
+    }
+
     const snippet = recipeMetaDescription("zh-CN", cocktail);
     const prefix = `${cocktail.name}鸡尾酒配方：`;
 
@@ -77,6 +83,11 @@ test("English search snippets keep pour copy", () => {
 
   for (const cocktail of cocktails) {
     const snippet = recipeMetaDescription("en", cocktail);
+    if (cocktail.seoDescription) {
+      assert.equal(snippet, cocktail.seoDescription, cocktail.slug);
+      continue;
+    }
+
     assert.equal(
       snippet,
       `${cocktail.description} Includes ingredients, glass, garnish, and mixing steps.`,
@@ -97,4 +108,29 @@ test("Recipe structured data keeps pour copy as its description", () => {
       assert.equal(recipe.description, cocktail.description, `${locale} ${cocktail.slug}`);
     }
   }
+});
+
+test("Whiskey Sour uses a more specific search title and description", () => {
+  const en = getCocktail("en", "whiskey-sour");
+  const zh = getCocktail("zh-CN", "whiskey-sour");
+  assert.ok(en && zh);
+
+  assert.equal(recipePageTitle("en", en), "Whiskey Sour Recipe: 2 oz Bourbon, Egg White Optional");
+  assert.equal(
+    recipeMetaDescription("en", en),
+    "A foundational sour with 2 oz bourbon, lemon, and sugar, ready in 4 minutes. Egg white is optional, but it gives the drink its classic silky top.",
+  );
+  assert.equal(recipePageTitle("zh-CN", zh), "威士忌酸配方：60 ml 波本，蛋清可选");
+  assert.equal(
+    recipeMetaDescription("zh-CN", zh),
+    "基础酸型做法：60 ml 波本搭配柠檬与糖，4 分钟完成。蛋清可选，但会带来经典的丝滑泡沫。",
+  );
+});
+
+test("default recipe titles still use the shared suffix", () => {
+  const en = getCocktail("en", "mojito");
+  const zh = getCocktail("zh-CN", "mojito");
+  assert.ok(en && zh);
+  assert.equal(recipePageTitle("en", en), "Mojito Cocktail Recipe");
+  assert.equal(recipePageTitle("zh-CN", zh), "莫吉托鸡尾酒配方");
 });

@@ -581,7 +581,9 @@ function verifyJsonLd(html, page, canonical, slugs) {
       const position = index + 1;
       assert(step["@type"] === "HowToStep", `${page.publicPath} Recipe step ${position} must be a HowToStep.`);
       assert(step.position === position, `${page.publicPath} Recipe step ${position} position must be ${position}.`);
+      assert(typeof step.name === "string" && step.name.length > 0, `${page.publicPath} Recipe step ${position} name is required.`);
       assert(typeof step.text === "string" && step.text.length > 0, `${page.publicPath} Recipe step ${position} text is required.`);
+      assert(step.text.startsWith(step.name), `${page.publicPath} Recipe step ${position} name must be derived from the step text.`);
       assert(step.url === `${canonical}#recipe-step-${position}`, `${page.publicPath} Recipe step ${position} URL must point to #recipe-step-${position}.`);
     });
   }

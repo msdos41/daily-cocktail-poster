@@ -55,6 +55,7 @@ type StableCocktail = {
   posterImage: string;
   shareBaseImage: string;
   ogImage?: string;
+  recipeImage?: string;
   glass: string;
   baseSpirit: string;
   estimatedCalories: number;
@@ -68,6 +69,8 @@ type LocalizedCocktail = {
   name: string;
   subtitle: string;
   description: string;
+  seoTitle?: string;
+  seoDescription?: string;
   heroIngredients: string[];
   ingredients: string[];
   steps: string[];
@@ -671,6 +674,7 @@ const stableCocktails: StableCocktail[] = [
     backgroundDownloadMobile: "/images/cocktails/whiskey-sour-scene-mobile.webp",
     posterImage: "/images/cocktails/whiskey-sour-scene-mobile.webp",
     shareBaseImage: "/images/cocktails/whiskey-sour-scene-mobile.webp",
+    recipeImage: "/images/cocktails/whiskey-sour-recipe.webp",
     glass: "rocks",
     baseSpirit: "bourbon",
     estimatedCalories: 210,
@@ -1142,6 +1146,9 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "Lemon, sugar, bourbon. Shake. Top with foam",
       description:
         "A foundational sour that balances whiskey warmth with lemon and sugar. Egg white is optional, but it gives the drink its classic silky top.",
+      seoTitle: "Whiskey Sour Recipe: 2 oz Bourbon, Egg White Optional",
+      seoDescription:
+        "A foundational sour with 2 oz bourbon, lemon, and sugar, ready in 4 minutes. Egg white is optional, but it gives the drink its classic silky top.",
       heroIngredients: ["Bourbon", "Lemon", "Sugar"],
       ingredients: ["2 oz (60 ml) bourbon", "3/4 oz (22.5 ml) lemon juice", "3/4 oz (22.5 ml) simple syrup", "1 egg white", "Angostura bitters"],
       steps: [
@@ -1771,6 +1778,8 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "酸的、甜的、酒味，上面还有泡沫",
       description:
         "基础酸型鸡尾酒之一，用柠檬和糖平衡威士忌的温暖。蛋清可选，但会带来经典的丝滑泡沫。",
+      seoTitle: "威士忌酸配方：60 ml 波本，蛋清可选",
+      seoDescription: "基础酸型做法：60 ml 波本搭配柠檬与糖，4 分钟完成。蛋清可选，但会带来经典的丝滑泡沫。",
       heroIngredients: ["波本", "柠檬", "糖"],
       ingredients: ["60 ml 波本", "22.5 ml 柠檬汁", "22.5 ml 单糖浆", "1 个蛋清", "安格斯图拉苦精"],
       steps: [

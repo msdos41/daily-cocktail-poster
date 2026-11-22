@@ -11,7 +11,7 @@ import { localeToPath, supportedLocales, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { ibaCategoryUrl } from "@/data/iba";
-import { recipeMetaDescription } from "@/utils/recipeSnippet";
+import { recipeMetaDescription, recipePageTitle } from "@/utils/recipeSnippet";
 import { pageUrlForLocalePath } from "@/utils/seo";
 import { cocktailStructuredData } from "@/utils/structuredData";
 
@@ -32,13 +32,8 @@ if (!cocktail) {
   return Astro.redirect(`/${localeToPath(locale)}/`);
 }
 
-function recipeTitle(locale: Locale, cocktail: Cocktail) {
-  const suffix = t(locale, "cocktailRecipeTitleSuffix");
-  return locale === "zh-CN" ? `${cocktail.name}${suffix}` : `${cocktail.name} ${suffix}`;
-}
-
 const path = `/cocktails/${cocktail.slug}`;
-const pageRecipeTitle = recipeTitle(locale, cocktail);
+const pageRecipeTitle = recipePageTitle(locale, cocktail);
 const title = `${pageRecipeTitle} | ${t(locale, "siteName")}`;
 const description = recipeMetaDescription(locale, cocktail);
 const pageUrl = pageUrlForLocalePath(locale, path);

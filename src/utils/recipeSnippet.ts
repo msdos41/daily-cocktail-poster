@@ -7,7 +7,15 @@ type RecipeMetaSource = {
   name: string;
   description: string;
   ingredients: readonly string[];
+  seoTitle?: string;
+  seoDescription?: string;
 };
+
+export function recipePageTitle(locale: Locale, cocktail: RecipeMetaSource): string {
+  if (cocktail.seoTitle) return cocktail.seoTitle;
+  const suffix = t(locale, "cocktailRecipeTitleSuffix");
+  return locale === "zh-CN" ? `${cocktail.name}${suffix}` : `${cocktail.name} ${suffix}`;
+}
 
 export function chineseRecipeSnippet(
   name: string,
@@ -27,6 +35,8 @@ export function chineseRecipeSnippet(
 }
 
 export function recipeMetaDescription(locale: Locale, cocktail: RecipeMetaSource): string {
+  if (cocktail.seoDescription) return cocktail.seoDescription;
+
   if (locale === "zh-CN") {
     return chineseRecipeSnippet(cocktail.name, cocktail.ingredients);
   }

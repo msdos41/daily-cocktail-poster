@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getAllCocktails } from "../src/data/cocktails.ts";
-import { cocktailStructuredData, homeStructuredData } from "../src/utils/structuredData.ts";
+import { getAllCocktails, getCocktail } from "../src/data/cocktails.ts";
+import { cocktailStructuredData, homeStructuredData, howToStepName } from "../src/utils/structuredData.ts";
 
 test("Recipe structured data omits cookTime and includes prepTime", () => {
   const cocktails = getAllCocktails("en");
@@ -143,4 +143,42 @@ test("IBA categories match the live IBA taxonomy", () => {
   assert.equal(bySlug.negroni, "The Unforgettables");
   assert.equal(bySlug.mojito, "Contemporary Classics");
   assert.equal(bySlug["espresso-martini"], "New Era Drinks");
+});
+
+test("HowToStep names are derived from existing step text", () => {
+  for (const locale of ["en", "zh-CN"]) {
+    for (const cocktail of getAllCocktails(locale)) {
+      const data = cocktailStructuredData({
+        locale,
+        cocktail,
+        url: `https://justonesip.today/${locale === "zh-CN" ? "zh-cn" : "en"}/cocktails/${cocktail.slug}/`,
+      });
+      const recipe = data.find((item) => item["@type"] === "Recipe");
+      assert.ok(recipe, `${locale} ${cocktail.slug}`);
+      assert.equal(recipe.recipeInstructions.length, cocktail.steps.length, cocktail.slug);
+
+      recipe.recipeInstructions.forEach((step, index) => {
+        const source = cocktail.steps[index];
+        assert.equal(step.name, howToStepName(source), `${locale} ${cocktail.slug} step ${index + 1}`);
+        assert.equal(source.startsWith(step.name), true, `${locale} ${cocktail.slug} step ${index + 1} name must come from the step text`);
+        assert.ok(step.name.length > 0, `${locale} ${cocktail.slug} step ${index + 1}`);
+      });
+    }
+  }
+
+  assert.equal(howToStepName("Dry shake bourbon, lemon, syrup, and egg white without ice."), "Dry shake bourbon, lemon, syrup, and egg white without ice");
+  assert.equal(howToStepName("先将波本、柠檬汁、糖浆和蛋清不加冰干摇。"), "先将波本、柠檬汁、糖浆和蛋清不加冰干摇");
+});
+
+test("Whiskey Sour Recipe image uses the finished-drink photo, not the OG card", () => {
+  const cocktail = getCocktail("en", "whiskey-sour");
+  assert.ok(cocktail);
+  const data = cocktailStructuredData({
+    locale: "en",
+    cocktail,
+    url: "https://justonesip.today/en/cocktails/whiskey-sour/",
+  });
+  const recipe = data.find((item) => item["@type"] === "Recipe");
+  assert.deepEqual(recipe.image, ["https://justonesip.today/images/cocktails/whiskey-sour-recipe.webp"]);
+  assert.equal(cocktail.ogImage, "/images/cocktails/whiskey-sour-og.webp");
 });
