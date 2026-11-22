@@ -170,15 +170,32 @@ test("HowToStep names are derived from existing step text", () => {
   assert.equal(howToStepName("先将波本、柠檬汁、糖浆和蛋清不加冰干摇。"), "先将波本、柠檬汁、糖浆和蛋清不加冰干摇");
 });
 
-test("Whiskey Sour Recipe image uses the finished-drink photo, not the OG card", () => {
-  const cocktail = getCocktail("en", "whiskey-sour");
-  assert.ok(cocktail);
-  const data = cocktailStructuredData({
-    locale: "en",
-    cocktail,
-    url: "https://justonesip.today/en/cocktails/whiskey-sour/",
-  });
-  const recipe = data.find((item) => item["@type"] === "Recipe");
-  assert.deepEqual(recipe.image, ["https://justonesip.today/images/cocktails/whiskey-sour-recipe.webp"]);
-  assert.equal(cocktail.ogImage, "/images/cocktails/whiskey-sour-og.webp");
+const FEATURED_RECIPE_IMAGE_SLUGS = [
+  "whiskey-sour",
+  "singapore-sling",
+  "sazerac",
+  "gimlet",
+  "paper-plane",
+  "aperol-spritz",
+  "pina-colada",
+];
+
+test("featured Recipe images use the finished-drink photo, not the OG card", () => {
+  for (const slug of FEATURED_RECIPE_IMAGE_SLUGS) {
+    const cocktail = getCocktail("en", slug);
+    assert.ok(cocktail, slug);
+    const data = cocktailStructuredData({
+      locale: "en",
+      cocktail,
+      url: `https://justonesip.today/en/cocktails/${slug}/`,
+    });
+    const recipe = data.find((item) => item["@type"] === "Recipe");
+    assert.deepEqual(
+      recipe.image,
+      [`https://justonesip.today/images/cocktails/${slug}-recipe.webp`],
+      slug,
+    );
+    assert.equal(cocktail.ogImage, `/images/cocktails/${slug}-og.webp`, slug);
+    assert.equal(recipe.aggregateRating, undefined, slug);
+  }
 });

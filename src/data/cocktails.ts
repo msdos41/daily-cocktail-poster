@@ -172,6 +172,7 @@ const stableCocktails: StableCocktail[] = [
     backgroundDownloadMobile: "/images/cocktails/sazerac-scene-mobile.webp",
     posterImage: "/images/cocktails/sazerac-scene-mobile.webp",
     shareBaseImage: "/images/cocktails/sazerac-scene-mobile.webp",
+    recipeImage: "/images/cocktails/sazerac-recipe.webp",
     glass: "rocks",
     baseSpirit: "rye whiskey",
     estimatedCalories: 170,
@@ -334,6 +335,7 @@ const stableCocktails: StableCocktail[] = [
     backgroundDownloadMobile: "/images/cocktails/singapore-sling-scene-mobile.webp",
     posterImage: "/images/cocktails/singapore-sling-scene-mobile.webp",
     shareBaseImage: "/images/cocktails/singapore-sling-scene-mobile.webp",
+    recipeImage: "/images/cocktails/singapore-sling-recipe.webp",
     glass: "highball",
     baseSpirit: "gin",
     estimatedCalories: 230,
@@ -406,6 +408,7 @@ const stableCocktails: StableCocktail[] = [
     backgroundDownloadMobile: "/images/cocktails/pina-colada-scene-mobile.webp",
     posterImage: "/images/cocktails/pina-colada-scene-mobile.webp",
     shareBaseImage: "/images/cocktails/pina-colada-scene-mobile.webp",
+    recipeImage: "/images/cocktails/pina-colada-recipe.webp",
     glass: "hurricane",
     baseSpirit: "rum",
     estimatedCalories: 370,
@@ -495,6 +498,7 @@ const stableCocktails: StableCocktail[] = [
     backgroundDownloadMobile: "/images/cocktails/paper-plane-scene-mobile.webp",
     posterImage: "/images/cocktails/paper-plane-scene-mobile.webp",
     shareBaseImage: "/images/cocktails/paper-plane-scene-mobile.webp",
+    recipeImage: "/images/cocktails/paper-plane-recipe.webp",
     glass: "coupe",
     baseSpirit: "bourbon",
     estimatedCalories: 170,
@@ -513,6 +517,7 @@ const stableCocktails: StableCocktail[] = [
     backgroundDownloadMobile: "/images/cocktails/gimlet-scene-mobile.webp",
     posterImage: "/images/cocktails/gimlet-scene-mobile.webp",
     shareBaseImage: "/images/cocktails/gimlet-scene-mobile.webp",
+    recipeImage: "/images/cocktails/gimlet-recipe.webp",
     glass: "coupe",
     baseSpirit: "gin",
     estimatedCalories: 190,
@@ -656,6 +661,7 @@ const stableCocktails: StableCocktail[] = [
     backgroundDownloadMobile: "/images/cocktails/aperol-spritz-scene-mobile.webp",
     posterImage: "/images/cocktails/aperol-spritz-scene-mobile.webp",
     shareBaseImage: "/images/cocktails/aperol-spritz-scene-mobile.webp",
+    recipeImage: "/images/cocktails/aperol-spritz-recipe.webp",
     glass: "wine",
     baseSpirit: "aperol",
     estimatedCalories: 180,
@@ -823,6 +829,9 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "Orange fizz for an open window",
       description:
         "A low-effort Italian aperitif that layers Aperol, prosecco, and soda into a bright orange glass made for long afternoons.",
+      seoTitle: "Aperol Spritz Recipe: 3 oz Prosecco, 2 oz Aperol",
+      seoDescription:
+        "A low-effort Italian aperitif that layers 3 oz prosecco, 2 oz Aperol, and soda into a bright orange glass, ready in 2 minutes.",
       heroIngredients: ["Prosecco", "Aperol", "Soda"],
       ingredients: ["3 oz (90 ml) prosecco", "2 oz (60 ml) Aperol", "1 oz (30 ml) soda water", "Orange slice"],
       steps: [
@@ -880,6 +889,9 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "Rye spice under an absinthe veil",
       description:
         "A New Orleans icon with rye whiskey, Peychaud's bitters, sugar, and a whisper of absinthe. It is potent, aromatic, and built for slow attention.",
+      seoTitle: "Sazerac Recipe: 2 oz Rye, Absinthe Rinse",
+      seoDescription:
+        "A New Orleans icon with 2 oz rye whiskey, Peychaud's bitters, sugar, and a whisper of absinthe, ready in 4 minutes. It is potent, aromatic, and built for slow attention.",
       heroIngredients: ["Rye Whiskey", "Peychaud's", "Absinthe"],
       ingredients: ["2 oz (60 ml) rye whiskey", "1/4 oz (7.5 ml) simple syrup", "3 dashes Peychaud's bitters", "Absinthe rinse", "Lemon peel"],
       steps: [
@@ -918,6 +930,9 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "Equal parts, bittersweet lift",
       description:
         "A modern equal-parts cocktail where bourbon, Aperol, amaro, and lemon lock into a clean bittersweet sour. It feels effortless because the balance is doing the work.",
+      seoTitle: "Paper Plane Recipe: Equal Parts, 3/4 oz Bourbon",
+      seoDescription:
+        "A modern equal-parts cocktail with 3/4 oz each of bourbon, Aperol, amaro, and lemon, ready in 3 minutes. It feels effortless because the balance is doing the work.",
       heroIngredients: ["Bourbon", "Aperol", "Lemon"],
       ingredients: ["3/4 oz (22.5 ml) bourbon", "3/4 oz (22.5 ml) Aperol", "3/4 oz (22.5 ml) Amaro Nonino", "3/4 oz (22.5 ml) lemon juice"],
       steps: [
@@ -1127,6 +1142,9 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "Gin and lime, cut clean",
       description:
         "An old-school gin sour that keeps the focus on lime and botanicals. It is cold, compact, and satisfying without extra decoration.",
+      seoTitle: "Gimlet Recipe: 2 oz Gin and Lime",
+      seoDescription:
+        "An old-school gin sour with 2 oz gin, lime, and sugar, ready in 3 minutes. It is cold, compact, and satisfying without extra decoration.",
       heroIngredients: ["Gin", "Lime", "Sugar"],
       ingredients: ["2 oz (60 ml) gin", "3/4 oz (22.5 ml) lime juice", "3/4 oz (22.5 ml) simple syrup"],
       steps: [
@@ -1187,6 +1205,9 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "Pineapple, coconut, and rum in full sun",
       description:
         "A creamy tropical classic that works best when pineapple stays bright and the coconut is rich but controlled.",
+      seoTitle: "Pina Colada Recipe: 2 oz Rum, Pineapple and Coconut",
+      seoDescription:
+        "A creamy tropical classic with 2 oz rum, pineapple, and coconut, ready in 4 minutes. It works best when pineapple stays bright and the coconut is rich but controlled.",
       heroIngredients: ["Rum", "Pineapple", "Coconut"],
       ingredients: ["2 oz (60 ml) rum", "1 1/2 oz (45 ml) pineapple juice", "1 oz (30 ml) cream of coconut", "1/2 oz (15 ml) lime juice", "Pineapple wedge"],
       steps: [
@@ -1301,6 +1322,9 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "Gin dressed in tropical fruit",
       description:
         "A tropical gin long drink with cherry, citrus, pineapple, and spice. It is colorful, structured, and more layered than it first appears.",
+      seoTitle: "Singapore Sling Recipe: 1 1/2 oz Gin, Cherry and Pineapple",
+      seoDescription:
+        "A tropical gin long drink with 1 1/2 oz gin, cherry, citrus, pineapple, and spice, ready in 4 minutes. It is colorful, structured, and more layered than it first appears.",
       heroIngredients: ["Gin", "Cherry", "Pineapple"],
       ingredients: ["1 1/2 oz (45 ml) gin", "1/2 oz (15 ml) cherry liqueur", "1/4 oz (7.5 ml) Cointreau", "1/4 oz (7.5 ml) Benedictine", "2 oz (60 ml) pineapple juice", "1/2 oz (15 ml) lime juice", "1/3 oz (10 ml) grenadine", "1 dash Angostura bitters"],
       steps: [
@@ -1455,6 +1479,8 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "打开窗时最适合的一杯橙色气泡",
       description:
         "一杯轻松的意式开胃酒，阿佩罗、普罗塞克和苏打水叠出明亮橙色，适合漫长午后。",
+      seoTitle: "阿佩罗橙光配方：90 ml 普罗塞克，60 ml 阿佩罗",
+      seoDescription: "轻松意式开胃酒：90 ml 普罗塞克、60 ml 阿佩罗与苏打水，2 分钟完成。明亮橙色，适合漫长午后。",
       heroIngredients: ["普罗塞克", "阿佩罗", "苏打水"],
       ingredients: ["90 ml 普罗塞克", "60 ml 阿佩罗", "30 ml 苏打水", "橙片"],
       steps: [
@@ -1512,6 +1538,8 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "黑麦辛香覆上一层苦艾气息",
       description:
         "新奥尔良经典，黑麦威士忌、Peychaud's 苦精、糖和少量苦艾酒组成浓烈而有辨识度的一杯。",
+      seoTitle: "萨泽拉克配方：60 ml 黑麦，苦艾酒润杯",
+      seoDescription: "新奥尔良经典：60 ml 黑麦威士忌，配 Peychaud's 苦精与苦艾酒润杯，4 分钟完成。浓烈而有辨识度。",
       heroIngredients: ["黑麦威士忌", "Peychaud's", "苦艾酒"],
       ingredients: ["60 ml 黑麦威士忌", "7.5 ml 单糖浆", "3 滴 Peychaud's 苦精", "苦艾酒润杯", "柠檬皮"],
       steps: [
@@ -1550,6 +1578,8 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "等量配方，苦甜起飞",
       description:
         "一杯现代经典，波本、Aperol、阿玛罗和柠檬以等量组合，形成干净、苦甜而平衡的酸型鸡尾酒。",
+      seoTitle: "纸飞机配方：等量组合，22.5 ml 波本",
+      seoDescription: "现代等量经典：波本、Aperol、阿玛罗和柠檬各 22.5 ml，3 分钟完成。干净、苦甜而平衡。",
       heroIngredients: ["波本", "Aperol", "柠檬"],
       ingredients: ["22.5 ml 波本", "22.5 ml Aperol", "22.5 ml Amaro Nonino", "22.5 ml 柠檬汁"],
       steps: [
@@ -1759,6 +1789,8 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "金酒与青柠，干净切入",
       description:
         "一杯老派金酒酸，把焦点放在青柠和植物香上。冰冷、紧凑，不需要多余装饰。",
+      seoTitle: "吉姆雷特配方：60 ml 金酒与青柠",
+      seoDescription: "老派金酒酸：60 ml 金酒搭配青柠与糖，3 分钟完成。冰冷、紧凑，不需要多余装饰。",
       heroIngredients: ["金酒", "青柠", "糖"],
       ingredients: ["60 ml 金酒", "22.5 ml 青柠汁", "22.5 ml 单糖浆"],
       steps: [
@@ -1818,6 +1850,8 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "菠萝、椰子和朗姆的盛夏感",
       description:
         "一杯奶油感热带经典，最好让菠萝保持明亮，椰子足够浓郁但不过分沉重。",
+      seoTitle: "椰林飘香配方：60 ml 朗姆，菠萝与椰子",
+      seoDescription: "奶油感热带经典：60 ml 朗姆搭配菠萝与椰子，4 分钟完成。让菠萝保持明亮，椰子浓郁但不过分沉重。",
       heroIngredients: ["朗姆", "菠萝", "椰子"],
       ingredients: ["60 ml 朗姆", "45 ml 菠萝汁", "30 ml 椰子奶油", "15 ml 青柠汁", "菠萝角"],
       steps: [
@@ -1932,6 +1966,8 @@ const localizedCocktails: Record<Locale, Record<CocktailId, LocalizedCocktail>> 
       subtitle: "粉红色的，没人只喝一杯",
       description:
         "一杯热带金酒长饮，樱桃、柑橘、菠萝和香料让它色彩鲜明，也比第一眼看上去更有结构。",
+      seoTitle: "新加坡司令配方：45 ml 金酒，樱桃与菠萝",
+      seoDescription: "热带金酒长饮：45 ml 金酒搭配樱桃、柑橘与菠萝，4 分钟完成。色彩鲜明，也比第一眼看上去更有结构。",
       heroIngredients: ["金酒", "樱桃", "菠萝"],
       ingredients: ["45 ml 金酒", "15 ml 樱桃利口酒", "7.5 ml Cointreau", "7.5 ml Benedictine", "60 ml 菠萝汁", "15 ml 青柠汁", "10 ml 红石榴糖浆", "1 滴安格斯图拉苦精"],
       steps: [
